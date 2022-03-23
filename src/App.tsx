@@ -1,9 +1,13 @@
-function App() {
+import { FunctionComponent } from "react"
+import { Container } from "react-bootstrap"
+import StudentContainer from "./components/StudentContainer"
+
+const App: FunctionComponent = () => {
   return (
-    <div>
-      <h3>Start</h3>
-    </div>
-  );
+    <Container>
+      <StudentContainer />
+    </Container>
+  )
 }
 
-export default App;
+export default App
