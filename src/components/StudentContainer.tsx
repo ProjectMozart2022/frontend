@@ -5,8 +5,6 @@ import { useState, useEffect, FunctionComponent } from "react"
 import axios from "axios"
 
 const StudentContainer: FunctionComponent = () => {
-  const [students, setStudents] = useState([])
-
   const fakeStudents = [
     {
       first_name: "Andrzej",
@@ -14,6 +12,7 @@ const StudentContainer: FunctionComponent = () => {
       class_number: 1,
     },
   ]
+  const [students, setStudents] = useState(fakeStudents)
 
   useEffect(() => {
     const fetchStudents = async () => {
@@ -26,7 +25,7 @@ const StudentContainer: FunctionComponent = () => {
 
   return (
     <Container className="studentContainer">
-      <TableView students={fakeStudents} title="Uczniowie" />
+      <TableView students={students} title="Uczniowie" />
     </Container>
   )
 }
