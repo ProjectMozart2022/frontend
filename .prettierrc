@@ -1,6 +1,6 @@
 {
- "tabWidth": 1,
- "semicolons": false,
- "bracketSpacing": true,
- "bracketSameLine": true
+  "tabWidth": 2,
+  "semi": false,
+  "bracketSpacing": true,
+  "bracketSameLine": true
 }
