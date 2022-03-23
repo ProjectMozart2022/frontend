@@ -1,4 +1,4 @@
-import { FC } from "react"
+import { FunctionComponent } from "react"
 import { Container, Table } from "react-bootstrap"
 import { Student } from "../types/Student"
 import "../css/Student.css"
@@ -8,7 +8,7 @@ interface IProps {
   title: string
 }
 
-const TableView: FC<IProps> = ({ students, title }) => {
+const TableView: FunctionComponent<IProps> = ({ students, title }) => {
   if (!students) {
     return <Container></Container>
   }

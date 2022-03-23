@@ -1,10 +1,10 @@
 import { Container } from "react-bootstrap"
 import TableView from "./TableView"
 import "../css/Student.css"
-import { useState, useEffect } from "react"
+import { useState, useEffect, FunctionComponent } from "react"
 import axios from "axios"
 
-const StudentContainer = () => {
+const StudentContainer: FunctionComponent = () => {
   const [students, setStudents] = useState([])
 
   const fakeStudents = [
