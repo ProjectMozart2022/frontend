@@ -29,7 +29,7 @@ const TableView: FunctionComponent<IProps> = ({ students, title }) => {
   return (
     <Container className="studentContainer" fluid>
       <h3 className="title">{title}</h3>
-      <Table bordered striped>
+      <Table bordered striped hover>
         <thead>
           <tr>
             {headers.map((header) => {
