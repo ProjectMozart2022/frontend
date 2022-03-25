@@ -1,5 +1,6 @@
 import { FunctionComponent } from "react"
-import { Container, Table } from "react-bootstrap"
+import { Container } from "@mantine/core"
+import { Table } from "react-bootstrap"
 import { Student } from "../types/Student"
 import "../css/Student.css"
 
@@ -27,7 +28,7 @@ const TableView: FunctionComponent<IProps> = ({ students, title }) => {
     })
 
   return (
-    <Container className="studentContainer" fluid>
+    <Container className="studentContainer">
       <h3 className="title">{title}</h3>
       <Table bordered striped hover>
         <thead>
