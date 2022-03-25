@@ -7,7 +7,7 @@ const AppWrapper: FunctionComponent = () => {
   return (
     <Routes>
       <Route path="/" element={<App />} />
-      <Route path="students" element={<StudentContainer />} />
+      <Route path="/students" element={<StudentContainer />} />
     </Routes>
   )
 }
