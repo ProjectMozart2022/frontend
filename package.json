@@ -10,6 +10,9 @@
     "lint": "eslint --fix"
   },
   "dependencies": {
+    "@mantine/core": "^4.0.8",
+    "@mantine/form": "^4.0.8",
+    "@mantine/hooks": "^4.0.8",
     "@types/node": "^16.7.13",
     "@types/react": "^17.0.20",
     "@types/react-bootstrap": "^0.32.29",
@@ -24,9 +27,11 @@
     "typescript": "^4.4.2"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.16.0",
     "@typescript-eslint/parser": "^5.8.1",
     "eslint": "^8.10.0",
     "eslint-config-prettier": "^8.5.0",
+    "eslint-config-react-app": "^7.0.0",
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.28.0",
