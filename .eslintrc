@@ -1,15 +1,12 @@
 {
   "parser": "@typescript-eslint/parser",
-  "plugins": ["react", "import", "jsx-a11y", "prettier"],
+  "plugins": ["react", "import", "jsx-a11y"],
   "extends": [
     "plugin:import/typescript",
     "plugin:react/recommended",
     "plugin:jsx-a11y/recommended",
     "plugin:react-hooks/recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:prettier/recommended",
-    "react-app",
-    "prettier"
+    "react-app"
   ],
   "rules": {
     "react/prop-types": 0,
