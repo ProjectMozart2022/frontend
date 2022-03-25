@@ -10,8 +10,7 @@ const App: FunctionComponent = () => {
       name: "Antoni Karwosky",
       image: "https://avatars.githubusercontent.com/u/70971641?v=4",
     },
-    tabs: [
-    ],
+    tabs: [],
   }
   return (
     <Container>

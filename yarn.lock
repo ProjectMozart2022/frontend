@@ -1224,11 +1224,14 @@
   integrity sha512-6U71C2Wp7r5XtFtQzYrW5iKFT67OixrSxjI4MptCHzdSVlgabczzqLe0ZSgnub/5Kp4hSbpDB1tMytZY9pwxxA==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@eslint/eslintrc@^1.2.0", "@eslint/eslintrc@^1.2.1":
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-1.2.1.tgz#8b5e1c49f4077235516bc9ec7d41378c0f69b8c6"
   integrity sha512-bxvbYnBPN1Gibwyp6NrpnFzA3YtRL3BBAyEAFVIpNTm2Rn4Vy87GA5M4aSn3InRrlsbX5N0GW7XIx+U4SAEKdQ==
 =======
+=======
+>>>>>>> 7d5a3f24b8a564a30a096f81c89608d1b84858c2
 "@eslint/eslintrc@^1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-1.2.0.tgz#7ce1547a5c46dfe56e1e45c3c9ed18038c721c6a"
@@ -1475,7 +1478,10 @@
     react-textarea-autosize "^8.3.2"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 7d5a3f24b8a564a30a096f81c89608d1b84858c2
 "@mantine/dates@^4.0.8":
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/@mantine/dates/-/dates-4.0.8.tgz#0a744f504ca256e20b5362265c60ddfc56ffbb79"
@@ -1485,7 +1491,10 @@
     clsx "^1.1.1"
     react-popper "^2.2.5"
 
+<<<<<<< HEAD
 >>>>>>> 1722db3 (started)
+=======
+>>>>>>> 7d5a3f24b8a564a30a096f81c89608d1b84858c2
 "@mantine/form@^4.0.8":
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/@mantine/form/-/form-4.0.8.tgz#9ea17a3ca6108ac259f046376471b552541beb62"
@@ -1496,6 +1505,30 @@
   resolved "https://registry.yarnpkg.com/@mantine/hooks/-/hooks-4.0.8.tgz#4b3c62e8a136de45fafbda8c3845dbdd63860d11"
   integrity sha512-f9DNbLB0KjVdTGxVeas/+9fNSiniv//Pm3SAm7NtaeCNX1EU3WECnjph+bnQx0YVwINCRVlLbyWwpkI64m132w==
 
+<<<<<<< HEAD
+=======
+"@mantine/modals@^4.0.8":
+  version "4.0.8"
+  resolved "https://registry.yarnpkg.com/@mantine/modals/-/modals-4.0.8.tgz#c81a8c1f320aae22ffd52bcf76d57c7f363b0d95"
+  integrity sha512-EpruuHum9Qkcur0HwyflPNRQNj4hsFES1CONRx/MqeqLhoL74Vhg166cyEb8EbjASgwusdpR7ujQNQbSSovy9g==
+
+"@mantine/notifications@^4.0.8":
+  version "4.0.8"
+  resolved "https://registry.yarnpkg.com/@mantine/notifications/-/notifications-4.0.8.tgz#745f11d838eaf4d5bdd63a2c1510159b87b498d8"
+  integrity sha512-b23+cvn69AZMZZ5WUBxq4X6SioqmL1y2XG7rtX0cQYiYzlInHiswoeERaEFnaF/hlVr6bIfAiLG8ExIPJIPWoA==
+  dependencies:
+    clsx "^1.1.1"
+    react-transition-group "^4.4.2"
+
+"@mantine/prism@^4.0.8":
+  version "4.0.8"
+  resolved "https://registry.yarnpkg.com/@mantine/prism/-/prism-4.0.8.tgz#7151943f3a116dcc406a39df15d5f725d1fc669d"
+  integrity sha512-WMXjtKwfk9qMFzqqV/XX4C8zDvFy3wUpBgFdSHAWYJlNwxqczEZ3J1NOS4KDX2Qx8z7zkdC8T7ZqPwuNGentNw==
+  dependencies:
+    clsx "^1.1.1"
+    prism-react-renderer "^1.2.1"
+
+>>>>>>> 7d5a3f24b8a564a30a096f81c89608d1b84858c2
 "@mantine/styles@4.0.8":
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/@mantine/styles/-/styles-4.0.8.tgz#bfe7e8dda1daf031d95d999f02ccb6a099674487"
@@ -7582,10 +7615,14 @@ react-textarea-autosize@^8.3.2:
     use-latest "^1.0.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 react-transition-group@^4.4.1:
 =======
 react-transition-group@^4.4.1, react-transition-group@^4.4.2:
 >>>>>>> 1722db3 (started)
+=======
+react-transition-group@^4.4.1, react-transition-group@^4.4.2:
+>>>>>>> 7d5a3f24b8a564a30a096f81c89608d1b84858c2
   version "4.4.2"
   resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-4.4.2.tgz#8b59a56f09ced7b55cbd53c36768b922890d5470"
   integrity sha512-/RNYfRAMlZwDSr6z4zNKV6xu53/e2BuaBbGhbyYIXTrmgu/bGHzmqOs7mJSJBHy9Ud+ApHx3QjrkKSp1pxvlFg==
