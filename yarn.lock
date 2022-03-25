@@ -8341,6 +8341,11 @@ symbol-tree@^3.2.4:
   resolved "https://registry.yarnpkg.com/symbol-tree/-/symbol-tree-3.2.4.tgz#430637d248ba77e078883951fb9aa0eed7c63fa2"
   integrity sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==
 
+tabler-icons-react@^1.41.0:
+  version "1.41.0"
+  resolved "https://registry.yarnpkg.com/tabler-icons-react/-/tabler-icons-react-1.41.0.tgz#e6c7df60b30ffe4ab7701818deaa9d8fe550822f"
+  integrity sha512-A/ESVwCfPuH1hAgoaLJV3Kl+eTS3TbJLP1H+w4ztMajjHkQJIrMPJt6JJq3VlB1f86F7UgBw2PxlT7gfcjmTXA==
+
 tailwindcss@^3.0.2:
   version "3.0.23"
   resolved "https://registry.yarnpkg.com/tailwindcss/-/tailwindcss-3.0.23.tgz#c620521d53a289650872a66adfcb4129d2200d10"
