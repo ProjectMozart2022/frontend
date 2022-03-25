@@ -1,8 +1,7 @@
 import { FunctionComponent } from "react"
-import { TeacherForm } from "./components/TeacherForm"
+import { TeacherForm } from "./components/Teacher/TeacherForm"
 import { HeaderTabsColored } from "./components/Header"
 import { Container } from "@mantine/core"
-import StudentContainer from "./components/StudentContainer"
 
 const App: FunctionComponent = () => {
   const mockData = {
