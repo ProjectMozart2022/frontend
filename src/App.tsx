@@ -1,7 +1,8 @@
 import { FunctionComponent } from "react"
 import { TeacherForm } from "./components/Teacher/TeacherForm"
 import { HeaderTabsColored } from "./components/Header"
-import { Container } from "@mantine/core"
+import { Container, MantineProvider } from "@mantine/core"
+import { NotificationsProvider } from "@mantine/notifications"
 
 const App: FunctionComponent = () => {
   const mockData = {
@@ -11,11 +12,16 @@ const App: FunctionComponent = () => {
     },
     tabs: [],
   }
+
   return (
-    <Container>
-      <HeaderTabsColored {...mockData} />
-      <TeacherForm />
-    </Container>
+    <MantineProvider>
+      <NotificationsProvider>
+        <Container>
+          <HeaderTabsColored {...mockData} />
+          <TeacherForm />
+        </Container>
+      </NotificationsProvider>
+    </MantineProvider>
   )
 }
 

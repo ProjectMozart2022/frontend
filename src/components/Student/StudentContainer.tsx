@@ -16,6 +16,7 @@ const StudentContainer: FunctionComponent = () => {
 
   const [isAdding, setIsAdding] = useState(false)
   const [students, setStudents] = useState(fakeStudents)
+
   useEffect(() => {
     const fetchStudents = async () => {
       const request = axios.get(`http://localhost:3567/api/student`)

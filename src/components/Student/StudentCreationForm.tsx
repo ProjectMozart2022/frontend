@@ -1,20 +1,24 @@
-import { FunctionComponent } from "react"
+import React, { FunctionComponent, useState } from "react"
 import { Container, TextInput, Group, Button } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { Student } from "../../types/Student"
 import axios from "axios"
+import { useNotifications } from "@mantine/notifications"
 
 const URL = `http://localhost:4567/api/student`
 
 interface IProps {
   isAdding: boolean
-  setIsAdding: React.Dispatch<boolean>
+  setIsAdding: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const StudentCreationForm: FunctionComponent<IProps> = ({
   isAdding,
   setIsAdding,
 }) => {
+  const notifications = useNotifications()
+  const [error, setError] = useState("")
+
   const studentForm = useForm<Student>({
     initialValues: {
       first_name: "",
@@ -36,7 +40,16 @@ const StudentCreationForm: FunctionComponent<IProps> = ({
 
   const onSubmit = (studentData: Student) => {
     setIsAdding(!isAdding)
-    const response: Promise<Student> = axios.post(URL, { studentData })
+    axios.post(URL, { studentData }).catch((err) => setError(err.message))
+    notifications.showNotification({
+      title: `${
+        error ? `Nie udało się stworzyć ucznia!` : "Udało stworzyć się ucznia!"
+      }`,
+      autoClose: 3000,
+      message: error
+        ? `Nie udało się stworzyć ucznia ${studentForm.values.first_name} ${studentForm.values.last_name}`
+        : `Udało się stworzyć ucznia ${studentForm.values.first_name} ${studentForm.values.last_name}`,
+    })
   }
 
   return (
