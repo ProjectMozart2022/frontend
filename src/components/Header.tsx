@@ -12,10 +12,8 @@ import {
   Image,
 } from "@mantine/core"
 import { useBooleanToggle } from "@mantine/hooks"
-import {
-  ChevronDown,
-} from "tabler-icons-react"
-import StudentContainer from "./StudentContainer"
+import { ChevronDown } from "tabler-icons-react"
+import StudentContainer from "./Student/StudentContainer"
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -151,8 +149,8 @@ export const HeaderTabsColored = ({ user, tabs }: HeaderTabsProps) => {
                 </Group>
               </UnstyledButton>
             }>
-              null
-            </Menu>
+            null
+          </Menu>
         </Group>
       </Container>
       <Container>

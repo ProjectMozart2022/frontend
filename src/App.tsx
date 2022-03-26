@@ -1,8 +1,8 @@
 import { FunctionComponent } from "react"
-import { Container } from "react-bootstrap"
-import { TeacherForm } from "./components/TeacherForm"
+import { TeacherForm } from "./components/Teacher/TeacherForm"
 import { HeaderTabsColored } from "./components/Header"
-
+import { Container, MantineProvider } from "@mantine/core"
+import { NotificationsProvider } from "@mantine/notifications"
 
 const App: FunctionComponent = () => {
   const mockData = {
@@ -10,14 +10,18 @@ const App: FunctionComponent = () => {
       name: "Antoni Karwosky",
       image: "https://avatars.githubusercontent.com/u/70971641?v=4",
     },
-    tabs: [
-    ],
+    tabs: [],
   }
+
   return (
-    <Container>
-      <HeaderTabsColored {...mockData} />
-      <TeacherForm />
-    </Container>
+    <MantineProvider>
+      <NotificationsProvider>
+        <Container>
+          <HeaderTabsColored {...mockData} />
+          <TeacherForm />
+        </Container>
+      </NotificationsProvider>
+    </MantineProvider>
   )
 }
 

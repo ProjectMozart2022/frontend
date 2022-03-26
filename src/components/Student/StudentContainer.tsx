@@ -1,8 +1,9 @@
-import { Container } from "react-bootstrap"
-import TableView from "./TableView"
-import "../css/Student.css"
+import { Container, Button } from "@mantine/core"
+import TableView from "../TableView"
+import "../../css/Student.css"
 import { useState, useEffect, FunctionComponent } from "react"
 import axios from "axios"
+import StudentCreationForm from "./StudentCreationForm"
 
 const StudentContainer: FunctionComponent = () => {
   const fakeStudents = [
@@ -12,6 +13,8 @@ const StudentContainer: FunctionComponent = () => {
       class_number: 1,
     },
   ]
+
+  const [isAdding, setIsAdding] = useState(false)
   const [students, setStudents] = useState(fakeStudents)
 
   useEffect(() => {
@@ -25,7 +28,16 @@ const StudentContainer: FunctionComponent = () => {
 
   return (
     <Container className="studentContainer">
-      <TableView students={students} title="Uczniowie" />
+      <TableView students={students} title="Uczniowie" variant="light" />
+      <Button
+        style={{ marginLeft: "0.75vw", marginBottom: "0.5vh" }}
+        color="dark"
+        onClick={() => setIsAdding(!isAdding)}>
+        Dodać ucznia
+      </Button>
+      {isAdding && (
+        <StudentCreationForm isAdding={isAdding} setIsAdding={setIsAdding} />
+      )}
     </Container>
   )
 }

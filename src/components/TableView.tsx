@@ -1,14 +1,16 @@
 import { FunctionComponent } from "react"
-import { Container, Table } from "react-bootstrap"
+import { Container } from "@mantine/core"
+import { Table } from "react-bootstrap"
 import { Student } from "../types/Student"
 import "../css/Student.css"
 
 interface IProps {
   students: Student[]
   title: string
+  variant: string
 }
 
-const TableView: FunctionComponent<IProps> = ({ students, title }) => {
+const TableView: FunctionComponent<IProps> = ({ students, title, variant }) => {
   if (!students) {
     return <Container></Container>
   }
@@ -27,9 +29,9 @@ const TableView: FunctionComponent<IProps> = ({ students, title }) => {
     })
 
   return (
-    <Container className="studentContainer" fluid>
+    <Container className="studentContainer">
       <h3 className="title">{title}</h3>
-      <Table bordered striped hover>
+      <Table variant={variant} bordered striped hover>
         <thead>
           <tr>
             {headers.map((header) => {

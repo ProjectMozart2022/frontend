@@ -1,5 +1,5 @@
 import React from "react"
-import { Teacher } from "../types/Teacher"
+import { Teacher } from "../../types/Teacher"
 import { TextInput, Button, Group, Box } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import axios from "axios"
@@ -24,12 +24,12 @@ export const TeacherForm: React.FC = () => {
   })
 
   const handleSubmit = (teacherData: Teacher) => {
-    const response: Promise<Teacher> = axios.post(URL, {teacherData})
+    const response: Promise<Teacher> = axios.post(URL, { teacherData })
   }
 
   return (
     <Box sx={{ maxWidth: 400 }} mx="auto">
-      <form onSubmit={form.onSubmit((handleSubmit))}>
+      <form onSubmit={form.onSubmit(handleSubmit)}>
         <TextInput
           required
           label="Imię nauczyciela"
