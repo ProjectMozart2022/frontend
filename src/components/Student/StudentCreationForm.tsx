@@ -4,6 +4,7 @@ import { useForm } from "@mantine/form"
 import { Student } from "../../types/Student"
 import axios from "axios"
 import { useNotifications } from "@mantine/notifications"
+import { Check } from "tabler-icons-react"
 
 const URL = `http://localhost:4567/api/student`
 
@@ -46,6 +47,8 @@ const StudentCreationForm: FunctionComponent<IProps> = ({
         error ? `Nie udało się stworzyć ucznia!` : "Udało stworzyć się ucznia!"
       }`,
       autoClose: 3000,
+      icon: <Check size={18} />,
+      color: "green",
       message: error
         ? `Nie udało się stworzyć ucznia ${studentForm.values.first_name} ${studentForm.values.last_name}`
         : `Udało się stworzyć ucznia ${studentForm.values.first_name} ${studentForm.values.last_name}`,
