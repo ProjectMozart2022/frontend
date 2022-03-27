@@ -1,12 +1,27 @@
 import { FunctionComponent } from "react"
-import { Container } from "react-bootstrap"
-import StudentContainer from "./components/StudentContainer"
+import { TeacherForm } from "./components/Teacher/TeacherForm"
+import { HeaderTabsColored } from "./components/Header"
+import { Container, MantineProvider } from "@mantine/core"
+import { NotificationsProvider } from "@mantine/notifications"
 
 const App: FunctionComponent = () => {
+  const mockData = {
+    user: {
+      name: "Antoni Karwosky",
+      image: "https://avatars.githubusercontent.com/u/70971641?v=4",
+    },
+    tabs: [],
+  }
+
   return (
-    <Container>
-      <StudentContainer />
-    </Container>
+    <MantineProvider>
+      <NotificationsProvider>
+        <Container>
+          <HeaderTabsColored {...mockData} />
+          <TeacherForm />
+        </Container>
+      </NotificationsProvider>
+    </MantineProvider>
   )
 }
 
