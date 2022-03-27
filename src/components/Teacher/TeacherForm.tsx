@@ -7,7 +7,7 @@ import { useNotifications } from "@mantine/notifications"
 import { Check } from "tabler-icons-react"
 
 export const TeacherForm: React.FC = () => {
-  const URL = "http://localhost/api/teacher"
+  const URL = "http://localhost:4567/api/teacher"
   const notifications = useNotifications()
   const [error, setError] = useState("")
 
@@ -31,7 +31,7 @@ export const TeacherForm: React.FC = () => {
     axios
       .post(
         URL,
-        { teacherData },
+        { ...teacherData },
         {
           headers: {
             "Content-Type": "application/json",
