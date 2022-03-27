@@ -12,6 +12,7 @@ import axios from "axios"
 import { useNotifications } from "@mantine/notifications"
 import { Check } from "tabler-icons-react"
 import { Profile } from "../../types/Profile"
+import { showNotification } from "../../service/notificationService"
 
 type ProfileFormIProps = {
   name: string
@@ -37,6 +38,18 @@ export const ProfileForm: React.FC = () => {
     validate: (values) => ({}),
   })
 
+  const notificationObject = {
+    title: `${
+      error ? `Nie udało się dodać profilu!` : "Udało się dodać profil!"
+    }`,
+    autoClose: 3000,
+    icon: <Check size={18} />,
+    color: "green",
+    message: error
+      ? `Nie udało się dodać profilu ${profileForm.values.name}`
+      : `Udało się dodać profil ${profileForm.values.name}`,
+  }
+
   const handleSubmit = (profileData: ProfileFormIProps) => {
     const payload: Profile = {
       ...profileData,
@@ -52,17 +65,7 @@ export const ProfileForm: React.FC = () => {
         },
       })
       .catch((err) => setError(err.message))
-    notifications.showNotification({
-      title: `${
-        error ? `Nie udało się dodać profilu!` : "Udało się dodać profil!"
-      }`,
-      autoClose: 3000,
-      icon: <Check size={18} />,
-      color: "green",
-      message: error
-        ? `Nie udało się dodać profilu ${profileForm.values.name}`
-        : `Udało się dodać profil ${profileForm.values.name}`,
-    })
+    showNotification(notifications, notificationObject)
   }
 
   return (
