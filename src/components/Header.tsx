@@ -14,6 +14,7 @@ import {
 import { useBooleanToggle } from "@mantine/hooks"
 import { ChevronDown } from "tabler-icons-react"
 import StudentContainer from "./Student/StudentContainer"
+import { ProfileForm } from "./Profile/ProfileForm"
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -171,7 +172,7 @@ export const HeaderTabsColored = ({ user, tabs }: HeaderTabsProps) => {
             nauczyciele
           </Tabs.Tab>
           <Tabs.Tab label="Zajęcia" tabKey="third">
-            zjaecia
+            <ProfileForm />
           </Tabs.Tab>
         </Tabs>
       </Container>

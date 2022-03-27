@@ -18,10 +18,10 @@ export const TeacherForm: React.FC = () => {
     },
 
     validate: (values) => ({
-      first_name: /^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+$/.test(values.firstName)
+      firstName: /^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+$/.test(values.firstName)
         ? null
         : "Niepoprawne imię",
-      last_name: /^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+$/.test(values.lastName)
+      lastName: /^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+$/.test(values.lastName)
         ? null
         : "Niepoprawne nazwisko",
     }),
