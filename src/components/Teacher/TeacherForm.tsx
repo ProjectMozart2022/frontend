@@ -31,7 +31,7 @@ export const TeacherForm: React.FC = () => {
     axios
       .post(
         URL,
-        { ...teacherData },
+        teacherData,
         {
           headers: {
             "Content-Type": "application/json",
