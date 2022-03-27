@@ -15,18 +15,30 @@ const TableView: FunctionComponent<IProps> = ({ students, title, variant }) => {
     return <Container></Container>
   }
 
-  const headers = Object.entries(students[0])
-    .filter(([k, v]) => !k.includes("is_present"))
-    .map(([k, v]) => {
-      const spittedKey = k.split("_")
-      const capitalizeFirstLetter = (key: string) => {
-        return key.charAt(0).toUpperCase() + key.slice(1)
+  const mapFunction = (k: string) => {
+    const capitalizeFirstLetter = (key: string) => {
+      return key.charAt(0).toUpperCase() + key.slice(1)
+    }
+    let returnStr = ""
+    for (let i = 0; i < k.length; i++) {
+      if (k[i].match(/[A-Z]/)) {
+        let char = k[i]
+        let str = k.split(/[A-Z]/)
+        returnStr = `${capitalizeFirstLetter(str[0])} ${char.toUpperCase()}${
+          str[1]
+        }`
       }
-      return (
-        capitalizeFirstLetter(`${spittedKey[0]} `) +
-        spittedKey.slice(1).join(" ")
-      )
-    })
+    }
+    return returnStr
+  }
+
+  const filterFunction = (k: string) => {
+    return !k.includes("isPresent") && !k.includes("id")
+  }
+
+  const headers = Object.keys(students[0])
+    .filter((k) => filterFunction(k))
+    .map((k) => mapFunction(k))
 
   return (
     <Container className="studentContainer">
@@ -43,10 +55,10 @@ const TableView: FunctionComponent<IProps> = ({ students, title, variant }) => {
           {students.map((student) => {
             return (
               <tr
-                key={`${student.first_name}-${student.last_name}-${student.class_number}`}>
-                <td>{student.first_name}</td>
-                <td>{student.last_name}</td>
-                <td>{student.class_number}</td>
+                key={`${student.firstName}-${student.lastName}-${student.classNumber}`}>
+                <td>{student.firstName}</td>
+                <td>{student.lastName}</td>
+                <td>{student.classNumber}</td>
               </tr>
             )
           })}

@@ -25,16 +25,7 @@ export const ProfileForm: React.FC = () => {
   const [error, setError] = useState("")
 
   /* narazie na sztywno */
-  const [classNumber, setClassNumber] = useState([
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-  ])
+  const [classNumber] = useState(["1", "2", "3", "4", "5", "6", "7", "8"])
 
   const profileForm = useForm<ProfileFormIProps>({
     initialValues: {
@@ -102,7 +93,9 @@ export const ProfileForm: React.FC = () => {
         />
 
         <Group position="right" mt="md">
-          <Button color="red" type="submit">Dodaj Profil</Button>
+          <Button color="red" type="submit">
+            Dodaj Profil
+          </Button>
         </Group>
       </form>
     </Box>
