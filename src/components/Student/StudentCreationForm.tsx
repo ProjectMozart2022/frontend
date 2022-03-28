@@ -5,6 +5,7 @@ import { Student } from "../../types/Student"
 import axios from "axios"
 import { useNotifications } from "@mantine/notifications"
 import { Check } from "tabler-icons-react"
+import { showNotification } from "../../service/notificationService"
 
 const URL = `http://localhost:4567/api/student`
 
@@ -18,41 +19,49 @@ const StudentCreationForm: FunctionComponent<IProps> = ({
   setIsAdding,
 }) => {
   const notifications = useNotifications()
-  const [error, setError] = useState("")
 
   const studentForm = useForm<Student>({
     initialValues: {
-      first_name: "",
-      last_name: "",
-      class_number: 1,
+      firstName: "",
+      lastName: "",
+      classNumber: 1,
     },
     validate: (values) => ({
-      class_number: /[1-6]{1}/.test(`${values.class_number}`)
+      class_number: /[1-6]{1}/.test(`${values.classNumber}`)
         ? null
         : "Nieprawidłowa klasa",
-      first_name: /[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+$/.test(values.first_name)
+      first_name: /[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+$/.test(values.firstName)
         ? null
         : "Nieprawidłowa imię",
-      last_name: /[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+$/.test(values.last_name)
+      last_name: /[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+$/.test(values.lastName)
         ? null
         : "Nieprawidłowa nazwisko",
     }),
   })
+  const [error, setError] = useState("")
+  const notificationObject = {
+    title: `${
+      error ? `Nie udało się stworzyć ucznia!` : "Udało stworzyć się ucznia!"
+    }`,
+    autoClose: 3000,
+    icon: <Check size={18} />,
+    color: "green",
+    message: error
+      ? `Nie udało się stworzyć ucznia ${studentForm.values.firstName} ${studentForm.values.lastName}`
+      : `Udało się stworzyć ucznia ${studentForm.values.firstName} ${studentForm.values.lastName}`,
+  }
 
   const onSubmit = (studentData: Student) => {
     setIsAdding(!isAdding)
-    axios.post(URL, { studentData }).catch((err) => setError(err.message))
-    notifications.showNotification({
-      title: `${
-        error ? `Nie udało się stworzyć ucznia!` : "Udało stworzyć się ucznia!"
-      }`,
-      autoClose: 3000,
-      icon: <Check size={18} />,
-      color: "green",
-      message: error
-        ? `Nie udało się stworzyć ucznia ${studentForm.values.first_name} ${studentForm.values.last_name}`
-        : `Udało się stworzyć ucznia ${studentForm.values.first_name} ${studentForm.values.last_name}`,
-    })
+    axios
+      .post(URL, studentData, {
+        headers: {
+          "Content-Type": "application/json",
+          "Allow-Origin": "*",
+        },
+      })
+      .catch((err) => setError(err.message))
+    showNotification(notifications, notificationObject)
   }
 
   return (
@@ -63,21 +72,21 @@ const StudentCreationForm: FunctionComponent<IProps> = ({
           type="text"
           label="Imię ucznia"
           placeholder="Podaj imie ucznia"
-          {...studentForm.getInputProps("first_name")}
+          {...studentForm.getInputProps("firstName")}
         />
         <TextInput
           required
           type="text"
           label="Nazwisko ucznia"
           placeholder="Podaj nazwisko ucznia"
-          {...studentForm.getInputProps("last_name")}
+          {...studentForm.getInputProps("lastName")}
         />
         <TextInput
           required
           type="number"
           label="Klasa ucznia"
           placeholder="Podaj nazwisko ucznia"
-          {...studentForm.getInputProps("class_number")}
+          {...studentForm.getInputProps("classNumber")}
         />
         <Group
           position="center"

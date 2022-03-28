@@ -1,12 +1,13 @@
-import React, { useState } from "react"
+import { useState, FunctionComponent } from "react"
 import { Teacher } from "../../types/Teacher"
 import { TextInput, Button, Group, Box } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import axios from "axios"
 import { useNotifications } from "@mantine/notifications"
 import { Check } from "tabler-icons-react"
+import { showNotification } from "../../service/notificationService"
 
-export const TeacherForm: React.FC = () => {
+export const TeacherForm: FunctionComponent = () => {
   const URL = "http://localhost:4567/api/teacher"
   const notifications = useNotifications()
   const [error, setError] = useState("")
@@ -27,32 +28,30 @@ export const TeacherForm: React.FC = () => {
     }),
   })
 
+  const notificationObject = {
+    title: `${
+      error
+        ? `Nie udało się dodać nauczyciela!`
+        : "Udało się dodać nauczyciela!"
+    }`,
+    autoClose: 3000,
+    icon: <Check size={18} />,
+    color: "green",
+    message: error
+      ? `Nie udało się dodać nauczyciela ${teacherForm.values.firstName} ${teacherForm.values.lastName}`
+      : `Udało się dodać nauczyciela ${teacherForm.values.firstName} ${teacherForm.values.lastName}`,
+  }
+
   const handleSubmit = (teacherData: Teacher) => {
     axios
-      .post(
-        URL,
-        teacherData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "Allow-Origin": "*",
-          },
-        }
-      )
+      .post(URL, teacherData, {
+        headers: {
+          "Content-Type": "application/json",
+          "Allow-Origin": "*",
+        },
+      })
       .catch((err) => setError(err.message))
-    notifications.showNotification({
-      title: `${
-        error
-          ? `Nie udało się dodać nauczyciela!`
-          : "Udało się dodać nauczyciela!"
-      }`,
-      autoClose: 3000,
-      icon: <Check size={18} />,
-      color: "green",
-      message: error
-        ? `Nie udało się dodać nauczyciela ${teacherForm.values.firstName} ${teacherForm.values.lastName}`
-        : `Udało się dodać nauczyciela ${teacherForm.values.firstName} ${teacherForm.values.lastName}`,
-    })
+    showNotification(notifications, notificationObject)
   }
 
   return (
@@ -73,7 +72,9 @@ export const TeacherForm: React.FC = () => {
         />
 
         <Group position="right" mt="md">
-          <Button type="submit">Dodaj nauczyciela</Button>
+          <Button type="submit" color="dark">
+            Dodaj nauczyciela
+          </Button>
         </Group>
       </form>
     </Box>

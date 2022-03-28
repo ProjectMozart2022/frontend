@@ -12,6 +12,7 @@ import axios from "axios"
 import { useNotifications } from "@mantine/notifications"
 import { Check } from "tabler-icons-react"
 import { Profile } from "../../types/Profile"
+import { showNotification } from "../../service/notificationService"
 
 type ProfileFormIProps = {
   name: string
@@ -25,16 +26,7 @@ export const ProfileForm: React.FC = () => {
   const [error, setError] = useState("")
 
   /* narazie na sztywno */
-  const [classNumber, setClassNumber] = useState([
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-  ])
+  const [classNumber] = useState(["1", "2", "3", "4", "5", "6", "7", "8"])
 
   const profileForm = useForm<ProfileFormIProps>({
     initialValues: {
@@ -45,6 +37,18 @@ export const ProfileForm: React.FC = () => {
 
     validate: (values) => ({}),
   })
+
+  const notificationObject = {
+    title: `${
+      error ? `Nie udało się dodać profilu!` : "Udało się dodać profil!"
+    }`,
+    autoClose: 3000,
+    icon: <Check size={18} />,
+    color: "green",
+    message: error
+      ? `Nie udało się dodać profilu ${profileForm.values.name}`
+      : `Udało się dodać profil ${profileForm.values.name}`,
+  }
 
   const handleSubmit = (profileData: ProfileFormIProps) => {
     const payload: Profile = {
@@ -61,17 +65,7 @@ export const ProfileForm: React.FC = () => {
         },
       })
       .catch((err) => setError(err.message))
-    notifications.showNotification({
-      title: `${
-        error ? `Nie udało się dodać profilu!` : "Udało się dodać profil!"
-      }`,
-      autoClose: 3000,
-      icon: <Check size={18} />,
-      color: "green",
-      message: error
-        ? `Nie udało się dodać profilu ${profileForm.values.name}`
-        : `Udało się dodać profil ${profileForm.values.name}`,
-    })
+    showNotification(notifications, notificationObject)
   }
 
   return (
@@ -102,7 +96,9 @@ export const ProfileForm: React.FC = () => {
         />
 
         <Group position="right" mt="md">
-          <Button color="red" type="submit">Dodaj Profil</Button>
+          <Button color="dark" type="submit">
+            Dodaj Profil
+          </Button>
         </Group>
       </form>
     </Box>
