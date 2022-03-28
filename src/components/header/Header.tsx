@@ -6,6 +6,7 @@ import { ProfileForm } from "../Profile/ProfileForm"
 import { User } from "../../types/User"
 import MenuHeader from "./HeaderMenu"
 import { useStyles } from "./styles/headerStyles"
+import TeacherContainer from "../Teacher/TeacherContainer"
 
 interface HeaderTabsProps {
   user: User
@@ -63,7 +64,7 @@ export const HeaderTabsColored = ({ user, tabs }: HeaderTabsProps) => {
             <StudentContainer />
           </Tabs.Tab>
           <Tabs.Tab label="Nauczyciele" tabKey="second">
-            Nauczyciele
+            <TeacherContainer />
           </Tabs.Tab>
           <Tabs.Tab label="Zajęcia" tabKey="third">
             <ProfileForm />

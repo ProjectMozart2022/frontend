@@ -96,7 +96,7 @@ export const ProfileForm: React.FC = () => {
         />
 
         <Group position="right" mt="md">
-          <Button color="red" type="submit">
+          <Button color="dark" type="submit">
             Dodaj Profil
           </Button>
         </Group>

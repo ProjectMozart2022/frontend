@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import { useState, FunctionComponent } from "react"
 import { Teacher } from "../../types/Teacher"
 import { TextInput, Button, Group, Box } from "@mantine/core"
 import { useForm } from "@mantine/form"
@@ -7,7 +7,7 @@ import { useNotifications } from "@mantine/notifications"
 import { Check } from "tabler-icons-react"
 import { showNotification } from "../../service/notificationService"
 
-export const TeacherForm: React.FC = () => {
+export const TeacherForm: FunctionComponent = () => {
   const URL = "http://localhost:4567/api/teacher"
   const notifications = useNotifications()
   const [error, setError] = useState("")
@@ -72,7 +72,9 @@ export const TeacherForm: React.FC = () => {
         />
 
         <Group position="right" mt="md">
-          <Button type="submit">Dodaj nauczyciela</Button>
+          <Button type="submit" color="dark">
+            Dodaj nauczyciela
+          </Button>
         </Group>
       </form>
     </Box>
