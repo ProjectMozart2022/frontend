@@ -53,7 +53,6 @@ const StudentCreationForm: FunctionComponent<IProps> = ({
 
   const onSubmit = (studentData: Student) => {
     setIsAdding(!isAdding)
-    console.log(studentData)
     axios
       .post(URL, studentData, {
         headers: {
