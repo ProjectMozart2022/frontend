@@ -23,7 +23,7 @@ const StudentContainer: FunctionComponent = () => {
         .catch((err) => setError(err.message))
     }
     fetchStudents()
-  })
+  }, [])
 
   return (
     <Container className="studentContainer">
