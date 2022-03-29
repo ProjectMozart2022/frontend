@@ -13,17 +13,17 @@ const StudentContainer: FunctionComponent = () => {
   useEffect(() => {
     const fetchStudents = async () => {
       axios
-        .get(`http://localhost:4567/api/student`, {
+        .get(`https://mozart-backend.azurewebsites.net/api/student`, {
           headers: {
             "Content-Type": "application/json",
-            "Allow-Origin": "*",
+            "Access-Control-Allow-Origin": "*",
           },
         })
         .then((res) => setStudents(res.data))
         .catch((err) => setError(err.message))
     }
     fetchStudents()
-  })
+  }, [])
 
   return (
     <Container className="studentContainer">

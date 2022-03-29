@@ -7,7 +7,7 @@ import { useNotifications } from "@mantine/notifications"
 import { Check, X } from "tabler-icons-react"
 import { showNotification } from "../../service/notificationService"
 
-const URL = `http://localhost:4567/api/student`
+const URL = `https://mozart-backend.azurewebsites.net/api/student`
 
 interface IProps {
   isAdding: boolean
