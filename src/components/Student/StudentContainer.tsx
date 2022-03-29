@@ -6,22 +6,19 @@ import axios from "axios"
 import StudentCreationForm from "./StudentCreationForm"
 
 const StudentContainer: FunctionComponent = () => {
-  const fakeStudents = [
-    {
-      firstName: "Andrzej",
-      lastName: "Duda",
-      classNumber: 1,
-    },
-  ]
-
   const [isAdding, setIsAdding] = useState(false)
-  const [students, setStudents] = useState(fakeStudents || [])
+  const [students, setStudents] = useState([])
 
   useEffect(() => {
     const fetchStudents = async () => {
-      const request = axios.get(`http://localhost:4567/api/student`)
-      const data = await (await request).data
-      setStudents(data)
+      const response = axios
+        .get(`http://localhost:4567/api/student`, {
+          headers: {
+            "Content-Type": "application/json",
+            "Allow-Origin": "*",
+          },
+        })
+        .then((res) => setStudents(res.data))
     }
     fetchStudents()
   })

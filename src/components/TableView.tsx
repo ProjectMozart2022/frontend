@@ -11,8 +11,12 @@ interface IProps {
 }
 
 const TableView: FunctionComponent<IProps> = ({ students, title, variant }) => {
-  if (!students) {
-    return <Container></Container>
+  if (students?.length === 0) {
+    return (
+      <Container>
+        <h3 className="title">Brak uczniów</h3>
+      </Container>
+    )
   }
 
   const mapFunction = (k: string) => {
