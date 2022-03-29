@@ -4,7 +4,7 @@ import { TextInput, Button, Group, Box } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import axios from "axios"
 import { useNotifications } from "@mantine/notifications"
-import { Check } from "tabler-icons-react"
+import { Check, X } from "tabler-icons-react"
 import { showNotification } from "../../service/notificationService"
 
 export const TeacherForm: FunctionComponent = () => {
@@ -35,11 +35,11 @@ export const TeacherForm: FunctionComponent = () => {
         : "Udało się dodać nauczyciela!"
     }`,
     autoClose: 3000,
-    icon: <Check size={18} />,
-    color: "green",
+    icon: error?.length > 0 ? <X size={18} /> : <Check size={18} />,
+    color: error?.length > 0 ? "red" : "green",
     message: error
-      ? `Nie udało się dodać nauczyciela ${teacherForm.values.firstName} ${teacherForm.values.lastName}`
-      : `Udało się dodać nauczyciela ${teacherForm.values.firstName} ${teacherForm.values.lastName}`,
+      ? `Nie udało się dodać nauczyciela ${teacherForm.values.firstName} ${teacherForm.values.lastName}!`
+      : `Udało się dodać nauczyciela ${teacherForm.values.firstName} ${teacherForm.values.lastName}!`,
   }
 
   const handleSubmit = (teacherData: Teacher) => {

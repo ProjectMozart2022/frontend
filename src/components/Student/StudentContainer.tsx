@@ -1,17 +1,18 @@
-import { Container, Button } from "@mantine/core"
 import TableView from "../TableView"
 import "../../css/Student.css"
-import { useState, useEffect, FunctionComponent } from "react"
 import axios from "axios"
 import StudentCreationForm from "./StudentCreationForm"
+import { Container, Button } from "@mantine/core"
+import { useState, useEffect, FunctionComponent } from "react"
 
 const StudentContainer: FunctionComponent = () => {
   const [isAdding, setIsAdding] = useState(false)
   const [students, setStudents] = useState([])
+  const [, setError] = useState("")
 
   useEffect(() => {
     const fetchStudents = async () => {
-      const response = axios
+      axios
         .get(`http://localhost:4567/api/student`, {
           headers: {
             "Content-Type": "application/json",
@@ -19,6 +20,7 @@ const StudentContainer: FunctionComponent = () => {
           },
         })
         .then((res) => setStudents(res.data))
+        .catch((err) => setError(err.message))
     }
     fetchStudents()
   })

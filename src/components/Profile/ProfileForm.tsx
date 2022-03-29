@@ -10,7 +10,7 @@ import {
 import { useForm } from "@mantine/form"
 import axios from "axios"
 import { useNotifications } from "@mantine/notifications"
-import { Check } from "tabler-icons-react"
+import { Check, X } from "tabler-icons-react"
 import { Profile } from "../../types/Profile"
 import { showNotification } from "../../service/notificationService"
 
@@ -43,8 +43,8 @@ export const ProfileForm: React.FC = () => {
       error ? `Nie udało się dodać profilu!` : "Udało się dodać profil!"
     }`,
     autoClose: 3000,
-    icon: <Check size={18} />,
-    color: "green",
+    icon: error?.length > 0 ? <X size={18} /> : <Check size={18} />,
+    color: error?.length > 0 ? "red" : "green",
     message: error
       ? `Nie udało się dodać profilu ${profileForm.values.name}`
       : `Udało się dodać profil ${profileForm.values.name}`,
