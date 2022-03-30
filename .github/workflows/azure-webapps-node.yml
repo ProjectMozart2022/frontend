@@ -1,6 +1,10 @@
 name: Build and deploy Node.js app to Azure Web App - CodeGarden
 
 on:
+  pull_request:
+    branches:
+      - piotrek/*
+      - wojtek/*
   push:
     branches:
       - master
