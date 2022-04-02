@@ -1,7 +1,10 @@
 import { FunctionComponent } from "react"
+import {useState} from "react"
 import { HeaderTabsColored } from "./components/header/Header"
 import { Container, MantineProvider } from "@mantine/core"
 import { NotificationsProvider } from "@mantine/notifications"
+import { TabProvider } from "./contexts/TabContext"
+import MainContent from "./components/mainContent/mainContent"
 
 const App: FunctionComponent = () => {
   const mockData = {
@@ -11,15 +14,19 @@ const App: FunctionComponent = () => {
     },
     tabs: [],
   }
+  const [tab, setTab] = useState<String>("")
 
   return (
-    <MantineProvider>
-      <NotificationsProvider>
-        <Container>
-          <HeaderTabsColored {...mockData} />
-        </Container>
-      </NotificationsProvider>
-    </MantineProvider>
+    <TabProvider value={[tab, setTab]}>
+      <MantineProvider>
+        <NotificationsProvider>
+          <Container>
+            <HeaderTabsColored {...mockData} />
+            <MainContent />
+          </Container>
+        </NotificationsProvider>
+      </MantineProvider>
+    </TabProvider>
   )
 }
 
