@@ -1,12 +1,10 @@
-import { useState } from "react"
+import { useState, useContext } from "react"
 import { Container, Group, Tabs, Burger, Image } from "@mantine/core"
 import { useBooleanToggle } from "@mantine/hooks"
-import StudentContainer from "../Student/StudentContainer"
-import { ProfileForm } from "../Profile/ProfileForm"
 import { User } from "../../types/User"
 import MenuHeader from "./HeaderMenu"
 import { useStyles } from "./styles/headerStyles"
-import TeacherContainer from "../Teacher/TeacherContainer"
+import TabContext from "../../contexts/TabContext"
 
 interface HeaderTabsProps {
   user: User
@@ -17,10 +15,11 @@ export const HeaderTabsColored = ({ user, tabs }: HeaderTabsProps) => {
   const { classes, theme } = useStyles()
   const [opened, toggleOpened] = useBooleanToggle(false)
   const [userMenuOpened, setUserMenuOpened] = useState(false)
-  const [activeTab, setActiveTab] = useState(1)
+  const [activeTab, setActiveTab] = useState(0)
+  const [, setTab] = useContext(TabContext)
   const onChangeTab = (active: number, tabKey: string) => {
     setActiveTab(active)
-    console.log("tabKey", tabKey)
+    setTab(tabKey)
   }
 
   return (
@@ -60,15 +59,9 @@ export const HeaderTabsColored = ({ user, tabs }: HeaderTabsProps) => {
             tabControl: classes.tabControl,
             tabActive: classes.tabControlActive,
           }}>
-          <Tabs.Tab label="Uczniowie" tabKey="first">
-            <StudentContainer />
-          </Tabs.Tab>
-          <Tabs.Tab label="Nauczyciele" tabKey="second">
-            <TeacherContainer />
-          </Tabs.Tab>
-          <Tabs.Tab label="Zajęcia" tabKey="third">
-            <ProfileForm />
-          </Tabs.Tab>
+          <Tabs.Tab label="Uczniowie" tabKey="uczniowie" />
+          <Tabs.Tab label="Nauczyciele" tabKey="nauczyciele" />
+          <Tabs.Tab label="Profile" tabKey="profile" />
         </Tabs>
       </Container>
     </div>
