@@ -1,7 +1,5 @@
 {
   "cSpell.words": ["Mantine", "Unstyled"],
-  "editor.formatOnSave": true,
-  "files.insertFinalNewline": true,
   "files.exclude": {
     "**/.git": true,
     "**/.svn": true,
@@ -10,5 +8,10 @@
     "**/.DS_Store": true,
     "**/Thumbs.db": true,
     "**/node_modules": true
-  }
+  },
+  "editor.tabSize": 1,
+  "editor.formatOnPaste": true,
+  "editor.formatOnSaveMode": "modifications",
+  "editor.formatOnSave": true,
+  "files.insertFinalNewline": true,
 }

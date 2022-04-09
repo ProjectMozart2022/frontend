@@ -2,7 +2,7 @@ import { useState, useContext } from "react"
 import { Container, Group, Tabs, Burger, Image } from "@mantine/core"
 import { useBooleanToggle } from "@mantine/hooks"
 import { User } from "../../types/User"
-import MenuHeader from "./HeaderMenu"
+import HeaderMenu from "./HeaderMenu"
 import { useStyles } from "./styles/headerStyles"
 import TabContext from "../../contexts/TabContext"
 
@@ -28,7 +28,6 @@ export const HeaderTabsColored = ({ user, tabs }: HeaderTabsProps) => {
         <Group position="apart">
           <Image
             radius="md"
-            /* do poprawy */
             src="https://www.muzyczna-sosnowa.pl/wp-content/uploads/2016/09/logo_1-2.png"
             alt="Random unsplash image"
           />
@@ -41,13 +40,14 @@ export const HeaderTabsColored = ({ user, tabs }: HeaderTabsProps) => {
             color={theme.white}
           />
 
-          <MenuHeader
+          <HeaderMenu
             user={user}
             userMenuOpened={userMenuOpened}
             setUserMenuOpened={setUserMenuOpened}
           />
         </Group>
       </Container>
+
       <Container>
         <Tabs
           active={activeTab}

@@ -46,7 +46,9 @@ const TableView: FunctionComponent<IProps> = ({ students, title, variant }) => {
 
   return (
     <Container className="studentContainer">
-      <h3 className="title">{title}</h3>
+      <h3 className="title" style={{ color: "white" }}>
+        {title}
+      </h3>
       <Table variant={variant} bordered striped hover>
         <thead>
           <tr>
