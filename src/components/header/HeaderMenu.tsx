@@ -1,6 +1,14 @@
-import { Avatar, Group, UnstyledButton, Text, Menu } from "@mantine/core"
+import {
+  Avatar,
+  Group,
+  UnstyledButton,
+  Text,
+  Menu,
+  Button,
+} from "@mantine/core"
 import React, { FunctionComponent } from "react"
 import { ChevronDown } from "tabler-icons-react"
+import { auth } from "../../contexts/UserContext"
 import { User } from "../../types/User"
 import { useStyles } from "./styles/headerStyles"
 
@@ -10,12 +18,16 @@ interface IProps {
   setUserMenuOpened: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const MenuHeader: FunctionComponent<IProps> = ({
+const HeaderMenu: FunctionComponent<IProps> = ({
   userMenuOpened,
   user,
   setUserMenuOpened,
 }) => {
   const { classes, theme, cx } = useStyles()
+
+  const onLogOut = () => {
+    auth.signOut().catch((err) => console.log(err))
+  }
 
   return (
     <Menu
@@ -43,9 +55,11 @@ const MenuHeader: FunctionComponent<IProps> = ({
           </Group>
         </UnstyledButton>
       }>
-      null
+      <Button style={{ float: "right" }} onClick={onLogOut}>
+        Wyloguj
+      </Button>
     </Menu>
   )
 }
 
-export default MenuHeader
+export default HeaderMenu

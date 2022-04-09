@@ -6,6 +6,7 @@ import axios from "axios"
 import { useNotifications } from "@mantine/notifications"
 import { Check, X } from "tabler-icons-react"
 import { showNotification } from "../../service/notificationService"
+import { auth } from "../../contexts/UserContext"
 
 const URL = `https://mozart-backend.azurewebsites.net/api/student`
 
@@ -51,11 +52,13 @@ const StudentCreationForm: FunctionComponent<IProps> = ({
       : `Udało się stworzyć ucznia ${studentForm.values.firstName} ${studentForm.values.lastName}`,
   }
 
-  const onSubmit = (studentData: Student) => {
+  const onSubmit = async (studentData: Student) => {
     setIsAdding(!isAdding)
+    const jwt = await auth.currentUser?.getIdToken()
     axios
       .post(URL, studentData, {
         headers: {
+          Authorization: `Bearer ${jwt}`,
           "Content-Type": "application/json",
           "Allow-Origin": "*",
         },

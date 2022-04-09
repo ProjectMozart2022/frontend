@@ -1,21 +1,24 @@
 import { useState, FunctionComponent } from "react"
-import { Teacher } from "../../types/Teacher"
 import { TextInput, Button, Group, Box } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import axios from "axios"
 import { useNotifications } from "@mantine/notifications"
 import { Check, X } from "tabler-icons-react"
 import { showNotification } from "../../service/notificationService"
+import { TeacherRequest } from "../../types/TeacherRequest"
+import { auth } from "../../contexts/UserContext"
 
 export const TeacherForm: FunctionComponent = () => {
   const URL = "https://mozart-backend.azurewebsites.net/api/teacher"
   const notifications = useNotifications()
   const [error, setError] = useState("")
 
-  const teacherForm = useForm<Teacher>({
+  const teacherForm = useForm<TeacherRequest>({
     initialValues: {
       firstName: "",
       lastName: "",
+      email: "",
+      password: "",
     },
 
     validate: (values) => ({
@@ -42,14 +45,20 @@ export const TeacherForm: FunctionComponent = () => {
       : `Udało się dodać nauczyciela ${teacherForm.values.firstName} ${teacherForm.values.lastName}!`,
   }
 
-  const handleSubmit = (teacherData: Teacher) => {
+  const handleSubmit = (teacherData: TeacherRequest) => {
+    const getJWT = async () => {
+      return await auth.currentUser?.getIdToken()
+    }
+    const jwt = getJWT()
     axios
       .post(URL, teacherData, {
         headers: {
+          Authorization: `Bearer ${jwt}`,
           "Content-Type": "application/json",
           "Allow-Origin": "*",
         },
       })
+      .then((res) => console.log(res))
       .catch((err) => setError(err.message))
     showNotification(notifications, notificationObject)
   }
@@ -57,6 +66,21 @@ export const TeacherForm: FunctionComponent = () => {
   return (
     <Box sx={{ maxWidth: 400 }} mx="auto">
       <form onSubmit={teacherForm.onSubmit(handleSubmit)}>
+        <TextInput
+          required
+          label="Email nauczyciela"
+          placeholder="Email nauczyciela"
+          {...teacherForm.getInputProps("email")}
+        />
+
+        <TextInput
+          required
+          type="password"
+          label="Hasło nauczyciela"
+          placeholder="Hasło nauczyciela"
+          {...teacherForm.getInputProps("password")}
+        />
+
         <TextInput
           required
           label="Imię nauczyciela"
@@ -70,7 +94,6 @@ export const TeacherForm: FunctionComponent = () => {
           placeholder="Nazwisko"
           {...teacherForm.getInputProps("lastName")}
         />
-
         <Group position="right" mt="md">
           <Button type="submit" color="dark">
             Dodaj nauczyciela

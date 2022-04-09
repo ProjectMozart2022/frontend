@@ -13,6 +13,7 @@ import { useNotifications } from "@mantine/notifications"
 import { Check, X } from "tabler-icons-react"
 import { Profile } from "../../types/Profile"
 import { showNotification } from "../../service/notificationService"
+import { auth } from "../../contexts/UserContext"
 
 type ProfileFormIProps = {
   name: string
@@ -50,7 +51,7 @@ export const ProfileForm: React.FC = () => {
       : `Udało się dodać profil ${profileForm.values.name}`,
   }
 
-  const handleSubmit = (profileData: ProfileFormIProps) => {
+  const handleSubmit = async (profileData: ProfileFormIProps) => {
     const payload: Profile = {
       ...profileData,
       classRange: profileData.classRange.map((classNum) => {
@@ -60,6 +61,7 @@ export const ProfileForm: React.FC = () => {
     axios
       .post(URL, payload, {
         headers: {
+          Authorization: `Bearer ${await auth.currentUser?.getIdToken()}`,
           "Content-Type": "application/json",
           "Allow-Origin": "*",
         },
