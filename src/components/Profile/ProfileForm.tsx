@@ -71,6 +71,9 @@ export const ProfileForm: React.FC = () => {
 
   return (
     <Box sx={{ maxWidth: 400 }} mx="auto">
+      <Group position="center">
+        <h4>Dodaj profil</h4>
+      </Group>
       <form onSubmit={profileForm.onSubmit(handleSubmit)}>
         <TextInput
           required

@@ -90,6 +90,9 @@ export const TeacherForm: FunctionComponent = () => {
 
   return (
     <Box sx={{ maxWidth: 400 }} mx="auto">
+      <Group position="center">
+        <h4>Dodaj nauczyciela</h4>
+      </Group>
       <form onSubmit={teacherForm.onSubmit(handleSubmit)}>
         <TextInput
           required
