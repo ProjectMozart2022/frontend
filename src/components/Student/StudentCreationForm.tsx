@@ -1,7 +1,8 @@
 import React, { FunctionComponent, useState } from "react"
-import { Container, TextInput, Group, Button } from "@mantine/core"
+import { TextInput, Group, Button, Box } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { Student } from "../../types/Student"
+import "./css/Student.css"
 import axios from "axios"
 import { useNotifications } from "@mantine/notifications"
 import { Check, X } from "tabler-icons-react"
@@ -67,8 +68,10 @@ const StudentCreationForm: FunctionComponent<IProps> = ({
     showNotification(notifications, notificationObject)
   }
 
+  const buttonStyle = { marginTop: "0.5vh", marginBottom: "0.5vh" }
+
   return (
-    <Container>
+    <Box sx={{ maxWidth: 400 }} mx="auto" className="student-container">
       <form onSubmit={studentForm.onSubmit(onSubmit)}>
         <TextInput
           required
@@ -91,15 +94,13 @@ const StudentCreationForm: FunctionComponent<IProps> = ({
           placeholder="Podaj nazwisko ucznia"
           {...studentForm.getInputProps("classNumber")}
         />
-        <Group
-          position="center"
-          style={{ marginTop: "0.5vh", marginBottom: "0.5vh" }}>
+        <Group position="center" style={buttonStyle}>
           <Button type="submit" color="dark">
             Dodaj ucznia
           </Button>
         </Group>
       </form>
-    </Container>
+    </Box>
   )
 }
 

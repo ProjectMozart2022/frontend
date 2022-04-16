@@ -8,7 +8,7 @@ import TabContext from "../../contexts/TabContext"
 
 interface HeaderTabsProps {
   user: User
-  tabs: string[]
+  tabs?: string[]
 }
 
 export const HeaderTabsColored = ({ user, tabs }: HeaderTabsProps) => {

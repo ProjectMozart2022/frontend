@@ -7,6 +7,11 @@ import { Check, X } from "tabler-icons-react"
 import { showNotification } from "../../service/notificationService"
 import { TeacherRequest } from "../../types/TeacherRequest"
 import { auth } from "../../contexts/UserContext"
+import {
+  createUserWithEmailAndPassword,
+  UserCredential,
+  updateProfile,
+} from "firebase/auth"
 
 export const TeacherForm: FunctionComponent = () => {
   const URL = "https://mozart-backend.azurewebsites.net/api/teacher"
@@ -50,6 +55,16 @@ export const TeacherForm: FunctionComponent = () => {
       return await auth.currentUser?.getIdToken()
     }
     const jwt = getJWT()
+    createUserWithEmailAndPassword(
+      auth,
+      teacherData.email,
+      teacherData.password
+    )
+      .then(
+        async (res) =>
+          await setDisplayName(res, teacherData.firstName, teacherData.lastName)
+      )
+      .catch((err) => setError(err.message))
     axios
       .post(URL, teacherData, {
         headers: {
@@ -61,6 +76,16 @@ export const TeacherForm: FunctionComponent = () => {
       .then((res) => console.log(res))
       .catch((err) => setError(err.message))
     showNotification(notifications, notificationObject)
+  }
+
+  const setDisplayName = async (
+    user: UserCredential,
+    firstName: string,
+    lastName: string
+  ) => {
+    return await updateProfile(user.user, {
+      displayName: `${firstName} ${lastName}`,
+    })
   }
 
   return (

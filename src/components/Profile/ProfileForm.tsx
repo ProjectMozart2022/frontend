@@ -26,7 +26,6 @@ export const ProfileForm: React.FC = () => {
   const notifications = useNotifications()
   const [error, setError] = useState("")
 
-  /* narazie na sztywno */
   const [classNumber] = useState(["1", "2", "3", "4", "5", "6", "7", "8"])
 
   const profileForm = useForm<ProfileFormIProps>({

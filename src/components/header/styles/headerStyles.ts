@@ -5,7 +5,7 @@ export const useStyles = createStyles((theme) => ({
     paddingTop: theme.spacing.sm,
     backgroundColor: theme.colors[theme.primaryColor][6],
     borderBottom: `1px solid ${theme.colors[theme.primaryColor][6]}`,
-    marginBottom: 120,
+    marginBottom: 25,
   },
 
   mainSection: {

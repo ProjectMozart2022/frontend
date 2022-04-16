@@ -8,6 +8,7 @@ import { TabProvider } from "./contexts/TabContext"
 
 const App: FunctionComponent = () => {
   const [tab, setTab] = useState<String>("")
+
   return (
     <UserContext>
       <TabProvider value={[tab, setTab]}>

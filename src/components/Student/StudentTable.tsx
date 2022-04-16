@@ -1,8 +1,8 @@
 import { FunctionComponent } from "react"
 import { Container } from "@mantine/core"
 import { Table } from "react-bootstrap"
-import { Student } from "../types/Student"
-import "../css/Student.css"
+import { Student } from "../../types/Student"
+import "./css/Student.css"
 
 interface IProps {
   students: Student[]
@@ -10,13 +10,13 @@ interface IProps {
   variant: string
 }
 
-const TableView: FunctionComponent<IProps> = ({ students, title, variant }) => {
+const StudentTable: FunctionComponent<IProps> = ({
+  students,
+  title,
+  variant,
+}) => {
   if (students?.length === 0) {
-    return (
-      <Container>
-        <h3 className="title">Brak uczniów</h3>
-      </Container>
-    )
+    return <h3 className="title">Brak uczniów</h3>
   }
 
   const mapFunction = (k: string) => {
@@ -46,9 +46,7 @@ const TableView: FunctionComponent<IProps> = ({ students, title, variant }) => {
 
   return (
     <Container className="studentContainer">
-      <h3 className="title" style={{ color: "white" }}>
-        {title}
-      </h3>
+      <h3 className="title">{title}</h3>
       <Table variant={variant} bordered striped hover>
         <thead>
           <tr>
@@ -74,4 +72,4 @@ const TableView: FunctionComponent<IProps> = ({ students, title, variant }) => {
   )
 }
 
-export default TableView
+export default StudentTable

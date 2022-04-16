@@ -1,8 +1,8 @@
-import TableView from "../TableView"
-import "../../css/Student.css"
+import StudentTable from "./StudentTable"
+import "./css/Student.css"
 import axios from "axios"
 import StudentCreationForm from "./StudentCreationForm"
-import { Container, Button } from "@mantine/core"
+import { Container, Button, Group } from "@mantine/core"
 import { useState, useEffect, FunctionComponent } from "react"
 import { useFirebaseAuth, auth } from "../../contexts/UserContext"
 
@@ -31,13 +31,15 @@ const StudentContainer: FunctionComponent = () => {
 
   return (
     <Container className="studentContainer">
-      <TableView students={students} title="Uczniowie" variant="light" />
-      <Button
-        style={{ marginLeft: "0.75vw", marginBottom: "0.5vh" }}
-        color="dark"
-        onClick={() => setIsAdding(!isAdding)}>
-        Dodać ucznia
-      </Button>
+      <StudentTable students={students} title="Uczniowie" variant="light" />
+      <Group position="center">
+        <Button
+          style={{ marginLeft: "0.75vw", marginBottom: "0.5vh" }}
+          color="dark"
+          onClick={() => setIsAdding(!isAdding)}>
+          Dodać ucznia
+        </Button>
+      </Group>
       {isAdding && (
         <StudentCreationForm isAdding={isAdding} setIsAdding={setIsAdding} />
       )}
