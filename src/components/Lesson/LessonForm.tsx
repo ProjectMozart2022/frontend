@@ -5,13 +5,13 @@ import axios from "axios"
 import { useNotifications } from "@mantine/notifications"
 import { showNotification } from "../../service/notificationService"
 import { Check, X } from "tabler-icons-react"
-import { Profile } from "../../types/Profile"
+import { Subject } from "../../types/Subject"
 import { Student } from "../../types/Student"
 import { TeacherRequest } from "../../types/TeacherRequest"
 import { auth } from "../../contexts/UserContext"
 
 type LessonFormIProps = {
-  profile: Profile | undefined
+  subject: Subject | undefined
   student: Student | undefined
   teacher: TeacherRequest | undefined
 }
@@ -21,9 +21,9 @@ export const LessonForm: React.FC = () => {
   let jwt: string | undefined
   const notifications = useNotifications()
   const [error, setError] = useState("")
-  const [profiles, setProfiles] = useState<Profile[]>([])
+  const [subject, setSubjects] = useState<Subject[]>([])
   const [students, setStudents] = useState<Student[]>([])
-  const [teachers, setTeacher] = useState<TeacherRequest[]>([])
+  const [teachers, setTeachers] = useState<TeacherRequest[]>([])
   const fetchDefault = async () => {
     try {
       jwt = await auth.currentUser?.getIdToken()
@@ -32,15 +32,15 @@ export const LessonForm: React.FC = () => {
         "Content-Type": "application/json",
         "Allow-Origin": "*",
       }
-      const profileResponse = await axios.get<Profile[]>(URL + "profile", {headers: headers})
+      const subjectResponse = await axios.get<Subject[]>(URL + "subject", {headers: headers})
       const studentResponse = await axios.get<Student[]>(URL + "student", {headers: headers})
       const teacherResponse = await axios.get<TeacherRequest[]>(
         URL + "teacher",
         {headers: headers}
       )
       setStudents(studentResponse.data)
-      setTeacher(teacherResponse.data)
-      setProfiles(profileResponse.data)
+      setTeachers(teacherResponse.data)
+      setSubjects(subjectResponse.data)
     } catch (error) {
       console.log(error)
     }
@@ -54,7 +54,7 @@ export const LessonForm: React.FC = () => {
     initialValues: {
       student: undefined,
       teacher: undefined,
-      profile: undefined,
+      subject: undefined,
     },
 
     validate: (values) => ({}),
@@ -68,8 +68,8 @@ export const LessonForm: React.FC = () => {
     icon: error?.length > 0 ? <X size={18} /> : <Check size={18} />,
     color: error?.length > 0 ? "red" : "green",
     message: error
-      ? `Nie udało się dodać lekcji dla nauczyciela ${lessonForm.values.teacher?.firstName} z uczniem ${lessonForm.values.student?.firstName} z profilem ${lessonForm.values.profile?.name}`
-      : `Udało się dodać lekcje dla nauczyciela${lessonForm.values.teacher?.firstName} z uczniem ${lessonForm.values.student?.firstName} z profilem ${lessonForm.values.profile?.name}`,
+      ? `Nie udało się dodać lekcji dla nauczyciela ${lessonForm.values.teacher?.firstName} z uczniem ${lessonForm.values.student?.firstName} z profilem ${lessonForm.values.subject?.name}`
+      : `Udało się dodać lekcje dla nauczyciela${lessonForm.values.teacher?.firstName} z uczniem ${lessonForm.values.student?.firstName} z profilem ${lessonForm.values.subject?.name}`,
   }
 
   const handleSubmit = (lessonData: LessonFormIProps) => {
@@ -123,14 +123,14 @@ export const LessonForm: React.FC = () => {
 
         <MultiSelect
           required
-          label="Wybierz profil"
-          placeholder="profil"
-          data={profiles!
-            .map((profile) => {
-              return profile.name + " " + profile.lessonLength
+          label="Wybierz przedmiot"
+          placeholder="przedmiot"
+          data={subject!
+            .map((subject) => {
+              return subject.name + " " + subject.lessonLength
             })}
           searchable
-          {...lessonForm.getInputProps("profile")}
+          {...lessonForm.getInputProps("subject")}
         />
 
         <Group position="right" mt="md">

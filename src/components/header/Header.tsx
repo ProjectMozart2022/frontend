@@ -3,7 +3,7 @@ import { Container, Group, Tabs, Burger, Image } from "@mantine/core"
 import { useBooleanToggle } from "@mantine/hooks"
 import { User } from "../../types/User"
 import HeaderMenu from "./HeaderMenu"
-import { useStyles } from "./styles/headerStyles"
+import { headerStyle } from "./styles/headerStyle"
 import TabContext from "../../contexts/TabContext"
 
 interface HeaderTabsProps {
@@ -11,8 +11,8 @@ interface HeaderTabsProps {
   tabs?: string[]
 }
 
-export const HeaderTabsColored = ({ user, tabs }: HeaderTabsProps) => {
-  const { classes, theme } = useStyles()
+export const HeaderTabsColored = ({ user }: HeaderTabsProps) => {
+  const { classes, theme } = headerStyle()
   const [opened, toggleOpened] = useBooleanToggle(false)
   const [userMenuOpened, setUserMenuOpened] = useState(false)
   const [activeTab, setActiveTab] = useState(0)
@@ -61,7 +61,7 @@ export const HeaderTabsColored = ({ user, tabs }: HeaderTabsProps) => {
           }}>
           <Tabs.Tab label="Uczniowie" tabKey="uczniowie" />
           <Tabs.Tab label="Nauczyciele" tabKey="nauczyciele" />
-          <Tabs.Tab label="Profile" tabKey="profile" />
+          <Tabs.Tab label="Przedmioty" tabKey="przedmioty" />
           <Tabs.Tab label="Lekcje" tabKey="lekcje" />
         </Tabs>
       </Container>

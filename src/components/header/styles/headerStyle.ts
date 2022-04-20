@@ -1,6 +1,6 @@
 import { createStyles } from "@mantine/core"
 
-export const useStyles = createStyles((theme) => ({
+export const headerStyle = createStyles((theme) => ({
   header: {
     paddingTop: theme.spacing.sm,
     backgroundColor: theme.colors[theme.primaryColor][6],

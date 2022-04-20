@@ -13,7 +13,12 @@ import {
   updateProfile,
 } from "firebase/auth"
 
-export const TeacherForm: FunctionComponent = () => {
+interface IProps {
+  isAdding: boolean
+  setIsAdding: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export const TeacherForm: FunctionComponent<IProps> = ({isAdding, setIsAdding}) => {
   const URL = "https://mozart-backend.azurewebsites.net/api/admin/teacher"
   const notifications = useNotifications()
   const [error, setError] = useState("")
@@ -50,11 +55,9 @@ export const TeacherForm: FunctionComponent = () => {
       : `Udało się dodać nauczyciela ${teacherForm.values.firstName} ${teacherForm.values.lastName}!`,
   }
 
-  const handleSubmit = (teacherData: TeacherRequest) => {
-    const getJWT = async () => {
-      return await auth.currentUser?.getIdToken()
-    }
-    const jwt = getJWT()
+  const handleSubmit = async (teacherData: TeacherRequest) => {
+    setIsAdding(!isAdding)
+    const jwt = await auth.currentUser?.getIdToken()
     createUserWithEmailAndPassword(
       auth,
       teacherData.email,
@@ -90,22 +93,19 @@ export const TeacherForm: FunctionComponent = () => {
 
   return (
     <Box sx={{ maxWidth: 400 }} mx="auto">
-      <Group position="center">
-        <h4>Dodaj nauczyciela</h4>
-      </Group>
       <form onSubmit={teacherForm.onSubmit(handleSubmit)}>
         <TextInput
           required
-          label="Email nauczyciela"
-          placeholder="Email nauczyciela"
+          label="Email"
+          placeholder="Email"
           {...teacherForm.getInputProps("email")}
         />
 
         <TextInput
           required
           type="password"
-          label="Hasło nauczyciela"
-          placeholder="Hasło nauczyciela"
+          label="Hasło"
+          placeholder="Hasło"
           {...teacherForm.getInputProps("password")}
         />
 

@@ -1,24 +1,23 @@
-import { StudentTable, StudentTableProps } from "../Table/StudentTable"
-import "./css/Student.css"
+import { SubjectTable, SubjectTableProps } from "../Table/SubjectTable"
 import axios from "axios"
-import StudentCreationForm from "./StudentCreationForm"
+import { SubjectForm } from "./SubjectForm"
 import { Container, Button, Group } from "@mantine/core"
 import { useState, useEffect, FunctionComponent } from "react"
 import { useFirebaseAuth, auth } from "../../contexts/UserContext"
-import { Student } from "../../types/Student"
+import { Subject } from "../../types/Subject"
 
-const StudentContainer: FunctionComponent = () => {
+const SubjectContainer: FunctionComponent = () => {
   const [isAdding, setIsAdding] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-  const [students, setStudents] = useState<Student[]>([])
+  const [subjects, setSubjects] = useState<Subject[]>([])
   const [, setError] = useState("")
 
-  const fetchStudents = async () => {
+  const fetchSubjects = async () => {
     setIsLoading(true)
     try {
       const jwt = await auth.currentUser?.getIdToken()
-      const studentResponse = await axios.get<Student[]>(
-        `https://mozart-backend.azurewebsites.net/api/admin/student`,
+      const subjectResponse = await axios.get<Subject[]>(
+        `https://mozart-backend.azurewebsites.net/api/admin/subject`,
         {
           headers: {
             Authorization: `Bearer ${jwt}`,
@@ -27,7 +26,7 @@ const StudentContainer: FunctionComponent = () => {
           },
         }
       )
-      setStudents(studentResponse.data)
+      setSubjects(subjectResponse.data)
       setIsLoading(false)
     } catch (error: any) {
       setError(error.toString())
@@ -36,36 +35,36 @@ const StudentContainer: FunctionComponent = () => {
   }
 
   useEffect(() => {
-    fetchStudents()
+    fetchSubjects()
   }, [])
 
-  const tableData: StudentTableProps = {
-    data: students.map((student) => {
-      const studentData = {
-        ...student,
-        classNumber: student.classNumber.toString(),
+  const tableData: SubjectTableProps = {
+    data: subjects.map((subject) => {
+      const subjectData = {
+        name: subject.name,
+        lessonLength: subject.lessonLength.toString(),
+        classRange: subject.classRange.toString(),
       }
-      return studentData
+      return subjectData
     }),
   }
 
   return (
     <Container className="studentContainer">
-      {/* <StudentTable students={students} title="Uczniowie" variant="light" /> */}
-      {!isLoading ? <StudentTable data={tableData.data}></StudentTable> : null}
+      {!isLoading ? <SubjectTable data={tableData.data}></SubjectTable> : null}
       <Group position="center">
         <Button
           style={{ marginLeft: "0.75vw", marginBottom: "0.5vh" }}
           color="dark"
           onClick={() => setIsAdding(!isAdding)}>
-          Dodaj ucznia
+          Dodaj przedmiot
         </Button>
       </Group>
       {isAdding && (
-        <StudentCreationForm isAdding={isAdding} setIsAdding={setIsAdding} />
+        <SubjectForm isAdding={isAdding} setIsAdding={setIsAdding} />
       )}
     </Container>
   )
 }
 
-export default StudentContainer
+export default SubjectContainer

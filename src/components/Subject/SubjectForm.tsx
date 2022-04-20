@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, FunctionComponent } from "react"
 import {
   TextInput,
   Button,
@@ -11,24 +11,31 @@ import { useForm } from "@mantine/form"
 import axios from "axios"
 import { useNotifications } from "@mantine/notifications"
 import { Check, X } from "tabler-icons-react"
-import { Profile } from "../../types/Profile"
+import { Subject } from "../../types/Subject"
 import { showNotification } from "../../service/notificationService"
 import { auth } from "../../contexts/UserContext"
 
-type ProfileFormIProps = {
+type SubjectFormIProps = {
   name: string
   lessonLength: number
   classRange: string[]
 }
 
-export const ProfileForm: React.FC = () => {
-  const URL = "https://mozart-backend.azurewebsites.net/api/admin/profile"
+interface IProps {
+  isAdding: boolean
+  setIsAdding: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+export const SubjectForm: FunctionComponent<IProps> = ({
+  isAdding, setIsAdding
+}) => {
+  const URL = "https://mozart-backend.azurewebsites.net/api/admin/subject"
   const notifications = useNotifications()
   const [error, setError] = useState("")
 
   const [classNumber] = useState(["1", "2", "3", "4", "5", "6", "7", "8"])
 
-  const profileForm = useForm<ProfileFormIProps>({
+  const profileForm = useForm<SubjectFormIProps>({
     initialValues: {
       name: "",
       lessonLength: 45,
@@ -40,18 +47,19 @@ export const ProfileForm: React.FC = () => {
 
   const notificationObject = {
     title: `${
-      error ? `Nie udało się dodać profilu!` : "Udało się dodać profil!"
+      error ? `Nie udało się dodać przedmiotu!` : "Udało się dodać przedmiot!"
     }`,
     autoClose: 3000,
     icon: error?.length > 0 ? <X size={18} /> : <Check size={18} />,
     color: error?.length > 0 ? "red" : "green",
     message: error
-      ? `Nie udało się dodać profilu ${profileForm.values.name}`
-      : `Udało się dodać profil ${profileForm.values.name}`,
+      ? `Nie udało się dodać przedmiotu ${profileForm.values.name}`
+      : `Udało się dodać przedmiot ${profileForm.values.name}`,
   }
 
-  const handleSubmit = async (profileData: ProfileFormIProps) => {
-    const payload: Profile = {
+  const handleSubmit = async (profileData: SubjectFormIProps) => {
+    setIsAdding(!isAdding);
+    const payload: Subject = {
       ...profileData,
       classRange: profileData.classRange.map((classNum) => {
         return parseInt(classNum)
@@ -71,9 +79,6 @@ export const ProfileForm: React.FC = () => {
 
   return (
     <Box sx={{ maxWidth: 400 }} mx="auto">
-      <Group position="center">
-        <h4>Dodaj profil</h4>
-      </Group>
       <form onSubmit={profileForm.onSubmit(handleSubmit)}>
         <TextInput
           required
@@ -101,7 +106,7 @@ export const ProfileForm: React.FC = () => {
 
         <Group position="right" mt="md">
           <Button color="dark" type="submit">
-            Dodaj Profil
+            Dodaj Przedmiot
           </Button>
         </Group>
       </form>
