@@ -10,7 +10,7 @@ import React, { FunctionComponent } from "react"
 import { ChevronDown } from "tabler-icons-react"
 import { auth } from "../../contexts/UserContext"
 import { User } from "../../types/User"
-import { useStyles } from "./styles/headerStyles"
+import { headerStyle } from "./styles/headerStyle"
 
 interface IProps {
   userMenuOpened: boolean
@@ -23,7 +23,7 @@ const HeaderMenu: FunctionComponent<IProps> = ({
   user,
   setUserMenuOpened,
 }) => {
-  const { classes, theme, cx } = useStyles()
+  const { classes, theme, cx } = headerStyle()
 
   const onLogOut = () => {
     auth.signOut().catch((err) => console.log(err))
