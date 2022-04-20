@@ -22,7 +22,7 @@ type ProfileFormIProps = {
 }
 
 export const ProfileForm: React.FC = () => {
-  const URL = "https://mozart-backend.azurewebsites.net/api/profile"
+  const URL = "https://mozart-backend.azurewebsites.net/api/admin/profile"
   const notifications = useNotifications()
   const [error, setError] = useState("")
 

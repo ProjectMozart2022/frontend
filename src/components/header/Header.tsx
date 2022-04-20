@@ -62,6 +62,7 @@ export const HeaderTabsColored = ({ user, tabs }: HeaderTabsProps) => {
           <Tabs.Tab label="Uczniowie" tabKey="uczniowie" />
           <Tabs.Tab label="Nauczyciele" tabKey="nauczyciele" />
           <Tabs.Tab label="Profile" tabKey="profile" />
+          <Tabs.Tab label="Lekcje" tabKey="lekcje" />
         </Tabs>
       </Container>
     </div>

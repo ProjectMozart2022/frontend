@@ -16,7 +16,7 @@ const StudentContainer: FunctionComponent = () => {
     const fetchStudents = async () => {
       const jwt = await auth.currentUser?.getIdToken()
       axios
-        .get(`https://mozart-backend.azurewebsites.net/api/student`, {
+        .get(`https://mozart-backend.azurewebsites.net/api/admin/student`, {
           headers: {
             Authorization: `Bearer ${jwt}`,
             "Content-Type": "application/json",

@@ -14,7 +14,7 @@ import {
 } from "firebase/auth"
 
 export const TeacherForm: FunctionComponent = () => {
-  const URL = "https://mozart-backend.azurewebsites.net/api/teacher"
+  const URL = "https://mozart-backend.azurewebsites.net/api/admin/teacher"
   const notifications = useNotifications()
   const [error, setError] = useState("")
 
