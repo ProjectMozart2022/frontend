@@ -13,7 +13,7 @@ const StudentContainer: FunctionComponent = () => {
   useEffect(() => {
     const fetchStudents = async () => {
       axios
-        .get(`https://mozart-backend.azurewebsites.net/api/student`, {
+        .get(`https://mozart-backend.azurewebsites.net/api/admin/student`, {
           headers: {
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",

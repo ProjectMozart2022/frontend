@@ -8,7 +8,7 @@ import { Check, X } from "tabler-icons-react"
 import { showNotification } from "../../service/notificationService"
 
 export const TeacherForm: FunctionComponent = () => {
-  const URL = "https://mozart-backend.azurewebsites.net/api/teacher"
+  const URL = "https://mozart-backend.azurewebsites.net/api/admin/teacher"
   const notifications = useNotifications()
   const [error, setError] = useState("")
 

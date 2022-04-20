@@ -16,7 +16,7 @@ type LessonFormIProps = {
 }
 
 export const LessonForm: React.FC = () => {
-  const URL = "https://mozart-backend.azurewebsites.net/api/"
+  const URL = "https://mozart-backend.azurewebsites.net/api/admin/"
   const notifications = useNotifications()
   const [error, setError] = useState("")
   const [profiles, setProfiles] = useState<Profile[]>()
@@ -141,7 +141,7 @@ export const LessonForm: React.FC = () => {
 
         <Group position="right" mt="md">
           <Button color="dark" type="submit">
-            Dodaj Lekcje
+            Dodaj lekcje
           </Button>
         </Group>
       </form>
