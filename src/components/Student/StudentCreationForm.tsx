@@ -9,7 +9,7 @@ import { Check, X } from "tabler-icons-react"
 import { showNotification } from "../../service/notificationService"
 import { auth } from "../../contexts/UserContext"
 
-const URL = `https://mozart-backend.azurewebsites.net/api/student`
+const URL = `https://mozart-backend.azurewebsites.net/api/admin/student`
 
 interface IProps {
   isAdding: boolean
@@ -29,15 +29,15 @@ const StudentCreationForm: FunctionComponent<IProps> = ({
       classNumber: 1,
     },
     validate: (values) => ({
-      class_number: /[1-6]{1}/.test(`${values.classNumber}`)
+      classNumber: /[1-6]{1}/.test(`${values.classNumber}`)
         ? null
-        : "Nieprawidłowa klasa",
-      first_name: /[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+$/.test(values.firstName)
+        : "Nieprawidłowy identyfikator klasy",
+      firstName: /[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+$/.test(values.firstName)
         ? null
-        : "Nieprawidłowa imię",
-      last_name: /[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+$/.test(values.lastName)
+        : "Nieprawidłowe imię",
+      lastName: /[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+$/.test(values.lastName)
         ? null
-        : "Nieprawidłowa nazwisko",
+        : "Nieprawidłowe nazwisko",
     }),
   })
   const [error, setError] = useState("")
@@ -77,7 +77,7 @@ const StudentCreationForm: FunctionComponent<IProps> = ({
           required
           type="text"
           label="Imię ucznia"
-          placeholder="Podaj imie ucznia"
+          placeholder="Podaj imię ucznia"
           {...studentForm.getInputProps("firstName")}
         />
         <TextInput

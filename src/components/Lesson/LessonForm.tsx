@@ -7,42 +7,44 @@ import { showNotification } from "../../service/notificationService"
 import { Check, X } from "tabler-icons-react"
 import { Profile } from "../../types/Profile"
 import { Student } from "../../types/Student"
-import { Teacher } from "../../types/Teacher"
+import { TeacherRequest } from "../../types/TeacherRequest"
+import { auth } from "../../contexts/UserContext"
 
 type LessonFormIProps = {
   profile: Profile | undefined
   student: Student | undefined
-  teacher: Teacher | undefined
+  teacher: TeacherRequest | undefined
 }
 
 export const LessonForm: React.FC = () => {
   const URL = "https://mozart-backend.azurewebsites.net/api/admin/"
+  let jwt: string | undefined
   const notifications = useNotifications()
   const [error, setError] = useState("")
-  const [profiles, setProfiles] = useState<Profile[]>()
-  const [students, setStudents] = useState<Student[]>()
-  const [teachers, setTeacher] = useState<Teacher[]>()
+  const [profiles, setProfiles] = useState<Profile[]>([])
+  const [students, setStudents] = useState<Student[]>([])
+  const [teachers, setTeacher] = useState<TeacherRequest[]>([])
   const fetchDefault = async () => {
-    let profiles: Profile[] | undefined = undefined
-    let students: Student[] | undefined = undefined
-    let teachers: Teacher[] | undefined = undefined
     try {
+      jwt = await auth.currentUser?.getIdToken()
       const headers = {
-          "Content-Type": "application/json",
-          "Allow-Origin": "*",
+        Authorization: `Bearer ${jwt}`,
+        "Content-Type": "application/json",
+        "Allow-Origin": "*",
       }
       const profileResponse = await axios.get<Profile[]>(URL + "profile", {headers: headers})
       const studentResponse = await axios.get<Student[]>(URL + "student", {headers: headers})
-      const teacherResponse = await axios.get<Teacher[]>(URL + "teacher", {headers: headers})
-      profiles = profileResponse.data
-      students = studentResponse.data
-      teachers = teacherResponse.data
+      const teacherResponse = await axios.get<TeacherRequest[]>(
+        URL + "teacher",
+        {headers: headers}
+      )
+      setStudents(studentResponse.data)
+      setTeacher(teacherResponse.data)
+      setProfiles(profileResponse.data)
     } catch (error) {
       console.log(error)
     }
-    setProfiles(profiles)
-    setStudents(students)
-    setTeacher(teachers)
+
   }
   useEffect(() => {
     fetchDefault()
@@ -50,9 +52,9 @@ export const LessonForm: React.FC = () => {
 
   const lessonForm = useForm<LessonFormIProps>({
     initialValues: {
-      profile: profiles![0],
-      student: students![0],
-      teacher: teachers![0],
+      student: undefined,
+      teacher: undefined,
+      profile: undefined,
     },
 
     validate: (values) => ({}),
@@ -74,12 +76,14 @@ export const LessonForm: React.FC = () => {
     const payload: LessonFormIProps = {
       ...lessonData,
     }
+    const headers = {
+      Authorization: `Bearer ${jwt}`,
+      "Content-Type": "application/json",
+      "Allow-Origin": "*",
+    }
     axios
       .post(URL + "lesson", payload, {
-        headers: {
-          "Content-Type": "application/json",
-          "Allow-Origin": "*",
-        },
+        headers: headers
       })
       .catch((err) => setError(err.message))
     showNotification(notifications, notificationObject)
@@ -93,11 +97,6 @@ export const LessonForm: React.FC = () => {
           label="Wybierz ucznia"
           placeholder="uczeń"
           data={students!
-            .filter((student) => {
-              return lessonForm.values.profile?.classRange.includes(
-                student.classNumber
-              )
-            })
             .map((student) => {
               return (
                 student.firstName +
@@ -127,11 +126,6 @@ export const LessonForm: React.FC = () => {
           label="Wybierz profil"
           placeholder="profil"
           data={profiles!
-            .filter((profile) => {
-              return profile.classRange.includes(
-                lessonForm.values.student?.classNumber!
-              )
-            })
             .map((profile) => {
               return profile.name + " " + profile.lessonLength
             })}
