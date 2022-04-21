@@ -13,7 +13,6 @@ import { useNotifications } from "@mantine/notifications"
 import { Check, X } from "tabler-icons-react"
 import { Subject } from "../../types/Subject"
 import { showNotification } from "../../service/notificationService"
-import { auth } from "../../contexts/UserContext"
 
 type SubjectFormIProps = {
   name: string
@@ -27,9 +26,9 @@ interface IProps {
 }
 
 export const SubjectForm: FunctionComponent<IProps> = ({
-  isAdding, setIsAdding
+  isAdding,
+  setIsAdding,
 }) => {
-  const URL = "https://mozart-backend.azurewebsites.net/api/admin/subject"
   const notifications = useNotifications()
   const [error, setError] = useState("")
 
@@ -58,22 +57,15 @@ export const SubjectForm: FunctionComponent<IProps> = ({
   }
 
   const handleSubmit = async (profileData: SubjectFormIProps) => {
-    setIsAdding(!isAdding);
+    setIsAdding(!isAdding)
     const payload: Subject = {
       ...profileData,
       classRange: profileData.classRange.map((classNum) => {
         return parseInt(classNum)
       }),
     }
-    axios
-      .post(URL, payload, {
-        headers: {
-          Authorization: `Bearer ${await auth.currentUser?.getIdToken()}`,
-          "Content-Type": "application/json",
-          "Allow-Origin": "*",
-        },
-      })
-      .catch((err) => setError(err.message))
+    await axios.post(`admin/subject`, payload)
+    // TODO: error handling
     showNotification(notifications, notificationObject)
   }
 

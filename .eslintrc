@@ -1,18 +1,53 @@
 {
   "parser": "@typescript-eslint/parser",
-  "plugins": ["react", "import", "jsx-a11y"],
+  "plugins": ["react", "import", "jsx-a11y", "@typescript-eslint"],
   "extends": [
     "plugin:import/typescript",
     "plugin:react/recommended",
     "plugin:jsx-a11y/recommended",
     "plugin:react-hooks/recommended",
-    "react-app"
+    "react-app",
+    "eslint:recommended",
+    "plugin:import/errors",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "prettier"
   ],
   "rules": {
     "react/prop-types": 0,
     "react/react-in-jsx-scope": 0,
     "no-unused-vars": "warn",
-    "react-hooks/exhaustive-deps": "warn"
+    "react-hooks/exhaustive-deps": "warn",
+    "@typescript-eslint/no-empty-function": 0,
+    "indent": ["error", 2],
+    "eqeqeq": ["error", "always"],
+    "yoda": ["error", "never"],
+    "prefer-regex-literals": "error",
+    "prefer-object-spread": "error",
+    "prefer-destructuring": ["error", { "object": true, "array": false }],
+    "prefer-const": [
+        "error",
+        {
+            "destructuring": "any",
+            "ignoreReadBeforeAssign": false
+        }
+    ],
+    "no-var": "error",
+    "prefer-arrow-callback": "error",
+    "no-return-await": "error",
+    "no-bitwise": "error",
+    "dot-notation": "error",
+    "camelcase": "error",
+    "no-unmodified-loop-condition": "error",
+    "no-duplicate-imports": "error",
+    "require-await": "error",
+    "import/no-unresolved": 0,
+    "@typescript-eslint/no-misused-promises": [
+          "error",  
+          {
+            "checksVoidReturn": false     
+          }   
+    ]
   },
   "env": {
     "es6": true,
@@ -20,6 +55,7 @@
     "node": true
   },
   "parserOptions": {
+    "project": "./tsconfig.json",
     "ecmaVersion": 2021,
     "sourceType": "module",
     "ecmaFeatures": {
@@ -28,6 +64,14 @@
     "allowImportExportEverywhere": true
   },
   "settings": {
-    "react": "detect"
+    "react": "detect",
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true
+      }
+    }
   }
 }

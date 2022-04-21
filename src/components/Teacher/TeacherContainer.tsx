@@ -3,7 +3,6 @@ import axios from "axios"
 import { TeacherForm } from "./TeacherForm"
 import { Container, Button, Group } from "@mantine/core"
 import { useState, useEffect, FunctionComponent } from "react"
-import { auth } from "../../contexts/UserContext"
 import { TeacherRequest } from "../../types/TeacherRequest"
 
 const SubjectContainer: FunctionComponent = () => {
@@ -15,27 +14,17 @@ const SubjectContainer: FunctionComponent = () => {
   const fetchTeachers = async () => {
     setIsLoading(true)
     try {
-      const jwt = await auth.currentUser?.getIdToken()
-      const teachersResponse = await axios.get<TeacherRequest[]>(
-        `https://mozart-backend.azurewebsites.net/api/admin/teacher`,
-        {
-          headers: {
-            Authorization: `Bearer ${jwt}`,
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-          },
-        }
-      )
+      const teachersResponse = await axios.get<TeacherRequest[]>(`admin/teacher`,)
       setTeachers(teachersResponse.data)
       setIsLoading(false)
-    } catch (error: any) {
-      setError(error.toString())
+    } catch (error) {
+      setError(error as string)
       setIsLoading(false)
     }
   }
 
   useEffect(() => {
-    fetchTeachers()
+    void fetchTeachers()
   }, [])
 
   return (

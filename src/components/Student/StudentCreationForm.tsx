@@ -7,9 +7,6 @@ import axios from "axios"
 import { useNotifications } from "@mantine/notifications"
 import { Check, X } from "tabler-icons-react"
 import { showNotification } from "../../service/notificationService"
-import { auth } from "../../contexts/UserContext"
-
-const URL = `https://mozart-backend.azurewebsites.net/api/admin/student`
 
 interface IProps {
   isAdding: boolean
@@ -55,16 +52,8 @@ const StudentCreationForm: FunctionComponent<IProps> = ({
 
   const onSubmit = async (studentData: Student) => {
     setIsAdding(!isAdding)
-    const jwt = await auth.currentUser?.getIdToken()
-    axios
-      .post(URL, studentData, {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-          "Content-Type": "application/json",
-          "Allow-Origin": "*",
-        },
-      })
-      .catch((err) => setError(err.message))
+    await axios.post(`admin/student`, studentData)
+    // TODO: error handling
     showNotification(notifications, notificationObject)
   }
 
