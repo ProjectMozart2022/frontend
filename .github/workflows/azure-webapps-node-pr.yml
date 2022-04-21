@@ -20,10 +20,18 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ env.NODE_VERSION }}
-      - name: yarn install, build
+      - name: Install dependencies
         run: |
           yarn install
-          yarn run build
+      - name: Linting the code
+        run: |
+          yarn lint
+      - name: Format code
+        run: |
+          yarn run format
+      - name: Build React app
+        run: |
+          yarn build
       - name: add process.json
         run: |
           echo '{ "script": "serve", env: { "PM2_SERVE_SPA": "true", "PM2_SERVE_HOMEPAGE": "/index.html" } }' >> build/process.json
