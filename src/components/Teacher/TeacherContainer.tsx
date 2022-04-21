@@ -3,7 +3,7 @@ import axios from "axios"
 import { TeacherForm } from "./TeacherForm"
 import { Container, Button, Group } from "@mantine/core"
 import { useState, useEffect, FunctionComponent } from "react"
-import { useFirebaseAuth, auth } from "../../contexts/UserContext"
+import { auth } from "../../contexts/UserContext"
 import { TeacherRequest } from "../../types/TeacherRequest"
 
 const SubjectContainer: FunctionComponent = () => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import { useEffect, useState, FunctionComponent } from "react"
 import { Button, Group, Box, MultiSelect } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import axios from "axios"
@@ -16,7 +16,7 @@ type LessonFormIProps = {
   teacher: TeacherRequest | undefined
 }
 
-export const LessonForm: React.FC = () => {
+export const LessonForm: FunctionComponent = () => {
   const URL = "https://mozart-backend.azurewebsites.net/api/admin/"
   let jwt: string | undefined
   const notifications = useNotifications()
@@ -32,23 +32,33 @@ export const LessonForm: React.FC = () => {
         "Content-Type": "application/json",
         "Allow-Origin": "*",
       }
-      const subjectResponse = await axios.get<Subject[]>(URL + "subject", {headers: headers})
-      const studentResponse = await axios.get<Student[]>(URL + "student", {headers: headers})
+      // zamiast robić trzy responsy można pomyśleć nad Promise.all
+      // później wziąć to w jeden callback tak żeby wszystkie wykonywały się na raz
+      // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all
+      // https://stackoverflow.com/questions/52669596/promise-all-with-axios
+      const subjectResponse = await axios.get<Subject[]>(URL + "subject", {
+        headers: headers,
+      })
+      const studentResponse = await axios.get<Student[]>(URL + "student", {
+        headers: headers,
+      })
       const teacherResponse = await axios.get<TeacherRequest[]>(
         URL + "teacher",
-        {headers: headers}
+        {
+          headers: headers,
+        }
       )
       setStudents(studentResponse.data)
       setTeachers(teacherResponse.data)
       setSubjects(subjectResponse.data)
-    } catch (error) {
-      console.log(error)
+    } catch (error: any) {
+      setError(error.toString())
     }
-
   }
+
   useEffect(() => {
     fetchDefault()
-  }, [])
+  })
 
   const lessonForm = useForm<LessonFormIProps>({
     initialValues: {
@@ -69,7 +79,7 @@ export const LessonForm: React.FC = () => {
     color: error?.length > 0 ? "red" : "green",
     message: error
       ? `Nie udało się dodać lekcji dla nauczyciela ${lessonForm.values.teacher?.firstName} z uczniem ${lessonForm.values.student?.firstName} z profilem ${lessonForm.values.subject?.name}`
-      : `Udało się dodać lekcje dla nauczyciela${lessonForm.values.teacher?.firstName} z uczniem ${lessonForm.values.student?.firstName} z profilem ${lessonForm.values.subject?.name}`,
+      : `Udało się dodać lekcje dla nauczyciela ${lessonForm.values.teacher?.firstName} z uczniem ${lessonForm.values.student?.firstName} z profilem ${lessonForm.values.subject?.name}`,
   }
 
   const handleSubmit = (lessonData: LessonFormIProps) => {
@@ -83,7 +93,7 @@ export const LessonForm: React.FC = () => {
     }
     axios
       .post(URL + "lesson", payload, {
-        headers: headers
+        headers: headers,
       })
       .catch((err) => setError(err.message))
     showNotification(notifications, notificationObject)
@@ -96,16 +106,15 @@ export const LessonForm: React.FC = () => {
           required
           label="Wybierz ucznia"
           placeholder="uczeń"
-          data={students!
-            .map((student) => {
-              return (
-                student.firstName +
-                " " +
-                student.lastName +
-                " " +
-                student.classNumber
-              )
-            })}
+          data={students!.map((student) => {
+            return (
+              student.firstName +
+              " " +
+              student.lastName +
+              " " +
+              student.classNumber
+            )
+          })}
           searchable
           {...lessonForm.getInputProps("student")}
         />
@@ -125,10 +134,9 @@ export const LessonForm: React.FC = () => {
           required
           label="Wybierz przedmiot"
           placeholder="przedmiot"
-          data={subject!
-            .map((subject) => {
-              return subject.name + " " + subject.lessonLength
-            })}
+          data={subject!.map((subject) => {
+            return subject.name + " " + subject.lessonLength
+          })}
           searchable
           {...lessonForm.getInputProps("subject")}
         />

@@ -1,10 +1,10 @@
-import { StudentTable, StudentTableProps } from "../Table/StudentTable"
 import "./css/Student.css"
 import axios from "axios"
 import StudentCreationForm from "./StudentCreationForm"
+import { StudentTable, StudentTableProps } from "../Table/StudentTable"
 import { Container, Button, Group } from "@mantine/core"
 import { useState, useEffect, FunctionComponent } from "react"
-import { useFirebaseAuth, auth } from "../../contexts/UserContext"
+import { auth } from "../../contexts/UserContext"
 import { Student } from "../../types/Student"
 
 const StudentContainer: FunctionComponent = () => {
