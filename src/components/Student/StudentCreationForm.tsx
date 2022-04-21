@@ -3,10 +3,11 @@ import { TextInput, Group, Button, Box } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { Student } from "../../types/Student"
 import "./css/Student.css"
-import axios from "axios"
+import axios, { AxiosError } from "axios"
 import { useNotifications } from "@mantine/notifications"
 import { Check, X } from "tabler-icons-react"
 import { showNotification } from "../../service/notificationService"
+import { signOut } from "../../service/signOut"
 
 interface IProps {
   isAdding: boolean
@@ -51,8 +52,17 @@ const StudentCreationForm: FunctionComponent<IProps> = ({
   }
 
   const onSubmit = async (studentData: Student) => {
+    try {
+      setIsAdding(!isAdding)
+      await axios.post(`admin/student`, studentData)
+    } catch (error) {
+      setIsAdding(!isAdding)
+      const aError = error as AxiosError
+      if (aError.response?.status === 401) {
+        await signOut()
+      }
+    }
     setIsAdding(!isAdding)
-    await axios.post(`admin/student`, studentData)
     // TODO: error handling
     showNotification(notifications, notificationObject)
   }

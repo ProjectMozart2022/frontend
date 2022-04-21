@@ -1,13 +1,15 @@
 import { useEffect, useState, FunctionComponent } from "react"
 import { Button, Group, Box, MultiSelect } from "@mantine/core"
 import { useForm } from "@mantine/form"
-import axios from "axios"
+import axios, { AxiosError } from "axios"
 import { useNotifications } from "@mantine/notifications"
 import { showNotification } from "../../service/notificationService"
 import { Check, X } from "tabler-icons-react"
 import { Subject } from "../../types/Subject"
 import { Student } from "../../types/Student"
 import { TeacherRequest } from "../../types/TeacherRequest"
+import { signOut } from "../../service/signOut"
+import { setBearerToken } from "../../service/setBearerToken"
 
 type LessonFormIProps = {
   subject: Subject | undefined
@@ -23,6 +25,7 @@ export const LessonForm: FunctionComponent = () => {
   const [teachers, setTeachers] = useState<TeacherRequest[]>([])
   const fetchDefault = async () => {
     try {
+      await setBearerToken()
       // zamiast robić trzy responsy można pomyśleć nad Promise.all
       // później wziąć to w jeden callback tak żeby wszystkie wykonywały się na raz
       // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all
@@ -34,7 +37,10 @@ export const LessonForm: FunctionComponent = () => {
       setTeachers(teacherResponse.data)
       setSubjects(subjectResponse.data)
     } catch (error) {
-      console.log(error) 
+      const aError = error as AxiosError
+      if (aError.response?.status === 401) {
+        await signOut()
+      }
     }
   }
 
@@ -63,19 +69,23 @@ export const LessonForm: FunctionComponent = () => {
     autoClose: 3000,
     icon: error?.length > 0 ? <X size={18} /> : <Check size={18} />,
     color: error?.length > 0 ? "red" : "green",
-    message: error
-      ? `Nie udało się dodać lekcji`
-      : `Udało się dodać lekcje`,
+    message: error ? `Nie udało się dodać lekcji` : `Udało się dodać lekcje`,
   }
 
   const handleSubmit = async (lessonData: LessonFormIProps) => {
     const payload: LessonFormIProps = {
       ...lessonData,
     }
-
-    await axios.post("admin/lesson", payload)
     // TODO: error handling
-    // setError(error as string)
+    try {
+      await axios.post("admin/lesson", payload)
+    } catch (error) {
+      const aError = error as AxiosError
+      setError(error as string)
+      if (aError.response?.status === 401) {
+        await signOut()
+      }
+    }
     showNotification(notifications, notificationObject)
   }
 

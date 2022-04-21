@@ -16,10 +16,6 @@ const LoginView = () => {
 
   const handleSubmit = async (userData: FirebaseUser) => {
     await signInWithEmailAndPassword(auth, userData.email, userData.password)
-    const jwt = await auth.currentUser?.getIdToken()
-    if (jwt) {
-      axios.defaults.headers.common.Authorization = `Bearer ${jwt}`
-    }
     // TODO: error handling
   }
 

@@ -1,10 +1,12 @@
 import "./css/Student.css"
-import axios from "axios"
+import axios, { AxiosError } from "axios"
 import StudentCreationForm from "./StudentCreationForm"
 import { StudentTable, StudentTableProps } from "../Table/StudentTable"
 import { Container, Button, Group } from "@mantine/core"
 import { useState, useEffect, FunctionComponent } from "react"
 import { Student } from "../../types/Student"
+import { signOut } from "../../service/signOut"
+import { setBearerToken } from "../../service/setBearerToken"
 
 const StudentContainer: FunctionComponent = () => {
   const [isAdding, setIsAdding] = useState(false)
@@ -15,12 +17,17 @@ const StudentContainer: FunctionComponent = () => {
   const fetchStudents = async () => {
     setIsLoading(true)
     try {
+      await setBearerToken()
       const studentResponse = await axios.get<Student[]>(`admin/student`)
       setStudents(studentResponse.data)
       setIsLoading(false)
     } catch (error) {
       setError(error as string)
       setIsLoading(false)
+      const aError = error as AxiosError
+      if (aError.response?.status === 401) {
+        await signOut()
+      }
     }
   }
 

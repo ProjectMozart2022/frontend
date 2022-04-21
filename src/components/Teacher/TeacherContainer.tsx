@@ -1,9 +1,11 @@
 import { TeacherTable } from "../Table/TeacherTable"
-import axios from "axios"
+import axios, { AxiosError } from "axios"
 import { TeacherForm } from "./TeacherForm"
 import { Container, Button, Group } from "@mantine/core"
 import { useState, useEffect, FunctionComponent } from "react"
 import { TeacherRequest } from "../../types/TeacherRequest"
+import { signOut } from "../../service/signOut"
+import { setBearerToken } from "../../service/setBearerToken"
 
 const SubjectContainer: FunctionComponent = () => {
   const [isAdding, setIsAdding] = useState(false)
@@ -14,12 +16,19 @@ const SubjectContainer: FunctionComponent = () => {
   const fetchTeachers = async () => {
     setIsLoading(true)
     try {
-      const teachersResponse = await axios.get<TeacherRequest[]>(`admin/teacher`,)
+      await setBearerToken()
+      const teachersResponse = await axios.get<TeacherRequest[]>(
+        `admin/teacher`
+      )
       setTeachers(teachersResponse.data)
       setIsLoading(false)
     } catch (error) {
       setError(error as string)
       setIsLoading(false)
+      const aError = error as AxiosError
+      if (aError.response?.status === 401) {
+        await signOut()
+      }
     }
   }
 
