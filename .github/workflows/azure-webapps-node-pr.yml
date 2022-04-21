@@ -28,7 +28,7 @@ jobs:
           yarn lint
       - name: Format code
         run: |
-          yarn run prettier --write ./src/**/*.tsx ./src/**/*.ts
+          yarn run prettier --write ./src/**/*.{ts, tsx} ./src/**/**/*.{ts, tsx}
       - name: Build React app
         run: |
           yarn build
