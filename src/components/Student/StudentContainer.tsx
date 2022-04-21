@@ -43,6 +43,7 @@ const StudentContainer: FunctionComponent = () => {
     data: students.map((student) => {
       const studentData = {
         ...student,
+        id: student.id.toString(),
         classNumber: student.classNumber.toString(),
       }
       return studentData

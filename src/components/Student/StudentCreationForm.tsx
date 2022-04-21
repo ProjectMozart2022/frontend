@@ -1,7 +1,6 @@
 import React, { FunctionComponent, useState } from "react"
 import { TextInput, Group, Button, Box } from "@mantine/core"
 import { useForm } from "@mantine/form"
-import { Student } from "../../types/Student"
 import "./css/Student.css"
 import axios from "axios"
 import { useNotifications } from "@mantine/notifications"
@@ -16,13 +15,19 @@ interface IProps {
   setIsAdding: React.Dispatch<React.SetStateAction<boolean>>
 }
 
+type StudentFormType = {
+  firstName: string
+  lastName: string
+  classNumber: number
+}
+
 const StudentCreationForm: FunctionComponent<IProps> = ({
   isAdding,
   setIsAdding,
 }) => {
   const notifications = useNotifications()
 
-  const studentForm = useForm<Student>({
+  const studentForm = useForm<StudentFormType>({
     initialValues: {
       firstName: "",
       lastName: "",
@@ -53,7 +58,7 @@ const StudentCreationForm: FunctionComponent<IProps> = ({
       : `Udało się stworzyć ucznia ${studentForm.values.firstName} ${studentForm.values.lastName}`,
   }
 
-  const onSubmit = async (studentData: Student) => {
+  const onSubmit = async (studentData: StudentFormType) => {
     setIsAdding(!isAdding)
     const jwt = await auth.currentUser?.getIdToken()
     axios
