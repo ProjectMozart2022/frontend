@@ -8,10 +8,12 @@ interface IPropsEditModal {
  lastName: string
 }
 
-export const EditModal: FunctionComponent<IPropsEditModal> = (
- {id, firstName, lastName}
-) => {
-  const [opened, setOpened] = useState(false);
+export const EditModal: FunctionComponent<IPropsEditModal> = ({
+  id,
+  firstName,
+  lastName,
+}) => {
+  const [opened, setOpened] = useState(false)
 
   return (
     <>
@@ -21,19 +23,25 @@ export const EditModal: FunctionComponent<IPropsEditModal> = (
         onClose={() => setOpened(false)}
         overlayColor={"gray"}
         overlayOpacity={0.95}
-        closeButtonLabel="Close edit modal"
-      >
-      <h4>Jesteś pewien, że chcesz zmienić dane ucznia {firstName} {lastName}</h4>
-       <Group position="center" grow>
-        <Button>Tak, zmień
-        </Button>
-        <Button>Nie zmieniaj</Button>
-       </Group>
+        closeButtonLabel="Close edit modal">
+        <h4>
+          Jesteś pewien, że chcesz zmienić dane ucznia {firstName} {lastName}
+        </h4>
+        <Group position="center" grow>
+          <Button>Tak, zmień</Button>
+          <Button onClick={() => setOpened(false)}>Nie zmieniaj</Button>
+        </Group>
       </Modal>
 
       <Group position="center">
-        <ActionIcon aria-label="edit" variant="outline" color="red" onClick={() => setOpened(true)}><Edit size={16}></Edit></ActionIcon>
+        <ActionIcon
+          aria-label="edit"
+          variant="outline"
+          color="red"
+          onClick={() => setOpened(true)}>
+          <Edit size={16}></Edit>
+        </ActionIcon>
       </Group>
     </>
-  );
+  )
 }

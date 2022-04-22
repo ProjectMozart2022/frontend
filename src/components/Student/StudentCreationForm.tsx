@@ -56,7 +56,7 @@ const StudentCreationForm: FunctionComponent<IProps> = ({
       : `Udało się stworzyć ucznia ${studentForm.values.firstName} ${studentForm.values.lastName}`,
   }
 
-  const onSubmit = async (studentData: Student) => {
+  const onSubmit = async (studentData: StudentFormType) => {
     try {
       setIsAdding(!isAdding)
       await axios.post(`admin/student`, studentData)
