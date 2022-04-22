@@ -1,7 +1,6 @@
 import React, { FunctionComponent, useState } from "react"
 import { TextInput, Group, Button, Box } from "@mantine/core"
 import { useForm } from "@mantine/form"
-import { Student } from "../../types/Student"
 import "./css/Student.css"
 import axios, { AxiosError } from "axios"
 import { useNotifications } from "@mantine/notifications"
@@ -14,13 +13,19 @@ interface IProps {
   setIsAdding: React.Dispatch<React.SetStateAction<boolean>>
 }
 
+type StudentFormType = {
+  firstName: string
+  lastName: string
+  classNumber: number
+}
+
 const StudentCreationForm: FunctionComponent<IProps> = ({
   isAdding,
   setIsAdding,
 }) => {
   const notifications = useNotifications()
 
-  const studentForm = useForm<Student>({
+  const studentForm = useForm<StudentFormType>({
     initialValues: {
       firstName: "",
       lastName: "",
@@ -62,6 +67,7 @@ const StudentCreationForm: FunctionComponent<IProps> = ({
         await signOut()
       }
     }
+    
     setIsAdding(!isAdding)
     // TODO: error handling
     showNotification(notifications, notificationObject)
