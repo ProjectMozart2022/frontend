@@ -9,6 +9,8 @@ import {
 import { initializeApp } from "firebase/app"
 import { getAuth, User } from "firebase/auth"
 
+
+
 const firebaseConfig = {
   apiKey: "AIzaSyA7zW5JVBpiGghTaEUa3FmjslP5fcR09Kk",
   authDomain: "mozart-poc.firebaseapp.com",
@@ -16,6 +18,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig)
 export const auth = getAuth(app)
+
 
 const FirebaseContext = createContext<FirebaseContextType | undefined>(
   undefined

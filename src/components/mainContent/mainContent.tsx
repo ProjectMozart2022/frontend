@@ -7,18 +7,18 @@ import SubjectContainer from "../Subject/SubjectContainer"
 
 const MainContent: FunctionComponent = () => {
   const [tab, ] = useContext(TabContext)
-  const renderContent = (tab: String) => {
+  const renderContent = (tab: string) => {
     switch (tab) {
-      case "uczniowie":
-        return <StudentContainer />
-      case "nauczyciele":
-        return <TeacherContainer />
-      case "przedmioty":
-        return <SubjectContainer />
-      case "lekcje":
-        return <LessonForm />
-      default:
-        return <StudentContainer />
+    case "uczniowie":
+      return <StudentContainer />
+    case "nauczyciele":
+      return <TeacherContainer />
+    case "przedmioty":
+      return <SubjectContainer />
+    case "lekcje":
+      return <LessonForm />
+    default:
+      return <StudentContainer />
     }
   }
 

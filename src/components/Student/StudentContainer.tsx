@@ -1,11 +1,12 @@
 import "./css/Student.css"
-import axios from "axios"
+import axios, { AxiosError } from "axios"
 import StudentCreationForm from "./StudentCreationForm"
 import { StudentTable, StudentTableProps } from "../Table/StudentTable"
 import { Container, Button, Group } from "@mantine/core"
 import { useState, useEffect, FunctionComponent } from "react"
-import { auth } from "../../contexts/UserContext"
 import { Student } from "../../types/Student"
+import { signOut } from "../../service/signOut"
+import { setBearerToken } from "../../service/setBearerToken"
 
 const StudentContainer: FunctionComponent = () => {
   const [isAdding, setIsAdding] = useState(false)
@@ -16,27 +17,22 @@ const StudentContainer: FunctionComponent = () => {
   const fetchStudents = async () => {
     setIsLoading(true)
     try {
-      const jwt = await auth.currentUser?.getIdToken()
-      const studentResponse = await axios.get<Student[]>(
-        `https://mozart-backend.azurewebsites.net/api/admin/student`,
-        {
-          headers: {
-            Authorization: `Bearer ${jwt}`,
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-          },
-        }
-      )
+      await setBearerToken()
+      const studentResponse = await axios.get<Student[]>(`admin/student`)
       setStudents(studentResponse.data)
       setIsLoading(false)
-    } catch (error: any) {
-      setError(error.toString())
+    } catch (error) {
+      setError(error as string)
       setIsLoading(false)
+      const aError = error as AxiosError
+      if (aError.response?.status === 401) {
+        await signOut()
+      }
     }
   }
 
   useEffect(() => {
-    fetchStudents()
+    void fetchStudents()
   }, [])
 
   const tableData: StudentTableProps = {

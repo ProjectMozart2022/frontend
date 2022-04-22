@@ -1,14 +1,15 @@
 import { useEffect, useState, FunctionComponent } from "react"
 import { Button, Group, Box, MultiSelect } from "@mantine/core"
 import { useForm } from "@mantine/form"
-import axios from "axios"
+import axios, { AxiosError } from "axios"
 import { useNotifications } from "@mantine/notifications"
 import { showNotification } from "../../service/notificationService"
 import { Check, X } from "tabler-icons-react"
 import { Subject } from "../../types/Subject"
 import { Student } from "../../types/Student"
 import { TeacherRequest } from "../../types/TeacherRequest"
-import { auth } from "../../contexts/UserContext"
+import { signOut } from "../../service/signOut"
+import { setBearerToken } from "../../service/setBearerToken"
 
 type LessonFormIProps = {
   subject: Subject | undefined
@@ -17,8 +18,6 @@ type LessonFormIProps = {
 }
 
 export const LessonForm: FunctionComponent = () => {
-  const URL = "https://mozart-backend.azurewebsites.net/api/admin/"
-  let jwt: string | undefined
   const notifications = useNotifications()
   const [error, setError] = useState("")
   const [subject, setSubjects] = useState<Subject[]>([])
@@ -26,38 +25,27 @@ export const LessonForm: FunctionComponent = () => {
   const [teachers, setTeachers] = useState<TeacherRequest[]>([])
   const fetchDefault = async () => {
     try {
-      jwt = await auth.currentUser?.getIdToken()
-      const headers = {
-        Authorization: `Bearer ${jwt}`,
-        "Content-Type": "application/json",
-        "Allow-Origin": "*",
-      }
+      await setBearerToken()
       // zamiast robić trzy responsy można pomyśleć nad Promise.all
       // później wziąć to w jeden callback tak żeby wszystkie wykonywały się na raz
       // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all
       // https://stackoverflow.com/questions/52669596/promise-all-with-axios
-      const subjectResponse = await axios.get<Subject[]>(URL + "subject", {
-        headers: headers,
-      })
-      const studentResponse = await axios.get<Student[]>(URL + "student", {
-        headers: headers,
-      })
-      const teacherResponse = await axios.get<TeacherRequest[]>(
-        URL + "teacher",
-        {
-          headers: headers,
-        }
-      )
+      const subjectResponse = await axios.get<Subject[]>(`admin/subject`)
+      const studentResponse = await axios.get<Student[]>(`admin/student`)
+      const teacherResponse = await axios.get<TeacherRequest[]>(`admin/teacher`)
       setStudents(studentResponse.data)
       setTeachers(teacherResponse.data)
       setSubjects(subjectResponse.data)
-    } catch (error: any) {
-      setError(error.toString())
+    } catch (error) {
+      const aError = error as AxiosError
+      if (aError.response?.status === 401) {
+        await signOut()
+      }
     }
   }
 
   useEffect(() => {
-    fetchDefault()
+    void fetchDefault()
   })
 
   const lessonForm = useForm<LessonFormIProps>({
@@ -67,7 +55,11 @@ export const LessonForm: FunctionComponent = () => {
       subject: undefined,
     },
 
-    validate: (values) => ({}),
+    validate: (values) => ({
+      student: values.student !== undefined ? `Wybierz studenta` : null,
+      teacher: values.teacher !== undefined ? `Wybierz nauczyciela` : null,
+      subject: values.subject !== undefined ? `Wybierz przedmiot` : null,
+    }),
   })
 
   const notificationObject = {
@@ -77,25 +69,23 @@ export const LessonForm: FunctionComponent = () => {
     autoClose: 3000,
     icon: error?.length > 0 ? <X size={18} /> : <Check size={18} />,
     color: error?.length > 0 ? "red" : "green",
-    message: error
-      ? `Nie udało się dodać lekcji dla nauczyciela ${lessonForm.values.teacher?.firstName} z uczniem ${lessonForm.values.student?.firstName} z profilem ${lessonForm.values.subject?.name}`
-      : `Udało się dodać lekcje dla nauczyciela ${lessonForm.values.teacher?.firstName} z uczniem ${lessonForm.values.student?.firstName} z profilem ${lessonForm.values.subject?.name}`,
+    message: error ? `Nie udało się dodać lekcji` : `Udało się dodać lekcje`,
   }
 
-  const handleSubmit = (lessonData: LessonFormIProps) => {
+  const handleSubmit = async (lessonData: LessonFormIProps) => {
     const payload: LessonFormIProps = {
       ...lessonData,
     }
-    const headers = {
-      Authorization: `Bearer ${jwt}`,
-      "Content-Type": "application/json",
-      "Allow-Origin": "*",
+    // TODO: error handling
+    try {
+      await axios.post("admin/lesson", payload)
+    } catch (error) {
+      const aError = error as AxiosError
+      setError(error as string)
+      if (aError.response?.status === 401) {
+        await signOut()
+      }
     }
-    axios
-      .post(URL + "lesson", payload, {
-        headers: headers,
-      })
-      .catch((err) => setError(err.message))
     showNotification(notifications, notificationObject)
   }
 
@@ -106,14 +96,8 @@ export const LessonForm: FunctionComponent = () => {
           required
           label="Wybierz ucznia"
           placeholder="uczeń"
-          data={students!.map((student) => {
-            return (
-              student.firstName +
-              " " +
-              student.lastName +
-              " " +
-              student.classNumber
-            )
+          data={students.map((student) => {
+            return `${student.firstName} ${student.lastName} ${student.classNumber}`
           })}
           searchable
           {...lessonForm.getInputProps("student")}
@@ -123,8 +107,8 @@ export const LessonForm: FunctionComponent = () => {
           required
           label="Wybierz nauczyciela"
           placeholder="nauczyciel"
-          data={teachers!.map((teacher) => {
-            return teacher.firstName + " " + teacher.lastName
+          data={teachers.map((teacher) => {
+            return `${teacher.firstName} ${teacher.lastName}`
           })}
           searchable
           {...lessonForm.getInputProps("teacher")}
@@ -134,8 +118,8 @@ export const LessonForm: FunctionComponent = () => {
           required
           label="Wybierz przedmiot"
           placeholder="przedmiot"
-          data={subject!.map((subject) => {
-            return subject.name + " " + subject.lessonLength
+          data={subject.map((subject) => {
+            return `${subject.name} ${subject.lessonLength}`
           })}
           searchable
           {...lessonForm.getInputProps("subject")}

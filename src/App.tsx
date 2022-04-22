@@ -7,7 +7,7 @@ import AppWrapper from "./AppWrapper"
 import { TabProvider } from "./contexts/TabContext"
 
 const App: FunctionComponent = () => {
-  const [tab, setTab] = useState<String>("")
+  const [tab, setTab] = useState<string>("")
 
   return (
     <UserContext>

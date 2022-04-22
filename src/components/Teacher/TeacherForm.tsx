@@ -18,8 +18,10 @@ interface IProps {
   setIsAdding: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export const TeacherForm: FunctionComponent<IProps> = ({isAdding, setIsAdding}) => {
-  const URL = "https://mozart-backend.azurewebsites.net/api/admin/teacher"
+export const TeacherForm: FunctionComponent<IProps> = ({
+  isAdding,
+  setIsAdding,
+}) => {
   const notifications = useNotifications()
   const [error, setError] = useState("")
 
@@ -57,36 +59,27 @@ export const TeacherForm: FunctionComponent<IProps> = ({isAdding, setIsAdding}) 
 
   const handleSubmit = async (teacherData: TeacherRequest) => {
     setIsAdding(!isAdding)
-    const jwt = await auth.currentUser?.getIdToken()
-    createUserWithEmailAndPassword(
+    const fireBaseResponse = await createUserWithEmailAndPassword(
       auth,
       teacherData.email,
       teacherData.password
     )
-      .then(
-        async (res) =>
-          await setDisplayName(res, teacherData.firstName, teacherData.lastName)
-      )
-      .catch((err) => setError(err.message))
-    axios
-      .post(URL, teacherData, {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-          "Content-Type": "application/json",
-          "Allow-Origin": "*",
-        },
-      })
-      .then((res) => console.log(res))
-      .catch((err) => setError(err.message))
+    await setDisplayName(
+      fireBaseResponse,
+      teacherData.firstName,
+      teacherData.lastName
+    )
+    await axios.post(`admin/teacher`, teacherData)
+    // TODO: error handling
     showNotification(notifications, notificationObject)
   }
 
-  const setDisplayName = async (
+  const setDisplayName = (
     user: UserCredential,
     firstName: string,
     lastName: string
   ) => {
-    return await updateProfile(user.user, {
+    return updateProfile(user.user, {
       displayName: `${firstName} ${lastName}`,
     })
   }

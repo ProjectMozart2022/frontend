@@ -1,10 +1,9 @@
-
 import { Box, Button, Center, TextInput } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { signInWithEmailAndPassword } from "firebase/auth"
 import { auth } from "../contexts/UserContext"
 import { FirebaseUser } from "../types/FirebaseUser"
-
+import axios from "axios"
 
 const LoginView = () => {
 
@@ -15,10 +14,9 @@ const LoginView = () => {
     },
   })
 
-  const onSubmit = async (userData: FirebaseUser) => {
-    signInWithEmailAndPassword(auth, userData.email, userData.password)
-      .then((user) => console.log(user.user))
-      // TODO: error handling
+  const handleSubmit = async (userData: FirebaseUser) => {
+    await signInWithEmailAndPassword(auth, userData.email, userData.password)
+    // TODO: error handling
   }
 
   return (
@@ -27,7 +25,7 @@ const LoginView = () => {
         <h1>Logowanie</h1>
       </Center>
       <Box sx={{ maxWidth: 400 }} mx="auto">
-        <form onSubmit={loginForm.onSubmit(onSubmit)}>
+        <form onSubmit={loginForm.onSubmit(handleSubmit)}>
           <TextInput
             required
             style={{ padding: 10 }}
