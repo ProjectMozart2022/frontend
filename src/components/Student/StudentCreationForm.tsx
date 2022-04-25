@@ -5,8 +5,8 @@ import "./css/Student.css"
 import axios, { AxiosError } from "axios"
 import { useNotifications } from "@mantine/notifications"
 import { Check, X } from "tabler-icons-react"
-import { showNotification } from "../../service/notificationService"
-import { signOut } from "../../service/signOut"
+import { showNotification } from "../../services/notificationService"
+import { signOut } from "../../services/signOut"
 
 interface IProps {
   isAdding: boolean

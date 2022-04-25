@@ -4,7 +4,7 @@ import { useForm } from "@mantine/form"
 import axios from "axios"
 import { useNotifications } from "@mantine/notifications"
 import { Check, X } from "tabler-icons-react"
-import { showNotification } from "../../service/notificationService"
+import { showNotification } from "../../services/notificationService"
 import { TeacherRequest } from "../../types/TeacherRequest"
 import { auth } from "../../contexts/UserContext"
 import {

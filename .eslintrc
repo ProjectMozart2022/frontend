@@ -3,11 +3,10 @@
   "plugins": ["react", "import", "jsx-a11y", "@typescript-eslint"],
   "extends": [
     "plugin:import/typescript",
-    "plugin:react/recommended",
     "plugin:jsx-a11y/recommended",
     "plugin:react-hooks/recommended",
-    "react-app",
     "eslint:recommended",
+    "plugin:react/recommended",
     "plugin:import/errors",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
@@ -55,7 +54,7 @@
     "node": true
   },
   "parserOptions": {
-    "project": "./tsconfig.json",
+    "project": ["./tsconfig.json"],
     "ecmaVersion": 2021,
     "sourceType": "module",
     "ecmaFeatures": {
@@ -64,7 +63,9 @@
     "allowImportExportEverywhere": true
   },
   "settings": {
-    "react": "detect",
+    "react": {
+      "version": "detect"
+    },
     "import/parsers": {
       "@typescript-eslint/parser": [".ts", ".tsx"]
     },

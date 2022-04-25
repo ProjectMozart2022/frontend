@@ -4,8 +4,8 @@ import { TeacherForm } from "./TeacherForm"
 import { Container, Button, Group } from "@mantine/core"
 import { useState, useEffect, FunctionComponent } from "react"
 import { TeacherRequest } from "../../types/TeacherRequest"
-import { signOut } from "../../service/signOut"
-import { setBearerToken } from "../../service/setBearerToken"
+import { signOut } from "../../services/signOut"
+import { setBearerToken } from "../../services/setBearerToken"
 
 const SubjectContainer: FunctionComponent = () => {
   const [isAdding, setIsAdding] = useState(false)

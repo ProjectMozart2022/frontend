@@ -4,8 +4,8 @@ import { SubjectForm } from "./SubjectForm"
 import { Container, Button, Group } from "@mantine/core"
 import { useState, useEffect, FunctionComponent } from "react"
 import { Subject } from "../../types/Subject"
-import { signOut } from "../../service/signOut"
-import { setBearerToken } from "../../service/setBearerToken"
+import { signOut } from "../../services/signOut"
+import { setBearerToken } from "../../services/setBearerToken"
 
 const SubjectContainer: FunctionComponent = () => {
   const [isAdding, setIsAdding] = useState(false)

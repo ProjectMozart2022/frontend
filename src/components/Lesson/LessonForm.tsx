@@ -3,13 +3,13 @@ import { Button, Group, Box, MultiSelect } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import axios, { AxiosError } from "axios"
 import { useNotifications } from "@mantine/notifications"
-import { showNotification } from "../../service/notificationService"
+import { showNotification } from "../../services/notificationService"
 import { Check, X } from "tabler-icons-react"
 import { Subject } from "../../types/Subject"
 import { Student } from "../../types/Student"
 import { TeacherRequest } from "../../types/TeacherRequest"
-import { signOut } from "../../service/signOut"
-import { setBearerToken } from "../../service/setBearerToken"
+import { signOut } from "../../services/signOut"
+import { setBearerToken } from "../../services/setBearerToken"
 
 type LessonFormIProps = {
   subject: Subject | undefined
