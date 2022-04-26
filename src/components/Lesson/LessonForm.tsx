@@ -73,20 +73,20 @@ export const LessonForm: FunctionComponent = () => {
   }
 
   const handleSubmit = async (lessonData: LessonFormIProps) => {
-    const payload: LessonFormIProps = {
-      ...lessonData,
-    }
-    // TODO: error handling
-    try {
-      await axios.post("admin/lesson", payload)
-    } catch (error) {
-      const aError = error as AxiosError
-      setError(error as string)
-      if (aError.response?.status === 401) {
-        await signOut()
+    if (lessonForm) {
+      const { subject, student, teacher } = lessonData
+      // TODO: error handling
+      try {
+        await axios.post(`admin/lesson?studentId=${student.id}&teacherId=${teacher.id}&subjectId=${subject.id}`)
+      } catch (error) {
+        const aError = error as AxiosError
+        setError(error as string)
+        if (aError.response?.status === 401) {
+          await signOut()
+        }
       }
+      showNotification(notifications, notificationObject)
     }
-    showNotification(notifications, notificationObject)
   }
 
   return (

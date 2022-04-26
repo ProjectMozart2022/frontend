@@ -1,4 +1,4 @@
-import { TeacherTable } from "../Table/TeacherTable"
+import { TeacherTable } from "../Tables/TeacherTable"
 import axios, { AxiosError } from "axios"
 import { TeacherForm } from "./TeacherForm"
 import { Container, Button, Group } from "@mantine/core"

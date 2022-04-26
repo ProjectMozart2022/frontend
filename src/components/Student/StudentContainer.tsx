@@ -1,7 +1,7 @@
 import "./css/Student.css"
 import axios, { AxiosError } from "axios"
 import StudentCreationForm from "./StudentCreationForm"
-import { StudentTable, StudentTableProps } from "../Table/StudentTable"
+import { StudentTable, StudentTableProps } from "../Tables/StudentTable"
 import { Container, Button, Group } from "@mantine/core"
 import { useState, useEffect, FunctionComponent } from "react"
 import { Student } from "../../types/Student"

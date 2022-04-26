@@ -1,4 +1,4 @@
-import { SubjectTable, SubjectTableProps } from "../Table/SubjectTable"
+import { SubjectTable, SubjectTableProps } from "../Tables/SubjectTable"
 import axios, { AxiosError } from "axios"
 import { SubjectForm } from "./SubjectForm"
 import { Container, Button, Group } from "@mantine/core"
