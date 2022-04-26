@@ -73,11 +73,12 @@ export const LessonForm: FunctionComponent = () => {
   }
 
   const handleSubmit = async (lessonData: LessonFormIProps) => {
-    console.log(lessonData)
     const { subject, student, teacher } = lessonData
     // TODO: error handling
     try {
-      await axios.post(`admin/lesson?studentId=${student}&teacherId=${teacher}&subjectId=${subject}`)
+      await axios.post(
+        `admin/lesson?studentId=${student}&teacherId=${teacher}&subjectId=${subject}`
+      )
     } catch (error) {
       const aError = error as AxiosError
       setError(error as string)
