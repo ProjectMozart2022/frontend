@@ -54,7 +54,7 @@ const filterData = (data: StudentRowData[], search: string) => {
   const keys = Object.keys(data[0])
   const query = search.toLowerCase().trim()
   return data.filter((item) =>
-    keys.some((key) =>
+    keys.some(() =>
       Object.values(item).toString().toLowerCase().includes(query)
     )
   )
@@ -105,8 +105,16 @@ export const StudentTable = ({ data }: StudentTableProps) => {
       <td>{row.firstName}</td>
       <td>{row.lastName}</td>
       <td>{row.classNumber}</td>
-      <td><EditModal id={parseInt(row.id)} firstName={row.firstName} lastName={row.lastName}></EditModal></td>
-      <td><DeleteModal id={parseInt(row.id)} firstName={row.firstName} lastName={row.lastName}></DeleteModal></td>
+      <td>
+        <EditModal firstName={row.firstName} lastName={row.lastName} />
+      </td>
+      <td>
+        <DeleteModal
+          id={parseInt(row.id)}
+          firstName={row.firstName}
+          lastName={row.lastName}
+        />
+      </td>
     </tr>
   ))
 
@@ -123,7 +131,7 @@ export const StudentTable = ({ data }: StudentTableProps) => {
         highlightOnHover
         horizontalSpacing="md"
         verticalSpacing="xs"
-        sx={{minWidth: 700 }}>
+        sx={{ minWidth: 700 }}>
         <thead>
           <tr>
             <Th
@@ -144,7 +152,8 @@ export const StudentTable = ({ data }: StudentTableProps) => {
               onSort={() => setSorting("classNumber")}>
               Klasa
             </Th>
-            <th></th><th></th>
+            <th></th>
+            <th></th>
           </tr>
         </thead>
         <tbody>

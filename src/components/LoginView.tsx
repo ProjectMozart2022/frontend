@@ -3,7 +3,6 @@ import { useForm } from "@mantine/form"
 import { signInWithEmailAndPassword } from "firebase/auth"
 import { auth } from "../contexts/UserContext"
 import { FirebaseUser } from "../types/FirebaseUser"
-import axios from "axios"
 
 const LoginView = () => {
 

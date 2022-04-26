@@ -3,13 +3,11 @@ import { Modal, Group, ActionIcon, Button } from '@mantine/core';
 import { Edit } from "tabler-icons-react"
 
 interface IPropsEditModal {
- id: number
- firstName: string
- lastName: string
+  firstName: string
+  lastName: string
 }
 
 export const EditModal: FunctionComponent<IPropsEditModal> = ({
-  id,
   firstName,
   lastName,
 }) => {

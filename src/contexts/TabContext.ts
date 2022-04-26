@@ -1,8 +1,10 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable indent */
 import * as React from "react"
 
 const TabContext = React.createContext<
   [string, (tab: React.SetStateAction<string>) => void]
-    >(["uczniowie", () => {}])
+>(["uczniowie", () => {}])
 
 export const TabProvider = TabContext.Provider
 

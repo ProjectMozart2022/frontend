@@ -51,7 +51,7 @@ const filterData = (data: SubjectRowData[], search: string) => {
   const keys = Object.keys(data[0])
   const query = search.toLowerCase().trim()
   return data.filter((item) =>
-    keys.some((key) =>
+    keys.some(() =>
       Object.values(item).toString().toLowerCase().includes(query)
     )
   )

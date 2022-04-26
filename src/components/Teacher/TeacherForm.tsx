@@ -23,7 +23,7 @@ export const TeacherForm: FunctionComponent<IProps> = ({
   setIsAdding,
 }) => {
   const notifications = useNotifications()
-  const [error, setError] = useState("")
+  const [error] = useState("")
 
   const teacherForm = useForm<TeacherRequest>({
     initialValues: {

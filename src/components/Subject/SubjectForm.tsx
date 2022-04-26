@@ -30,7 +30,7 @@ export const SubjectForm: FunctionComponent<IProps> = ({
   setIsAdding,
 }) => {
   const notifications = useNotifications()
-  const [error, setError] = useState("")
+  const [error] = useState("")
 
   const [classNumber] = useState(["1", "2", "3", "4", "5", "6", "7", "8"])
 
@@ -41,7 +41,7 @@ export const SubjectForm: FunctionComponent<IProps> = ({
       classRange: [],
     },
 
-    validate: (values) => ({}),
+    validate: () => ({}),
   })
 
   const notificationObject = {

@@ -43,7 +43,7 @@ const StudentCreationForm: FunctionComponent<IProps> = ({
         : "Nieprawidłowe nazwisko",
     }),
   })
-  const [error, setError] = useState("")
+  const [error] = useState("")
   const notificationObject = {
     title: `${
       error ? `Nie udało się stworzyć ucznia!` : "Udało stworzyć się ucznia!"
