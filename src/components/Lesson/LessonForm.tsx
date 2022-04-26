@@ -1,5 +1,5 @@
 import { useEffect, useState, FunctionComponent } from "react"
-import { Button, Group, Box, MultiSelect } from "@mantine/core"
+import { Button, Group, Box, Select } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import axios, { AxiosError } from "axios"
 import { useNotifications } from "@mantine/notifications"
@@ -7,14 +7,14 @@ import { showNotification } from "../../services/notificationService"
 import { Check, X } from "tabler-icons-react"
 import { Subject } from "../../types/Subject"
 import { Student } from "../../types/Student"
-import { TeacherRequest } from "../../types/TeacherRequest"
+import { Teacher } from "../../types/Teacher"
 import { signOut } from "../../services/signOut"
 import { setBearerToken } from "../../services/setBearerToken"
 
 type LessonFormIProps = {
-  subject: Subject | undefined
-  student: Student | undefined
-  teacher: TeacherRequest | undefined
+  subject: string
+  student: string
+  teacher: string
 }
 
 export const LessonForm: FunctionComponent = () => {
@@ -22,7 +22,7 @@ export const LessonForm: FunctionComponent = () => {
   const [error, setError] = useState("")
   const [subject, setSubjects] = useState<Subject[]>([])
   const [students, setStudents] = useState<Student[]>([])
-  const [teachers, setTeachers] = useState<TeacherRequest[]>([])
+  const [teachers, setTeachers] = useState<Teacher[]>([])
   const fetchDefault = async () => {
     try {
       await setBearerToken()
@@ -32,7 +32,7 @@ export const LessonForm: FunctionComponent = () => {
       // https://stackoverflow.com/questions/52669596/promise-all-with-axios
       const subjectResponse = await axios.get<Subject[]>(`admin/subject`)
       const studentResponse = await axios.get<Student[]>(`admin/student`)
-      const teacherResponse = await axios.get<TeacherRequest[]>(`admin/teacher`)
+      const teacherResponse = await axios.get<Teacher[]>(`admin/teacher`)
       setStudents(studentResponse.data)
       setTeachers(teacherResponse.data)
       setSubjects(subjectResponse.data)
@@ -46,19 +46,19 @@ export const LessonForm: FunctionComponent = () => {
 
   useEffect(() => {
     void fetchDefault()
-  })
+  }, [])
 
   const lessonForm = useForm<LessonFormIProps>({
     initialValues: {
-      student: undefined,
-      teacher: undefined,
-      subject: undefined,
+      student: "",
+      teacher: "",
+      subject: "",
     },
 
     validate: (values) => ({
-      student: values.student !== undefined ? `Wybierz studenta` : null,
-      teacher: values.teacher !== undefined ? `Wybierz nauczyciela` : null,
-      subject: values.subject !== undefined ? `Wybierz przedmiot` : null,
+      student: values.student === undefined ? `Wybierz studenta` : null,
+      teacher: values.teacher === undefined ? `Wybierz nauczyciela` : null,
+      subject: values.subject === undefined ? `Wybierz przedmiot` : null,
     }),
   })
 
@@ -73,55 +73,66 @@ export const LessonForm: FunctionComponent = () => {
   }
 
   const handleSubmit = async (lessonData: LessonFormIProps) => {
-    if (lessonForm) {
-      const { subject, student, teacher } = lessonData
-      // TODO: error handling
-      try {
-        await axios.post(`admin/lesson?studentId=${student.id}&teacherId=${teacher.id}&subjectId=${subject.id}`)
-      } catch (error) {
-        const aError = error as AxiosError
-        setError(error as string)
-        if (aError.response?.status === 401) {
-          await signOut()
-        }
+    console.log(lessonData)
+    const { subject, student, teacher } = lessonData
+    // TODO: error handling
+    try {
+      await axios.post(`admin/lesson?studentId=${student}&teacherId=${teacher}&subjectId=${subject}`)
+    } catch (error) {
+      const aError = error as AxiosError
+      setError(error as string)
+      if (aError.response?.status === 401) {
+        await signOut()
       }
-      showNotification(notifications, notificationObject)
     }
+    showNotification(notifications, notificationObject)
   }
 
   return (
     <Box sx={{ maxWidth: 400 }} mx="auto">
       <form onSubmit={lessonForm.onSubmit(handleSubmit)}>
-        <MultiSelect
+        <Select
           required
           label="Wybierz ucznia"
           placeholder="uczeń"
           data={students.map((student) => {
-            return `${student.firstName} ${student.lastName} ${student.classNumber}`
+            return {
+              value: student.id.toString(),
+              label: `${student.firstName} ${student.lastName} ${student.classNumber}`,
+            }
           })}
+          nothingFound="ni ma"
           searchable
           {...lessonForm.getInputProps("student")}
         />
 
-        <MultiSelect
+        <Select
           required
           label="Wybierz nauczyciela"
           placeholder="nauczyciel"
           data={teachers.map((teacher) => {
-            return `${teacher.firstName} ${teacher.lastName}`
+            return {
+              value: teacher?.firebaseId,
+              label: `${teacher.firstName} ${teacher.lastName}`,
+            }
           })}
+          nothingFound="ni ma"
           searchable
           {...lessonForm.getInputProps("teacher")}
         />
 
-        <MultiSelect
+        <Select
           required
           label="Wybierz przedmiot"
           placeholder="przedmiot"
           data={subject.map((subject) => {
-            return `${subject.name} ${subject.lessonLength}`
+            return {
+              value: subject.id.toString(),
+              label: `${subject.name} ${subject.lessonLength}`
+            } 
           })}
           searchable
+          nothingFound="ni ma"
           {...lessonForm.getInputProps("subject")}
         />
 

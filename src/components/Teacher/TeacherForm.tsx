@@ -5,13 +5,7 @@ import axios from "axios"
 import { useNotifications } from "@mantine/notifications"
 import { Check, X } from "tabler-icons-react"
 import { showNotification } from "../../services/notificationService"
-import { TeacherRequest } from "../../types/TeacherRequest"
-import { auth } from "../../contexts/UserContext"
-import {
-  createUserWithEmailAndPassword,
-  UserCredential,
-  updateProfile,
-} from "firebase/auth"
+import { Teacher } from "../../types/Teacher"
 
 interface IProps {
   isAdding: boolean
@@ -25,8 +19,9 @@ export const TeacherForm: FunctionComponent<IProps> = ({
   const notifications = useNotifications()
   const [error] = useState("")
 
-  const teacherForm = useForm<TeacherRequest>({
+  const teacherForm = useForm<Teacher>({
     initialValues: {
+      firebaseId: "",
       firstName: "",
       lastName: "",
       email: "",
@@ -57,32 +52,14 @@ export const TeacherForm: FunctionComponent<IProps> = ({
       : `Udało się dodać nauczyciela ${teacherForm.values.firstName} ${teacherForm.values.lastName}!`,
   }
 
-  const handleSubmit = async (teacherData: TeacherRequest) => {
+  const handleSubmit = async (teacherData: Teacher) => {
     setIsAdding(!isAdding)
-    const fireBaseResponse = await createUserWithEmailAndPassword(
-      auth,
-      teacherData.email,
-      teacherData.password
-    )
-    await setDisplayName(
-      fireBaseResponse,
-      teacherData.firstName,
-      teacherData.lastName
-    )
     await axios.post(`admin/teacher`, teacherData)
     // TODO: error handling
     showNotification(notifications, notificationObject)
   }
 
-  const setDisplayName = (
-    user: UserCredential,
-    firstName: string,
-    lastName: string
-  ) => {
-    return updateProfile(user.user, {
-      displayName: `${firstName} ${lastName}`,
-    })
-  }
+
 
   return (
     <Box sx={{ maxWidth: 400 }} mx="auto">

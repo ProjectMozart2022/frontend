@@ -3,21 +3,21 @@ import axios, { AxiosError } from "axios"
 import { TeacherForm } from "./TeacherForm"
 import { Container, Button, Group } from "@mantine/core"
 import { useState, useEffect, FunctionComponent } from "react"
-import { TeacherRequest } from "../../types/TeacherRequest"
+import { Teacher } from "../../types/Teacher"
 import { signOut } from "../../services/signOut"
 import { setBearerToken } from "../../services/setBearerToken"
 
 const SubjectContainer: FunctionComponent = () => {
   const [isAdding, setIsAdding] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-  const [teachers, setTeachers] = useState<TeacherRequest[]>([])
+  const [teachers, setTeachers] = useState<Teacher[]>([])
   const [, setError] = useState("")
 
   const fetchTeachers = async () => {
     setIsLoading(true)
     try {
       await setBearerToken()
-      const teachersResponse = await axios.get<TeacherRequest[]>(
+      const teachersResponse = await axios.get<Teacher[]>(
         `admin/teacher`
       )
       setTeachers(teachersResponse.data)
