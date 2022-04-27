@@ -1,10 +1,19 @@
-import { Box, Button, Center, TextInput } from "@mantine/core"
+import {
+  Button,
+  Center,
+  Paper,
+  PasswordInput,
+  TextInput,
+  Title,
+} from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { signInWithEmailAndPassword } from "firebase/auth"
-import { auth } from "../contexts/UserContext"
-import { FirebaseUser } from "../types/FirebaseUser"
+import { auth } from "../../contexts/UserContext"
+import { FirebaseUser } from "../../types/FirebaseUser"
+import { useLoginStyles } from "./styles/loginStyles"
 
 const LoginView = () => {
+  const { classes } = useLoginStyles()
 
   const loginForm = useForm<FirebaseUser>({
     initialValues: {
@@ -15,37 +24,42 @@ const LoginView = () => {
 
   const handleSubmit = async (userData: FirebaseUser) => {
     await signInWithEmailAndPassword(auth, userData.email, userData.password)
-    // TODO: error handling
   }
 
   return (
-    <Box style={{ maxWidth: 1500, margin: 10 }}>
-      <Center>
-        <h1>Logowanie</h1>
-      </Center>
-      <Box sx={{ maxWidth: 400 }} mx="auto">
+    <div className={classes.wrapper}>
+      <Paper className={classes.form} radius={0} p={30}>
         <form onSubmit={loginForm.onSubmit(handleSubmit)}>
+          <Title
+            order={2}
+            className={classes.title}
+            align="center"
+            mt="md"
+            mb={50}>
+            Logowanie
+          </Title>
           <TextInput
             required
-            style={{ padding: 10 }}
+            className={classes.input}
             label="Email"
             placeholder="Wpisz email"
             {...loginForm.getInputProps("email")}
           />
-          <TextInput
+          <PasswordInput
             required
-            type="password"
+            className={classes.input}
             label="Hasło"
             placeholder="Wpisz hasło"
-            style={{ padding: 10 }}
             {...loginForm.getInputProps("password")}
           />
           <Center>
-            <Button type="submit">Zaloguj</Button>
+            <Button radius="md" color="gray" type="submit">
+              Zaloguj
+            </Button>
           </Center>
         </form>
-      </Box>
-    </Box>
+      </Paper>
+    </div>
   )
 }
 

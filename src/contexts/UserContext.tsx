@@ -9,8 +9,6 @@ import {
 import { initializeApp } from "firebase/app"
 import { getAuth, User } from "firebase/auth"
 
-
-
 const firebaseConfig = {
   apiKey: "AIzaSyA7zW5JVBpiGghTaEUa3FmjslP5fcR09Kk",
   authDomain: "mozart-poc.firebaseapp.com",
@@ -18,7 +16,6 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig)
 export const auth = getAuth(app)
-
 
 const FirebaseContext = createContext<FirebaseContextType | undefined>(
   undefined
@@ -37,7 +34,10 @@ const UserContext: FunctionComponent<IProps> = ({ children }) => {
   const value = { user }
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(setUser)
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setUser(user)
+      setTimeout(() => auth.signOut(), 10800000)
+    })
     return unsubscribe
   }, [])
 

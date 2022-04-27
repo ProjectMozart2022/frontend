@@ -2,7 +2,7 @@ import { Container } from "@mantine/core"
 import { FunctionComponent } from "react"
 import { HeaderTabsColored } from "./components/header/Header"
 import { useFirebaseAuth } from "./contexts/UserContext"
-import LoginScreen from "./components/LoginView"
+import LoginScreen from "./components/login/LoginView"
 import MainContent from "./components/mainContent/mainContent"
 
 const DEFAULT_PICTURE_URL =
@@ -15,17 +15,13 @@ const AppWrapper: FunctionComponent = () => {
     image: user?.photoURL || DEFAULT_PICTURE_URL,
   }
 
-  return (
+  return user !== null ? (
     <Container>
-      {user !== null ? (
-        <Container style={{ margin: 0, padding: 0 }}>
-          <HeaderTabsColored user={headerUser} />
-          <MainContent />
-        </Container>
-      ) : (
-        <LoginScreen />
-      )}
+      <HeaderTabsColored user={headerUser} />
+      <MainContent />
     </Container>
+  ) : (
+    <LoginScreen />
   )
 }
 

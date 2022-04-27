@@ -17,9 +17,7 @@ const SubjectContainer: FunctionComponent = () => {
     setIsLoading(true)
     try {
       await setBearerToken()
-      const teachersResponse = await axios.get<Teacher[]>(
-        `admin/teacher`
-      )
+      const teachersResponse = await axios.get<Teacher[]>(`admin/teacher`)
       setTeachers(teachersResponse.data)
       setIsLoading(false)
     } catch (error) {
@@ -38,7 +36,7 @@ const SubjectContainer: FunctionComponent = () => {
 
   return (
     <Container className="studentContainer">
-      {!isLoading ? <TeacherTable data={teachers}></TeacherTable> : null}
+      {!isLoading ? <TeacherTable data={teachers} /> : null}
       <Group position="center">
         <Button
           style={{ marginLeft: "0.75vw", marginBottom: "0.5vh" }}
