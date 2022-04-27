@@ -1,7 +1,7 @@
 import { useState, FunctionComponent } from "react"
 import { TextInput, Button, Group, Box } from "@mantine/core"
 import { useForm } from "@mantine/form"
-import axios from "axios"
+import axios, { AxiosError } from "axios"
 import { useNotifications } from "@mantine/notifications"
 import { Check, X } from "tabler-icons-react"
 import { showNotification } from "../../services/notificationService"
@@ -17,7 +17,7 @@ export const TeacherForm: FunctionComponent<IProps> = ({
   setIsAdding,
 }) => {
   const notifications = useNotifications()
-  const [error] = useState("")
+  const [error, setError] = useState("")
 
   const teacherForm = useForm<Teacher>({
     initialValues: {
@@ -54,7 +54,9 @@ export const TeacherForm: FunctionComponent<IProps> = ({
 
   const handleSubmit = async (teacherData: Teacher) => {
     setIsAdding(!isAdding)
-    await axios.post(`admin/teacher`, teacherData)
+    await axios
+      .post(`admin/teacher`, teacherData)
+      .catch((err: AxiosError) => setError(err.message))
     // TODO: error handling
     showNotification(notifications, notificationObject)
   }
