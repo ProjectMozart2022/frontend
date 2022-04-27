@@ -26,9 +26,6 @@ jobs:
       - name: Linting the code
         run: |
           yarn lint
-      - name: Format code
-        run: |
-          yarn run format
       - name: Build React app
         run: |
           yarn build
