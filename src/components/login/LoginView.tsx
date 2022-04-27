@@ -55,7 +55,7 @@ const LoginView = () => {
           <Center>
             <Button radius="md" color="gray" type="submit">
               Zaloguj
-            </Button>{" "}
+            </Button>
           </Center>
         </form>
       </Paper>
