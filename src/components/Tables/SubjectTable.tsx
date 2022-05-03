@@ -10,8 +10,11 @@ import {
 } from "@mantine/core"
 import { Selector, ChevronDown, ChevronUp, Search } from "tabler-icons-react"
 import { tableStyle } from "./styles/tableStyle"
+import { EditModal } from "../modals/EditModal"
+import { DeleteModal } from "../modals/DeleteModal"
 
 interface SubjectRowData {
+  id: string
   name: string
   lessonLength: string
   classRange: string
@@ -102,6 +105,12 @@ export const SubjectTable = ({ data }: SubjectTableProps) => {
       <td>{row.name}</td>
       <td>{row.lessonLength}</td>
       <td>{row.classRange}</td>
+      <td>
+        <EditModal id={parseInt(row.id)} dialog="" />
+      </td>
+      <td>
+        <DeleteModal id={parseInt(row.id)} url="admin/subject" dialog="" />
+      </td>
     </tr>
   ))
 
@@ -115,6 +124,7 @@ export const SubjectTable = ({ data }: SubjectTableProps) => {
         onChange={handleSearchChange}
       />
       <Table
+        highlightOnHover
         horizontalSpacing="md"
         verticalSpacing="xs"
         sx={{ tableLayout: "fixed", minWidth: 700 }}>
@@ -138,6 +148,8 @@ export const SubjectTable = ({ data }: SubjectTableProps) => {
               onSort={() => setSorting("classRange")}>
               Przeznaczony dla klas
             </Th>
+            <th></th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -145,7 +157,7 @@ export const SubjectTable = ({ data }: SubjectTableProps) => {
             rows
           ) : (
             <tr>
-              <td colSpan={3}>
+              <td colSpan={4}>
                 <Text weight={500} align="center">
                   Brak wyników
                 </Text>

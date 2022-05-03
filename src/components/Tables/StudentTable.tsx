@@ -106,13 +106,13 @@ export const StudentTable = ({ data }: StudentTableProps) => {
       <td>{row.lastName}</td>
       <td>{row.classNumber}</td>
       <td>
-        <EditModal firstName={row.firstName} lastName={row.lastName} />
+        <EditModal id={parseInt(row.id)} dialog="{row.firstName} {lastName}" />
       </td>
       <td>
         <DeleteModal
           id={parseInt(row.id)}
-          firstName={row.firstName}
-          lastName={row.lastName}
+          url="admin/student"
+          dialog="{row.firstName} {lastName}"
         />
       </td>
     </tr>

@@ -1,24 +1,24 @@
 import { useState, FunctionComponent } from 'react';
-import { Modal, Group, ActionIcon, Button } from '@mantine/core';
+import { Modal, Group, ActionIcon, Button, Text } from '@mantine/core';
 import { X } from "tabler-icons-react"
 import axios from "axios"
 
 interface IPropsDeleteModal {
   id: number
-  firstName: string
-  lastName: string
+  url: string
+  dialog: string
 }
 
 export const DeleteModal: FunctionComponent<IPropsDeleteModal> = ({
   id,
-  firstName,
-  lastName,
+  url,
+  dialog
 }) => {
   const [opened, setOpened] = useState(false)
 
-  const deleteStudent = async (id: number) => {
+  const deleteEntity = async (id: number) => {
     try {
-      await axios.delete(`admin/student?id=${id}`)
+      await axios.delete(`${url}?id=${id}`)
     } catch (error) {
       console.log(error)
     }
@@ -33,12 +33,12 @@ export const DeleteModal: FunctionComponent<IPropsDeleteModal> = ({
         onClose={() => setOpened(false)}
         overlayColor={"gray"}
         overlayOpacity={0.95}
-        closeButtonLabel="Close delete student modal">
-        <h4>
-          Jesteś pewien, że chcesz usunąć ucznia {firstName} {lastName}
-        </h4>
+        closeButtonLabel="Close delete modal">
+        <Text>
+          Jesteś pewien, że chcesz usunąć {dialog}
+        </Text>
         <Group position="center" grow>
-          <Button onClick={() => deleteStudent(id)}>Tak, usuń</Button>
+          <Button onClick={() => deleteEntity(id)}>Tak, usuń</Button>
           <Button onClick={() => setOpened(false)}>Nie usuwaj</Button>
         </Group>
       </Modal>
@@ -49,7 +49,7 @@ export const DeleteModal: FunctionComponent<IPropsDeleteModal> = ({
           variant="outline"
           color="red"
           onClick={() => setOpened(true)}>
-          <X size={16}></X>
+          <X size={16}/>
         </ActionIcon>
       </Group>
     </>

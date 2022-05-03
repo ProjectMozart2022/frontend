@@ -64,7 +64,7 @@ export const LessonForm: FunctionComponent = () => {
 
   const notificationObject = {
     title: `${
-      error ? `Nie udało się dodać profilu!` : "Udało się dodać profil!"
+      error ? `Nie udało się dodać lekcji!` : "Udało się dodać lekcje!"
     }`,
     autoClose: 3000,
     icon: error?.length > 0 ? <X size={18} /> : <Check size={18} />,
@@ -104,6 +104,7 @@ export const LessonForm: FunctionComponent = () => {
           })}
           nothingFound="ni ma"
           searchable
+          clearable
           {...lessonForm.getInputProps("student")}
         />
 
@@ -119,6 +120,7 @@ export const LessonForm: FunctionComponent = () => {
           })}
           nothingFound="ni ma"
           searchable
+          clearable
           {...lessonForm.getInputProps("teacher")}
         />
 
@@ -129,11 +131,12 @@ export const LessonForm: FunctionComponent = () => {
           data={subject.map((subject) => {
             return {
               value: subject.id.toString(),
-              label: `${subject.name} ${subject.lessonLength}`
-            } 
+              label: `${subject.name} ${subject.lessonLength}`,
+            }
           })}
-          searchable
           nothingFound="ni ma"
+          searchable
+          clearable
           {...lessonForm.getInputProps("subject")}
         />
 

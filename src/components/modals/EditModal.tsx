@@ -1,15 +1,14 @@
 import { useState, FunctionComponent } from 'react';
-import { Modal, Group, ActionIcon, Button } from '@mantine/core';
+import { Modal, Group, ActionIcon, Button, Text } from '@mantine/core';
 import { Edit } from "tabler-icons-react"
 
 interface IPropsEditModal {
-  firstName: string
-  lastName: string
+  id: number
+  dialog: string
 }
 
 export const EditModal: FunctionComponent<IPropsEditModal> = ({
-  firstName,
-  lastName,
+  id, dialog
 }) => {
   const [opened, setOpened] = useState(false)
 
@@ -22,9 +21,9 @@ export const EditModal: FunctionComponent<IPropsEditModal> = ({
         overlayColor={"gray"}
         overlayOpacity={0.95}
         closeButtonLabel="Close edit modal">
-        <h4>
-          Jesteś pewien, że chcesz zmienić dane ucznia {firstName} {lastName}
-        </h4>
+        <Text>
+          Jesteś pewien, że chcesz zmienić dane {dialog}{id}
+        </Text>
         <Group position="center" grow>
           <Button>Tak, zmień</Button>
           <Button onClick={() => setOpened(false)}>Nie zmieniaj</Button>
