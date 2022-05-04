@@ -126,7 +126,7 @@ export const SubjectTable = ({ data }: SubjectTableProps) => {
   ))
 
   return (
-    <ScrollArea>
+    <ScrollArea style={{ marginBottom: 10 }}>
       <TextInput
         placeholder=""
         mb="md"
@@ -159,8 +159,8 @@ export const SubjectTable = ({ data }: SubjectTableProps) => {
               onSort={() => setSorting("classRange")}>
               Przeznaczony dla klas
             </Th>
-            <th></th>
-            <th></th>
+            <th>Edycja</th>
+            <th>Usuwanie</th>
           </tr>
         </thead>
         <tbody>

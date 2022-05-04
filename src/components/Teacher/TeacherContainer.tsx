@@ -38,6 +38,12 @@ const SubjectContainer: FunctionComponent = () => {
     data: teachers.map((teacher) => {
       const teacherData = {
         ...teacher,
+        lessons: teacher.lessons
+          .map(
+            (lesson) =>
+              `Uczeń: ${lesson.student.firstName} ${lesson.student.lastName} \n Lekcja: ${lesson.subject.name}`
+          )
+          .join(", "),
       }
       return teacherData
     }),

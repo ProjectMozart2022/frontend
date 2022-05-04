@@ -12,11 +12,13 @@ import { Selector, ChevronDown, ChevronUp, Search } from "tabler-icons-react"
 import { tableStyle } from "./styles/tableStyle"
 import { DeleteModal } from "../modals/DeleteModal"
 import { EditTeacherModal } from "../modals/EditTeacherModal"
+import { LessonsModal } from "../modals/LessonsModal"
 
 export interface TeacherRowData {
   firebaseId: string
   firstName: string
   lastName: string
+  lessons: string
 }
 
 export interface TeacherTableProps {
@@ -116,11 +118,14 @@ export const TeacherTable = ({ data }: TeacherTableProps) => {
           dialog={`nauczyciela ${row.firstName} ${row.lastName}`}
         />
       </td>
+      <td>
+        <LessonsModal lessons={row.lessons} />
+      </td>
     </tr>
   ))
 
   return (
-    <ScrollArea>
+    <ScrollArea style={{ marginBottom: 10 }}>
       <TextInput
         placeholder=""
         mb="md"
@@ -147,8 +152,9 @@ export const TeacherTable = ({ data }: TeacherTableProps) => {
               onSort={() => setSorting("firstName")}>
               Imię
             </Th>
-            <th></th>
-            <th></th>
+            <th>Edycja</th>
+            <th>Usuwanie</th>
+            <th>Pokaż lekcje nauczyciela</th>
           </tr>
         </thead>
         <tbody>

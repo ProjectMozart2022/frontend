@@ -12,7 +12,7 @@ import { Selector, ChevronDown, ChevronUp, Search } from "tabler-icons-react"
 import { tableStyle } from "./styles/tableStyle"
 import { DeleteModal } from "../modals/DeleteModal"
 import { EditStudentModal } from "../modals/EditStudentModal"
-import { ShowStudentLessonModal } from "../modals/ShowStudentLessonModal"
+import { LessonsModal } from "../modals/LessonsModal"
 export interface StudentRowData {
   id: string
   firstName: string
@@ -120,13 +120,13 @@ export const StudentTable = ({ data }: StudentTableProps) => {
         />
       </td>
       <td>
-        <ShowStudentLessonModal lessons={row.lessons} />
+        <LessonsModal lessons={row.lessons} />
       </td>
     </tr>
   ))
 
   return (
-    <ScrollArea>
+    <ScrollArea style={{ marginBottom: 10 }}>
       <TextInput
         placeholder=""
         mb="md"
@@ -161,6 +161,7 @@ export const StudentTable = ({ data }: StudentTableProps) => {
             </Th>
             <th>Edycja</th>
             <th>Usuwanie</th>
+            <th>Sprawdź lekcję ucznia</th>
           </tr>
         </thead>
         <tbody>
