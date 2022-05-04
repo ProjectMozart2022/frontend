@@ -6,6 +6,7 @@ import { useNotifications } from "@mantine/notifications"
 import { Check, X } from "tabler-icons-react"
 import { showNotification } from "../../services/notificationService"
 import { Teacher } from "../../types/Teacher"
+import { signOut } from "../../services/signOut"
 
 interface IProps {
   isAdding: boolean
@@ -53,10 +54,20 @@ export const TeacherForm: FunctionComponent<IProps> = ({
   }
 
   const handleSubmit = async (teacherData: Teacher) => {
+    try {
+      setIsAdding(!isAdding)
+      await axios
+        .post(`admin/teacher`, teacherData)
+    } catch (error) {
+      setIsAdding(!isAdding)
+      const aError = error as AxiosError
+      setError(aError.message)
+      if (aError.response?.status === 401) {
+        await signOut()
+      }
+    }
+  
     setIsAdding(!isAdding)
-    await axios
-      .post(`admin/teacher`, teacherData)
-      .catch((err: AxiosError) => setError(err.message))
     // TODO: error handling
     showNotification(notifications, notificationObject)
   }

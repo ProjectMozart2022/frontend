@@ -11,9 +11,9 @@ import {
 import { Selector, ChevronDown, ChevronUp, Search } from "tabler-icons-react"
 import { tableStyle } from "./styles/tableStyle"
 import { DeleteModal } from "../modals/DeleteModal"
-import { EditModal } from "../modals/EditModal"
+import { EditStudentModal } from "../modals/EditStudentModal"
 
-interface StudentRowData {
+export interface StudentRowData {
   id: string
   firstName: string
   lastName: string
@@ -106,13 +106,16 @@ export const StudentTable = ({ data }: StudentTableProps) => {
       <td>{row.lastName}</td>
       <td>{row.classNumber}</td>
       <td>
-        <EditModal id={parseInt(row.id)} dialog="{row.firstName} {lastName}" />
+        <EditStudentModal
+          id={parseInt(row.id)}
+          student={{...row, classNumber: parseInt(row.classNumber)}}
+        />
       </td>
       <td>
         <DeleteModal
           id={parseInt(row.id)}
           url="admin/student"
-          dialog="{row.firstName} {lastName}"
+          dialog={`ucznia ${row.firstName} ${row.lastName}`}
         />
       </td>
     </tr>

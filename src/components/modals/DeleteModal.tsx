@@ -4,7 +4,7 @@ import { X } from "tabler-icons-react"
 import axios from "axios"
 
 interface IPropsDeleteModal {
-  id: number
+  id: number | string
   url: string
   dialog: string
 }
@@ -16,7 +16,7 @@ export const DeleteModal: FunctionComponent<IPropsDeleteModal> = ({
 }) => {
   const [opened, setOpened] = useState(false)
 
-  const deleteEntity = async (id: number) => {
+  const deleteEntity = async (id: number | string) => {
     try {
       await axios.delete(`${url}?id=${id}`)
     } catch (error) {

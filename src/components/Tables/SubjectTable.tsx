@@ -10,10 +10,10 @@ import {
 } from "@mantine/core"
 import { Selector, ChevronDown, ChevronUp, Search } from "tabler-icons-react"
 import { tableStyle } from "./styles/tableStyle"
-import { EditModal } from "../modals/EditModal"
+import { EditSubjectModal } from "../modals/EditSubjectModal"
 import { DeleteModal } from "../modals/DeleteModal"
 
-interface SubjectRowData {
+export interface SubjectRowData {
   id: string
   name: string
   lessonLength: string
@@ -106,10 +106,21 @@ export const SubjectTable = ({ data }: SubjectTableProps) => {
       <td>{row.lessonLength}</td>
       <td>{row.classRange}</td>
       <td>
-        <EditModal id={parseInt(row.id)} dialog="" />
+        <EditSubjectModal
+          id={parseInt(row.id)}
+          subject={{
+            ...row,
+            lessonLength: parseInt(row.lessonLength),
+            classRange: row.classRange.split(","),
+          }}
+        />
       </td>
       <td>
-        <DeleteModal id={parseInt(row.id)} url="admin/subject" dialog="" />
+        <DeleteModal
+          id={parseInt(row.id)}
+          url="admin/subject"
+          dialog={`przedmiot ${row.name}`}
+        />
       </td>
     </tr>
   ))
@@ -127,7 +138,7 @@ export const SubjectTable = ({ data }: SubjectTableProps) => {
         highlightOnHover
         horizontalSpacing="md"
         verticalSpacing="xs"
-        sx={{ tableLayout: "fixed", minWidth: 700 }}>
+        sx={{ minWidth: 700 }}>
         <thead>
           <tr>
             <Th

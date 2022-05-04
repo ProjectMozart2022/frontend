@@ -10,13 +10,16 @@ import {
 } from "@mantine/core"
 import { Selector, ChevronDown, ChevronUp, Search } from "tabler-icons-react"
 import { tableStyle } from "./styles/tableStyle"
+import { DeleteModal } from "../modals/DeleteModal"
+import { EditTeacherModal } from "../modals/EditTeacherModal"
 
-interface TeacherRowData {
-  firstName: string,
+export interface TeacherRowData {
+  firebaseId: string
+  firstName: string
   lastName: string
 }
 
-interface TeacherTableProps {
+export interface TeacherTableProps {
   data: TeacherRowData[]
 }
 
@@ -100,6 +103,19 @@ export const TeacherTable = ({ data }: TeacherTableProps) => {
     <tr key={`${row.lastName}-${row.firstName}`}>
       <td>{row.lastName}</td>
       <td>{row.firstName}</td>
+      <td>
+        <EditTeacherModal
+          id={row.firebaseId}
+          teacher={{ firstName: row.firstName, lastName: row.lastName }}
+        />
+      </td>
+      <td>
+        <DeleteModal
+          id={row.firebaseId}
+          url="admin/teacher"
+          dialog={`nauczyciela ${row.firstName} ${row.lastName}`}
+        />
+      </td>
     </tr>
   ))
 
@@ -113,9 +129,10 @@ export const TeacherTable = ({ data }: TeacherTableProps) => {
         onChange={handleSearchChange}
       />
       <Table
+        highlightOnHover
         horizontalSpacing="md"
         verticalSpacing="xs"
-        sx={{ tableLayout: "fixed", minWidth: 700 }}>
+        sx={{ minWidth: 700 }}>
         <thead>
           <tr>
             <Th
@@ -130,6 +147,8 @@ export const TeacherTable = ({ data }: TeacherTableProps) => {
               onSort={() => setSorting("firstName")}>
               Imię
             </Th>
+            <th></th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -137,7 +156,7 @@ export const TeacherTable = ({ data }: TeacherTableProps) => {
             rows
           ) : (
             <tr>
-              <td colSpan={2}>
+              <td colSpan={4}>
                 <Text weight={500} align="center">
                   Brak wyników
                 </Text>

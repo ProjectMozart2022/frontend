@@ -8,18 +8,23 @@ import {
   MultiSelect,
 } from "@mantine/core"
 import { useForm } from "@mantine/form"
-import axios from "axios"
+import axios, { AxiosError } from "axios"
 import { useNotifications } from "@mantine/notifications"
 import { Check, X } from "tabler-icons-react"
-import { Subject } from "../../types/Subject"
 import { showNotification } from "../../services/notificationService"
+import { signOut } from "../../services/signOut"
 
-type SubjectFormIProps = {
+export type SubjectFormType = {
   name: string
   lessonLength: number
   classRange: string[]
 }
 
+type SubjectCreateType = {
+  name: string
+  lessonLength: number
+  classRange: number[]
+}
 interface IProps {
   isAdding: boolean
   setIsAdding: React.Dispatch<React.SetStateAction<boolean>>
@@ -34,7 +39,7 @@ export const SubjectForm: FunctionComponent<IProps> = ({
 
   const [classNumber] = useState(["1", "2", "3", "4", "5", "6", "7", "8"])
 
-  const profileForm = useForm<SubjectFormIProps>({
+  const profileForm = useForm<SubjectFormType>({
     initialValues: {
       name: "",
       lessonLength: 45,
@@ -56,15 +61,25 @@ export const SubjectForm: FunctionComponent<IProps> = ({
       : `Udało się dodać przedmiot ${profileForm.values.name}`,
   }
 
-  const handleSubmit = async (profileData: SubjectFormIProps) => {
-    setIsAdding(!isAdding)
-    const payload: Subject = {
-      ...profileData,
-      classRange: profileData.classRange.map((classNum) => {
-        return parseInt(classNum)
-      }),
+  const handleSubmit = async (profileData: SubjectFormType) => {
+    try {
+      setIsAdding(!isAdding)
+      const payload: SubjectCreateType = {
+        ...profileData,
+        classRange: profileData.classRange.map((classNum) => {
+          return parseInt(classNum)
+        }),
+      }
+      await axios.post(`admin/subject`, payload)
+    } catch (error) {
+      setIsAdding(!isAdding)
+      const aError = error as AxiosError
+      if (aError.response?.status === 401) {
+        await signOut()
+      }
     }
-    await axios.post(`admin/subject`, payload)
+
+    setIsAdding(!isAdding)
     // TODO: error handling
     showNotification(notifications, notificationObject)
   }

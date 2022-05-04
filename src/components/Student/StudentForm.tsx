@@ -13,7 +13,7 @@ interface IProps {
   setIsAdding: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-type StudentFormType = {
+export type StudentFormType = {
   firstName: string
   lastName: string
   classNumber: number
@@ -56,7 +56,7 @@ const StudentCreationForm: FunctionComponent<IProps> = ({
       : `Udało się stworzyć ucznia ${studentForm.values.firstName} ${studentForm.values.lastName}`,
   }
 
-  const onSubmit = async (studentData: StudentFormType) => {
+  const handleSubmit = async (studentData: StudentFormType) => {
     try {
       setIsAdding(!isAdding)
       await axios.post(`admin/student`, studentData)
@@ -77,7 +77,7 @@ const StudentCreationForm: FunctionComponent<IProps> = ({
 
   return (
     <Box sx={{ maxWidth: 400 }} mx="auto" className="student-container">
-      <form onSubmit={studentForm.onSubmit(onSubmit)}>
+      <form onSubmit={studentForm.onSubmit(handleSubmit)}>
         <TextInput
           required
           type="text"
@@ -96,7 +96,7 @@ const StudentCreationForm: FunctionComponent<IProps> = ({
           required
           type="number"
           label="Klasa ucznia"
-          placeholder="Podaj nazwisko ucznia"
+          placeholder="Podaj numer klasy ucznia"
           {...studentForm.getInputProps("classNumber")}
         />
         <Group position="center" style={buttonStyle}>

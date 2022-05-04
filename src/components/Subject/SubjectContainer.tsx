@@ -37,6 +37,7 @@ const SubjectContainer: FunctionComponent = () => {
   const tableData: SubjectTableProps = {
     data: subjects.map((subject) => {
       const subjectData = {
+        id: subject.id.toString(),
         name: subject.name,
         lessonLength: subject.lessonLength.toString(),
         classRange: subject.classRange.toString(),

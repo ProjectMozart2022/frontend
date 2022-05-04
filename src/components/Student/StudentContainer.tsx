@@ -1,6 +1,6 @@
 import "./css/Student.css"
 import axios, { AxiosError } from "axios"
-import StudentCreationForm from "./StudentCreationForm"
+import StudentCreationForm from "./StudentForm"
 import { StudentTable, StudentTableProps } from "../Tables/StudentTable"
 import { Container, Button, Group } from "@mantine/core"
 import { useState, useEffect, FunctionComponent } from "react"
@@ -48,7 +48,6 @@ const StudentContainer: FunctionComponent = () => {
 
   return (
     <Container className="studentContainer">
-      {/* <StudentTable students={students} title="Uczniowie" variant="light" /> */}
       {!isLoading ? <StudentTable data={tableData.data}></StudentTable> : null}
       <Group position="center">
         <Button
