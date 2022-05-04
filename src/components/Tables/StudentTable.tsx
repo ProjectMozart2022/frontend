@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { Dispatch, SetStateAction, useState, useEffect } from "react"
 import {
   Table,
   ScrollArea,
@@ -13,7 +13,10 @@ import { tableStyle } from "./styles/tableStyle"
 import { DeleteModal } from "../modals/DeleteModal"
 import { EditStudentModal } from "../modals/EditStudentModal"
 import { LessonsModal } from "../modals/LessonsModal"
-export interface StudentRowData {
+import { Student } from "../../types/Student"
+import { Lesson } from "../../types/Lesson"
+
+interface StudentRowData {
   id: string
   firstName: string
   lastName: string
@@ -21,8 +24,9 @@ export interface StudentRowData {
   lessons: string
 }
 
-export interface StudentTableProps {
-  data: StudentRowData[]
+interface StudentTableProps {
+  students: Student[]
+  setStudents: Dispatch<SetStateAction<Student[]>>
 }
 
 interface StudentThProps {
@@ -80,35 +84,56 @@ const sortData = (
   )
 }
 
-export const StudentTable = ({ data }: StudentTableProps) => {
+export const StudentTable = ({ students, setStudents }: StudentTableProps) => {
   const [search, setSearch] = useState("")
-  const [sortedData, setSortedData] = useState(data)
+  const [sortedData, setSortedData] = useState<StudentRowData[]>([])
   const [sortBy, setSortBy] = useState<keyof StudentRowData>("firstName")
   const [reverseSortDirection, setReverseSortDirection] = useState(false)
+
+  useEffect(() => {
+    setSortedData(
+      sortData(
+        students.map((student) => {
+          const studentData = {
+            ...student,
+            id: student.id.toString(),
+            classNumber: student.classNumber.toString(),
+            lessons: ""
+          }
+          return studentData
+        }),
+        { sortBy, reversed: reverseSortDirection, search }
+      )
+    )     
+  }, [students, sortBy, search, reverseSortDirection])
 
   const setSorting = (field: keyof StudentRowData) => {
     const reversed = field === sortBy ? !reverseSortDirection : false
     setReverseSortDirection(reversed)
     setSortBy(field)
-    setSortedData(sortData(data, { sortBy: field, reversed, search }))
   }
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.currentTarget
     setSearch(value)
     setSortedData(
-      sortData(data, { sortBy, reversed: reverseSortDirection, search: value })
+      sortData(sortedData, {
+        sortBy,
+        reversed: reverseSortDirection,
+        search: value,
+      })
     )
   }
 
   const rows = sortedData.map((row) => (
-    <tr key={`${row.firstName}-${row.lastName}-${row.classNumber}`}>
+    <tr key={`${row.id}`}>
       <td>{row.firstName}</td>
       <td>{row.lastName}</td>
       <td>{row.classNumber}</td>
       <td>
         <EditStudentModal
           id={parseInt(row.id)}
+          setStudents={setStudents}
           student={{ ...row, classNumber: parseInt(row.classNumber) }}
         />
       </td>

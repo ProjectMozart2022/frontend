@@ -1,4 +1,4 @@
-import { useState, FunctionComponent } from "react"
+import { useState, FunctionComponent, Dispatch, SetStateAction } from "react"
 import {
   Modal,
   Group,
@@ -13,14 +13,17 @@ import axios, { AxiosError } from "axios"
 import { signOut } from "../../services/signOut"
 import { useForm } from "@mantine/form"
 import { StudentFormType } from "../Student/StudentForm"
+import { Student } from "../../types/Student"
 
 interface IPropsEditStudentModal {
   id: number
+  setStudents: Dispatch<SetStateAction<Student[]>>
   student: StudentFormType
 }
 
 export const EditStudentModal: FunctionComponent<IPropsEditStudentModal> = ({
   id,
+  setStudents,
   student,
 }) => {
   const [opened, setOpened] = useState(false)
@@ -47,6 +50,7 @@ export const EditStudentModal: FunctionComponent<IPropsEditStudentModal> = ({
     /* TODO: implementacja logiki patcha, tak gdy informowac uzytkownika jezeli nie zmienil zadnego pola, wysylac tylko zmienione pola */
     try {
       await axios.put(`admin/student`, { id: id, ...studentNewData })
+      await fetchStudents()
     } catch (error) {
       console.log(error)
       const aError = error as AxiosError
@@ -55,6 +59,18 @@ export const EditStudentModal: FunctionComponent<IPropsEditStudentModal> = ({
       }
     }
     setOpened(false)
+  }
+
+  const fetchStudents = async () => {
+    try {
+      const studentResponse = await axios.get<Student[]>(`admin/student`)
+      setStudents(studentResponse.data)
+    } catch (error) {
+      const aError = error as AxiosError
+      if (aError.response?.status === 401) {
+        await signOut()
+      }
+    }
   }
 
   return (

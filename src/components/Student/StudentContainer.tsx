@@ -1,13 +1,12 @@
 import "./css/Student.css"
 import axios, { AxiosError } from "axios"
 import StudentCreationForm from "./StudentForm"
-import { StudentTable, StudentTableProps } from "../Tables/StudentTable"
+import { StudentTable } from "../Tables/StudentTable"
 import { Container, Button, Group } from "@mantine/core"
 import { useState, useEffect, FunctionComponent } from "react"
 import { Student } from "../../types/Student"
 import { signOut } from "../../services/signOut"
 import { setBearerToken } from "../../services/setBearerToken"
-import { Lesson } from "../../types/Lesson"
 
 const StudentContainer: FunctionComponent = () => {
   const [isAdding, setIsAdding] = useState(false)
@@ -36,26 +35,14 @@ const StudentContainer: FunctionComponent = () => {
     void fetchStudents()
   }, [])
 
-  const tableData: StudentTableProps = {
-    data: students.map((student) => {
-      const studentData = {
-        ...student,
-        id: student.id.toString(),
-        classNumber: student.classNumber.toString(),
-        lessons: student.lessons
-          .map(
-            (lesson: Lesson) =>
-              `Lekcja: ${lesson.subject.name} czas trwania: ${lesson.subject.lessonLength}\nNauczyciel ${lesson.teacher.firstName} ${lesson.teacher.lastName}`
-          )
-          .join("\n"),
-      }
-      return studentData
-    }),
-  }
-
   return (
     <Container className="studentContainer">
-      {!isLoading ? <StudentTable data={tableData.data}></StudentTable> : null}
+      {!isLoading ? (
+        <StudentTable
+          setStudents={setStudents} 
+          students={students}
+        />
+      ) : null}
       <Group position="center">
         <Button
           style={{ marginLeft: "0.75vw", marginBottom: "0.5vh" }}
