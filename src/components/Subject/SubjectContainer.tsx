@@ -1,4 +1,4 @@
-import { SubjectTable, SubjectTableProps } from "../Tables/SubjectTable"
+import { SubjectTable } from "../Tables/SubjectTable"
 import axios, { AxiosError } from "axios"
 import { SubjectForm } from "./SubjectForm"
 import { Container, Button, Group } from "@mantine/core"
@@ -34,21 +34,11 @@ const SubjectContainer: FunctionComponent = () => {
     void fetchSubjects()
   }, [])
 
-  const tableData: SubjectTableProps = {
-    data: subjects.map((subject) => {
-      const subjectData = {
-        id: subject.id.toString(),
-        name: subject.name,
-        lessonLength: subject.lessonLength.toString(),
-        classRange: subject.classRange.toString(),
-      }
-      return subjectData
-    }),
-  }
-
   return (
     <Container className="studentContainer">
-      {!isLoading ? <SubjectTable data={tableData.data}></SubjectTable> : null}
+      {!isLoading ? (
+        <SubjectTable setSubjects={setSubjects} subjects={subjects} />
+      ) : null}
       <Group position="center">
         <Button
           style={{ marginLeft: "0.75vw", marginBottom: "0.5vh" }}
@@ -58,7 +48,11 @@ const SubjectContainer: FunctionComponent = () => {
         </Button>
       </Group>
       {isAdding && (
-        <SubjectForm isAdding={isAdding} setIsAdding={setIsAdding} />
+        <SubjectForm
+          setSubjects={setSubjects}
+          isAdding={isAdding}
+          setIsAdding={setIsAdding}
+        />
       )}
     </Container>
   )

@@ -1,4 +1,4 @@
-import { TeacherTable, TeacherTableProps } from "../Tables/TeacherTable"
+import { TeacherTable } from "../Tables/TeacherTable"
 import axios, { AxiosError } from "axios"
 import { TeacherForm } from "./TeacherForm"
 import { Container, Button, Group } from "@mantine/core"
@@ -34,19 +34,11 @@ const SubjectContainer: FunctionComponent = () => {
     void fetchTeachers()
   }, [])
 
-  const tableData: TeacherTableProps = {
-    data: teachers.map((teacher) => {
-      const teacherData = {
-        ...teacher,
-        lessons: "",
-      }
-      return teacherData
-    }),
-  }
-
   return (
     <Container className="studentContainer">
-      {!isLoading ? <TeacherTable data={tableData.data} /> : null}
+      {!isLoading ? (
+        <TeacherTable setTeachers={setTeachers} teachers={teachers} />
+      ) : null}
       <Group position="center">
         <Button
           style={{ marginLeft: "0.75vw", marginBottom: "0.5vh" }}
@@ -56,7 +48,7 @@ const SubjectContainer: FunctionComponent = () => {
         </Button>
       </Group>
       {isAdding && (
-        <TeacherForm isAdding={isAdding} setIsAdding={setIsAdding} />
+        <TeacherForm setTeachers={setTeachers} isAdding={isAdding} setIsAdding={setIsAdding} />
       )}
     </Container>
   )

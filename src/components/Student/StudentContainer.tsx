@@ -52,7 +52,7 @@ const StudentContainer: FunctionComponent = () => {
         </Button>
       </Group>
       {isAdding && (
-        <StudentCreationForm isAdding={isAdding} setIsAdding={setIsAdding} />
+        <StudentCreationForm setStudents={setStudents} isAdding={isAdding} setIsAdding={setIsAdding} />
       )}
     </Container>
   )

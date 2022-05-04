@@ -14,7 +14,6 @@ import { DeleteModal } from "../modals/DeleteModal"
 import { EditStudentModal } from "../modals/EditStudentModal"
 import { LessonsModal } from "../modals/LessonsModal"
 import { Student } from "../../types/Student"
-import { Lesson } from "../../types/Lesson"
 
 interface StudentRowData {
   id: string

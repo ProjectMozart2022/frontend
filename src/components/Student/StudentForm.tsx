@@ -1,4 +1,9 @@
-import React, { FunctionComponent, useState } from "react"
+import React, {
+  Dispatch,
+  FunctionComponent,
+  SetStateAction,
+  useState,
+} from "react"
 import { TextInput, Group, Button, Box, NumberInput } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import "./css/Student.css"
@@ -7,10 +12,12 @@ import { useNotifications } from "@mantine/notifications"
 import { Check, X } from "tabler-icons-react"
 import { showNotification } from "../../services/notificationService"
 import { signOut } from "../../services/signOut"
+import { Student } from "../../types/Student"
 
 interface IProps {
   isAdding: boolean
   setIsAdding: React.Dispatch<React.SetStateAction<boolean>>
+  setStudents: Dispatch<SetStateAction<Student[]>>
 }
 
 export type StudentFormType = {
@@ -20,6 +27,7 @@ export type StudentFormType = {
 }
 
 const StudentCreationForm: FunctionComponent<IProps> = ({
+  setStudents,
   isAdding,
   setIsAdding,
 }) => {
@@ -60,6 +68,7 @@ const StudentCreationForm: FunctionComponent<IProps> = ({
     try {
       setIsAdding(!isAdding)
       await axios.post(`admin/student`, studentData)
+      await fetchStudents()
     } catch (error) {
       setIsAdding(!isAdding)
       const aError = error as AxiosError
@@ -67,10 +76,21 @@ const StudentCreationForm: FunctionComponent<IProps> = ({
         await signOut()
       }
     }
-
     setIsAdding(!isAdding)
     // TODO: error handling
     showNotification(notifications, notificationObject)
+  }
+
+  const fetchStudents = async () => {
+    try {
+      const studentResponse = await axios.get<Student[]>(`admin/student`)
+      setStudents(studentResponse.data)
+    } catch (error) {
+      const aError = error as AxiosError
+      if (aError.response?.status === 401) {
+        await signOut()
+      }
+    }
   }
 
   const buttonStyle = { marginTop: "0.5vh", marginBottom: "0.5vh" }

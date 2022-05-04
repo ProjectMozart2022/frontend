@@ -38,7 +38,7 @@ export const DeleteModal: FunctionComponent<IPropsDeleteModal> = ({
           Jesteś pewien, że chcesz usunąć {dialog}
         </Text>
         <Group position="center" grow>
-          <Button onClick={() => deleteEntity(id)}>Tak, usuń</Button>
+          <Button color="red" onClick={() => deleteEntity(id)}>Tak, usuń</Button>
           <Button onClick={() => setOpened(false)}>Nie usuwaj</Button>
         </Group>
       </Modal>

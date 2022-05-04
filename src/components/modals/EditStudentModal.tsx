@@ -7,6 +7,7 @@ import {
   Text,
   Box,
   TextInput,
+  NumberInput
 } from "@mantine/core"
 import { Edit } from "tabler-icons-react"
 import axios, { AxiosError } from "axios"
@@ -34,9 +35,6 @@ export const EditStudentModal: FunctionComponent<IPropsEditStudentModal> = ({
       classNumber: student.classNumber,
     },
     validate: (values) => ({
-      classNumber: /[1-8]{1}/.test(`${values.classNumber}`)
-        ? null
-        : "Nieprawidłowy identyfikator klasy",
       firstName: /[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+$/.test(values.firstName)
         ? null
         : "Nieprawidłowe imię",
@@ -98,16 +96,19 @@ export const EditStudentModal: FunctionComponent<IPropsEditStudentModal> = ({
               placeholder="Podaj nazwisko ucznia"
               {...studentEditForm.getInputProps("lastName")}
             />
-            <TextInput
+            <NumberInput
               required
               type="number"
+              min={1}
+              max={12}
+              step={1}
               label="Klasa ucznia"
               placeholder="Podaj numer klasy ucznia"
               {...studentEditForm.getInputProps("classNumber")}
             />
             <Text>Jesteś pewien, że chcesz zmienić dane studenta?</Text>
             <Group position="center" grow>
-              <Button type="submit">Tak, zmień</Button>
+              <Button color="yellow" type="submit">Tak, zmień</Button>
               <Button onClick={() => setOpened(false)}>Nie zmieniaj</Button>
             </Group>
           </form>

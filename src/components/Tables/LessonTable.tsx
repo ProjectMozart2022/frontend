@@ -11,24 +11,24 @@ import {
 import { Selector, ChevronDown, ChevronUp, Search } from "tabler-icons-react"
 import { tableStyle } from "./styles/tableStyle"
 
-export interface SubjectRowData {
+export interface LessonRowData {
   person: string
   lessonLength: string
   subjectName: string
 }
 
 export interface SubjectTableProps {
-  data: SubjectRowData[]
+  data: LessonRowData[]
 }
 
-interface SubjectThProps {
+interface LessonThProps {
   children: React.ReactNode
   reversed: boolean
   sorted: boolean
   onSort(): void
 }
 
-const Th = ({ children, reversed, sorted, onSort }: SubjectThProps) => {
+const Th = ({ children, reversed, sorted, onSort }: LessonThProps) => {
   const { classes } = tableStyle()
   const Icon = sorted ? (reversed ? ChevronUp : ChevronDown) : Selector
   return (
@@ -47,7 +47,7 @@ const Th = ({ children, reversed, sorted, onSort }: SubjectThProps) => {
   )
 }
 
-const filterData = (data: SubjectRowData[], search: string) => {
+const filterData = (data: LessonRowData[], search: string) => {
   const keys = Object.keys(data[0])
   const query = search.toLowerCase().trim()
   return data.filter((item) =>
@@ -58,8 +58,8 @@ const filterData = (data: SubjectRowData[], search: string) => {
 }
 
 const sortData = (
-  data: SubjectRowData[],
-  payload: { sortBy: keyof SubjectRowData; reversed: boolean; search: string }
+  data: LessonRowData[],
+  payload: { sortBy: keyof LessonRowData; reversed: boolean; search: string }
 ) => {
   if (!payload.sortBy) {
     return filterData(data, payload.search)
@@ -79,10 +79,10 @@ const sortData = (
 export const LessonTable = ({ data }: SubjectTableProps) => {
   const [search, setSearch] = useState("")
   const [sortedData, setSortedData] = useState(data)
-  const [sortBy, setSortBy] = useState<keyof SubjectRowData>("person")
+  const [sortBy, setSortBy] = useState<keyof LessonRowData>("person")
   const [reverseSortDirection, setReverseSortDirection] = useState(false)
 
-  const setSorting = (field: keyof SubjectRowData) => {
+  const setSorting = (field: keyof LessonRowData) => {
     const reversed = field === sortBy ? !reverseSortDirection : false
     setReverseSortDirection(reversed)
     setSortBy(field)

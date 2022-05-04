@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
 import {
   Table,
   ScrollArea,
@@ -12,16 +12,18 @@ import { Selector, ChevronDown, ChevronUp, Search } from "tabler-icons-react"
 import { tableStyle } from "./styles/tableStyle"
 import { EditSubjectModal } from "../modals/EditSubjectModal"
 import { DeleteModal } from "../modals/DeleteModal"
+import { Subject } from "../../types/Subject"
 
-export interface SubjectRowData {
+interface SubjectRowData {
   id: string
   name: string
   lessonLength: string
   classRange: string
 }
 
-export interface SubjectTableProps {
-  data: SubjectRowData[]
+interface SubjectTableProps {
+  subjects: Subject[]
+  setSubjects: Dispatch<SetStateAction<Subject[]>>
 }
 
 interface SubjectThProps {
@@ -79,35 +81,61 @@ const sortData = (
   )
 }
 
-export const SubjectTable = ({ data }: SubjectTableProps) => {
+export const SubjectTable = ({ subjects, setSubjects }: SubjectTableProps) => {
   const [search, setSearch] = useState("")
-  const [sortedData, setSortedData] = useState(data)
+  const [sortedData, setSortedData] = useState<SubjectRowData[]>([])
   const [sortBy, setSortBy] = useState<keyof SubjectRowData>("name")
   const [reverseSortDirection, setReverseSortDirection] = useState(false)
+
+  useEffect(() => {
+    setSortedData(
+      sortData(
+        subjects.map((subject) => {
+          const subjectData = {
+            ...subject,
+            id: subject.id.toString(),
+            lessonLength: subject.lessonLength.toString(),
+            classRange: subject.classRange.toString(),
+          }
+          return subjectData
+        }),
+        { sortBy, reversed: reverseSortDirection, search }
+      )
+    )
+  }, [subjects, sortBy, search, reverseSortDirection])
 
   const setSorting = (field: keyof SubjectRowData) => {
     const reversed = field === sortBy ? !reverseSortDirection : false
     setReverseSortDirection(reversed)
     setSortBy(field)
-    setSortedData(sortData(data, { sortBy: field, reversed, search }))
   }
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.currentTarget
     setSearch(value)
     setSortedData(
-      sortData(data, { sortBy, reversed: reverseSortDirection, search: value })
+      sortData(sortedData, {
+        sortBy,
+        reversed: reverseSortDirection,
+        search: value,
+      })
     )
   }
 
   const rows = sortedData.map((row) => (
-    <tr key={`${row.name}-${row.lessonLength}-${row.classRange}`}>
+    <tr key={`${row.id}`}>
       <td>{row.name}</td>
       <td>{row.lessonLength}</td>
-      <td>{row.classRange}</td>
+      <td>
+        {row.classRange
+          .split(",")
+          .sort((a, b) => parseInt(a) - parseInt(b))
+          .join(", ")}
+      </td>
       <td>
         <EditSubjectModal
           id={parseInt(row.id)}
+          setSubjects={setSubjects}
           subject={{
             ...row,
             lessonLength: parseInt(row.lessonLength),

@@ -13,6 +13,7 @@ import { useNotifications } from "@mantine/notifications"
 import { Check, X } from "tabler-icons-react"
 import { showNotification } from "../../services/notificationService"
 import { signOut } from "../../services/signOut"
+import { Subject } from "../../types/Subject"
 
 export type SubjectFormType = {
   name: string
@@ -26,18 +27,33 @@ type SubjectCreateType = {
   classRange: number[]
 }
 interface IProps {
+  setSubjects: React.Dispatch<React.SetStateAction<Subject[]>>
   isAdding: boolean
   setIsAdding: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const SubjectForm: FunctionComponent<IProps> = ({
+  setSubjects,
   isAdding,
   setIsAdding,
 }) => {
   const notifications = useNotifications()
   const [error] = useState("")
 
-  const [classNumber] = useState(["1", "2", "3", "4", "5", "6", "7", "8"])
+  const [classNumber] = useState([
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+  ])
 
   const profileForm = useForm<SubjectFormType>({
     initialValues: {
@@ -71,6 +87,7 @@ export const SubjectForm: FunctionComponent<IProps> = ({
         }),
       }
       await axios.post(`admin/subject`, payload)
+      await fetchSubjects()
     } catch (error) {
       setIsAdding(!isAdding)
       const aError = error as AxiosError
@@ -78,10 +95,21 @@ export const SubjectForm: FunctionComponent<IProps> = ({
         await signOut()
       }
     }
-
     setIsAdding(!isAdding)
     // TODO: error handling
     showNotification(notifications, notificationObject)
+  }
+
+  const fetchSubjects = async () => {
+    try {
+      const subjectResponse = await axios.get<Subject[]>(`admin/subject`)
+      setSubjects(subjectResponse.data)
+    } catch (error) {
+      const aError = error as AxiosError
+      if (aError.response?.status === 401) {
+        await signOut()
+      }
+    }
   }
 
   return (
@@ -97,6 +125,9 @@ export const SubjectForm: FunctionComponent<IProps> = ({
         <NumberInput
           required
           defaultValue={45}
+          min={5}
+          max={300}
+          step={5}
           placeholder="długość zajęć"
           label="Długość zajęć"
           {...profileForm.getInputProps("lessonLength")}

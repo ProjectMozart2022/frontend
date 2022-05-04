@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
 import {
   Table,
   ScrollArea,
@@ -13,16 +13,17 @@ import { tableStyle } from "./styles/tableStyle"
 import { DeleteModal } from "../modals/DeleteModal"
 import { EditTeacherModal } from "../modals/EditTeacherModal"
 import { LessonsModal } from "../modals/LessonsModal"
+import { Teacher } from "../../types/Teacher"
 
-export interface TeacherRowData {
+interface TeacherRowData {
   firebaseId: string
   firstName: string
   lastName: string
-  lessons: string
 }
 
-export interface TeacherTableProps {
-  data: TeacherRowData[]
+interface TeacherTableProps {
+  teachers: Teacher[]
+  setTeachers: Dispatch<SetStateAction<Teacher[]>>
 }
 
 interface TeacherThProps {
@@ -80,34 +81,44 @@ const sortData = (
   )
 }
 
-export const TeacherTable = ({ data }: TeacherTableProps) => {
+export const TeacherTable = ({ teachers, setTeachers }: TeacherTableProps) => {
   const [search, setSearch] = useState("")
-  const [sortedData, setSortedData] = useState(data)
+  const [sortedData, setSortedData] = useState<TeacherRowData[]>([])
   const [sortBy, setSortBy] = useState<keyof TeacherRowData>("lastName")
   const [reverseSortDirection, setReverseSortDirection] = useState(false)
+
+  useEffect(() => {
+    setSortedData(
+      sortData(teachers, { sortBy, reversed: reverseSortDirection, search })
+    )
+  }, [teachers, sortBy, search, reverseSortDirection])
 
   const setSorting = (field: keyof TeacherRowData) => {
     const reversed = field === sortBy ? !reverseSortDirection : false
     setReverseSortDirection(reversed)
     setSortBy(field)
-    setSortedData(sortData(data, { sortBy: field, reversed, search }))
   }
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.currentTarget
     setSearch(value)
     setSortedData(
-      sortData(data, { sortBy, reversed: reverseSortDirection, search: value })
+      sortData(sortedData, {
+        sortBy,
+        reversed: reverseSortDirection,
+        search: value,
+      })
     )
   }
 
   const rows = sortedData.map((row) => (
-    <tr key={`${row.lastName}-${row.firstName}`}>
+    <tr key={`${row.firebaseId}`}>
       <td>{row.lastName}</td>
       <td>{row.firstName}</td>
       <td>
         <EditTeacherModal
           id={row.firebaseId}
+          setTeachers={setTeachers}
           teacher={{ firstName: row.firstName, lastName: row.lastName }}
         />
       </td>
@@ -116,6 +127,16 @@ export const TeacherTable = ({ data }: TeacherTableProps) => {
           id={row.firebaseId}
           url="admin/teacher"
           dialog={`nauczyciela ${row.firstName} ${row.lastName}`}
+        />
+      </td>
+      <td>
+        <LessonsModal
+          isStudent={false}
+          lessons={
+            teachers.filter(
+              (teacher) => teacher.firebaseId === row.firebaseId
+            )[0].lessons
+          }
         />
       </td>
     </tr>

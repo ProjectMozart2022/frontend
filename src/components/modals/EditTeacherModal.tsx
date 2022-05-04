@@ -1,4 +1,4 @@
-import { useState, FunctionComponent } from "react"
+import { useState, FunctionComponent, Dispatch, SetStateAction } from "react"
 import {
   Modal,
   Group,
@@ -12,19 +12,22 @@ import { Edit } from "tabler-icons-react"
 import axios, { AxiosError } from "axios"
 import { signOut } from "../../services/signOut"
 import { useForm } from "@mantine/form"
+import { Teacher } from "../../types/Teacher"
 
 interface IPropsEditTeacherModal {
   id: string
+  setTeachers: Dispatch<SetStateAction<Teacher[]>>
   teacher: TeacherFormType
 }
 
 type TeacherFormType = {
- firstName: string,
- lastName: string
+  firstName: string
+  lastName: string
 }
 
 export const EditTeacherModal: FunctionComponent<IPropsEditTeacherModal> = ({
   id,
+  setTeachers,
   teacher,
 }) => {
   const [opened, setOpened] = useState(false)
@@ -47,6 +50,7 @@ export const EditTeacherModal: FunctionComponent<IPropsEditTeacherModal> = ({
     /* TODO: implementacja logiki patcha, tak gdy informowac uzytkownika jezeli nie zmienil zadnego pola, wysylac tylko zmienione pola */
     try {
       await axios.put(`admin/teacher`, { firebaseId: id, ...teacherNewData })
+      await fetchTeachers()
     } catch (error) {
       console.log(error)
       const aError = error as AxiosError
@@ -55,6 +59,18 @@ export const EditTeacherModal: FunctionComponent<IPropsEditTeacherModal> = ({
       }
     }
     setOpened(false)
+  }
+
+  const fetchTeachers = async () => {
+    try {
+      const teacherResponse = await axios.get<Teacher[]>(`admin/teacher`)
+      setTeachers(teacherResponse.data)
+    } catch (error) {
+      const aError = error as AxiosError
+      if (aError.response?.status === 401) {
+        await signOut()
+      }
+    }
   }
 
   return (
@@ -85,7 +101,9 @@ export const EditTeacherModal: FunctionComponent<IPropsEditTeacherModal> = ({
             />
             <Text>Jesteś pewien, że chcesz zmienić dane nauczyciela?</Text>
             <Group position="center" grow>
-              <Button type="submit">Tak, zmień</Button>
+              <Button color="yellow" type="submit">
+                Tak, zmień
+              </Button>
               <Button onClick={() => setOpened(false)}>Nie zmieniaj</Button>
             </Group>
           </form>

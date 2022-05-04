@@ -1,4 +1,4 @@
-import { useState, FunctionComponent } from "react"
+import { useState, FunctionComponent, Dispatch, SetStateAction } from "react"
 import {
   Modal,
   Group,
@@ -15,19 +15,35 @@ import axios, { AxiosError } from "axios"
 import { signOut } from "../../services/signOut"
 import { useForm } from "@mantine/form"
 import { SubjectFormType } from "../Subject/SubjectForm"
+import { Subject } from "../../types/Subject"
 
 interface IPropsEditSubjectModal {
   id: number
+  setSubjects: Dispatch<SetStateAction<Subject[]>>
   subject: SubjectFormType
 }
 
 export const EditSubjectModal: FunctionComponent<IPropsEditSubjectModal> = ({
   id,
+  setSubjects,
   subject,
 }) => {
   const [opened, setOpened] = useState(false)
   /* TODO: classNumber jako enum */
-  const [classNumber] = useState(["1", "2", "3", "4", "5", "6", "7", "8"])
+  const [classNumber] = useState([
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+  ])
   const subjectEditForm = useForm<SubjectFormType>({
     initialValues: {
       name: subject.name,
@@ -35,7 +51,10 @@ export const EditSubjectModal: FunctionComponent<IPropsEditSubjectModal> = ({
       classRange: subject.classRange,
     },
     /* TODO: WALIDACJA */
-    validate: () => ({}),
+    validate: () => ({
+      classRange: (value: string) =>
+        value === null ? "Należy wybrać chociaż jedną klasę!" : null,
+    }),
   })
 
   const editSubject = async (subjectNewData: SubjectFormType) => {
@@ -49,6 +68,7 @@ export const EditSubjectModal: FunctionComponent<IPropsEditSubjectModal> = ({
           return parseInt(classnumber)
         }),
       })
+      await fetchSubjects()
     } catch (error) {
       console.log(error)
       const aError = error as AxiosError
@@ -57,6 +77,18 @@ export const EditSubjectModal: FunctionComponent<IPropsEditSubjectModal> = ({
       }
     }
     setOpened(false)
+  }
+
+  const fetchSubjects = async () => {
+    try {
+      const subjectResponse = await axios.get<Subject[]>(`admin/subject`)
+      setSubjects(subjectResponse.data)
+    } catch (error) {
+      const aError = error as AxiosError
+      if (aError.response?.status === 401) {
+        await signOut()
+      }
+    }
   }
 
   return (
@@ -81,6 +113,9 @@ export const EditSubjectModal: FunctionComponent<IPropsEditSubjectModal> = ({
             <NumberInput
               required
               type="number"
+              min={5}
+              step={5}
+              max={300}
               placeholder="długość zajęć"
               label="Długość zajęć"
               {...subjectEditForm.getInputProps("lessonLength")}
@@ -97,7 +132,9 @@ export const EditSubjectModal: FunctionComponent<IPropsEditSubjectModal> = ({
             />
             <Text>Jesteś pewien, że chcesz zmienić dane przedmiotu?</Text>
             <Group position="center" grow>
-              <Button type="submit">Tak, zmień</Button>
+              <Button color="yellow" type="submit">
+                Tak, zmień
+              </Button>
               <Button onClick={() => setOpened(false)}>Nie zmieniaj</Button>
             </Group>
           </form>

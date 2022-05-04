@@ -5,24 +5,31 @@ import axios, { AxiosError } from "axios"
 import { useNotifications } from "@mantine/notifications"
 import { Check, X } from "tabler-icons-react"
 import { showNotification } from "../../services/notificationService"
-import { Teacher } from "../../types/Teacher"
 import { signOut } from "../../services/signOut"
+import { Teacher } from "../../types/Teacher"
 
+type TeacherFormType = {
+  firstName: string
+  lastName: string
+  email: string
+  password: string
+}
 interface IProps {
+  setTeachers: React.Dispatch<React.SetStateAction<Teacher[]>>
   isAdding: boolean
   setIsAdding: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const TeacherForm: FunctionComponent<IProps> = ({
+  setTeachers,
   isAdding,
   setIsAdding,
 }) => {
   const notifications = useNotifications()
   const [error, setError] = useState("")
 
-  const teacherForm = useForm<Teacher>({
+  const teacherForm = useForm<TeacherFormType>({
     initialValues: {
-      firebaseId: "",
       firstName: "",
       lastName: "",
       email: "",
@@ -53,11 +60,11 @@ export const TeacherForm: FunctionComponent<IProps> = ({
       : `Udało się dodać nauczyciela ${teacherForm.values.firstName} ${teacherForm.values.lastName}!`,
   }
 
-  const handleSubmit = async (teacherData: Teacher) => {
+  const handleSubmit = async (teacherData: TeacherFormType) => {
     try {
       setIsAdding(!isAdding)
-      await axios
-        .post(`admin/teacher`, teacherData)
+      await axios.post(`admin/teacher`, teacherData)
+      await fetchTeachers()
     } catch (error) {
       setIsAdding(!isAdding)
       const aError = error as AxiosError
@@ -66,13 +73,22 @@ export const TeacherForm: FunctionComponent<IProps> = ({
         await signOut()
       }
     }
-  
     setIsAdding(!isAdding)
     // TODO: error handling
     showNotification(notifications, notificationObject)
   }
 
-
+  const fetchTeachers = async () => {
+    try {
+      const teacherResponse = await axios.get<Teacher[]>(`admin/teacher`)
+      setTeachers(teacherResponse.data)
+    } catch (error) {
+      const aError = error as AxiosError
+      if (aError.response?.status === 401) {
+        await signOut()
+      }
+    }
+  }
 
   return (
     <Box sx={{ maxWidth: 400 }} mx="auto">

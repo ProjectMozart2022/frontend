@@ -11,24 +11,24 @@ import {
 import { Selector, ChevronDown, ChevronUp, Search } from "tabler-icons-react"
 import { tableStyle } from "./styles/tableStyle"
 
-export interface SubjectRowData {
+export interface ReportRowData {
   firstName: string
   lastName: string
   minutesInTotal: string
 }
 
-export interface SubjectTableProps {
-  data: SubjectRowData[]
+export interface ReportTableProps {
+  data: ReportRowData[]
 }
 
-interface SubjectThProps {
+interface ReportThProps {
   children: React.ReactNode
   reversed: boolean
   sorted: boolean
   onSort(): void
 }
 
-const Th = ({ children, reversed, sorted, onSort }: SubjectThProps) => {
+const Th = ({ children, reversed, sorted, onSort }: ReportThProps) => {
   const { classes } = tableStyle()
   const Icon = sorted ? (reversed ? ChevronUp : ChevronDown) : Selector
   return (
@@ -47,7 +47,7 @@ const Th = ({ children, reversed, sorted, onSort }: SubjectThProps) => {
   )
 }
 
-const filterData = (data: SubjectRowData[], search: string) => {
+const filterData = (data: ReportRowData[], search: string) => {
   const keys = Object.keys(data[0])
   const query = search.toLowerCase().trim()
   return data.filter((item) =>
@@ -58,8 +58,8 @@ const filterData = (data: SubjectRowData[], search: string) => {
 }
 
 const sortData = (
-  data: SubjectRowData[],
-  payload: { sortBy: keyof SubjectRowData; reversed: boolean; search: string }
+  data: ReportRowData[],
+  payload: { sortBy: keyof ReportRowData; reversed: boolean; search: string }
 ) => {
   if (!payload.sortBy) {
     return filterData(data, payload.search)
@@ -76,13 +76,13 @@ const sortData = (
   )
 }
 
-export const ReportTable = ({ data }: SubjectTableProps) => {
+export const ReportTable = ({ data }: ReportTableProps) => {
   const [search, setSearch] = useState("")
   const [sortedData, setSortedData] = useState(data)
-  const [sortBy, setSortBy] = useState<keyof SubjectRowData>("firstName")
+  const [sortBy, setSortBy] = useState<keyof ReportRowData>("firstName")
   const [reverseSortDirection, setReverseSortDirection] = useState(false)
 
-  const setSorting = (field: keyof SubjectRowData) => {
+  const setSorting = (field: keyof ReportRowData) => {
     const reversed = field === sortBy ? !reverseSortDirection : false
     setReverseSortDirection(reversed)
     setSortBy(field)
@@ -125,19 +125,19 @@ export const ReportTable = ({ data }: SubjectTableProps) => {
               sorted={sortBy === "firstName"}
               reversed={reverseSortDirection}
               onSort={() => setSorting("firstName")}>
-              Osoba
+              Imię
             </Th>
             <Th
               sorted={sortBy === "lastName"}
               reversed={reverseSortDirection}
               onSort={() => setSorting("lastName")}>
-              Długość zajęć
+              Nazwisko
             </Th>
             <Th
               sorted={sortBy === "minutesInTotal"}
               reversed={reverseSortDirection}
               onSort={() => setSorting("minutesInTotal")}>
-              Nazwa zajęć
+              Razem minut
             </Th>
           </tr>
         </thead>
