@@ -7,6 +7,7 @@ import { useState, useEffect, FunctionComponent } from "react"
 import { Student } from "../../types/Student"
 import { signOut } from "../../services/signOut"
 import { setBearerToken } from "../../services/setBearerToken"
+import { Lesson } from "../../types/Lesson"
 
 const StudentContainer: FunctionComponent = () => {
   const [isAdding, setIsAdding] = useState(false)
@@ -41,6 +42,12 @@ const StudentContainer: FunctionComponent = () => {
         ...student,
         id: student.id.toString(),
         classNumber: student.classNumber.toString(),
+        lessons: student.lessons
+          .map(
+            (lesson: Lesson) =>
+              `Lekcja: ${lesson.subject.name} czas trwania: ${lesson.subject.lessonLength}\nNauczyciel ${lesson.teacher.firstName} ${lesson.teacher.lastName}`
+          )
+          .join("\n"),
       }
       return studentData
     }),

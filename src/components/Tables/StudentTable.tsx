@@ -12,12 +12,13 @@ import { Selector, ChevronDown, ChevronUp, Search } from "tabler-icons-react"
 import { tableStyle } from "./styles/tableStyle"
 import { DeleteModal } from "../modals/DeleteModal"
 import { EditStudentModal } from "../modals/EditStudentModal"
-
+import { ShowStudentLessonModal } from "../modals/ShowStudentLessonModal"
 export interface StudentRowData {
   id: string
   firstName: string
   lastName: string
   classNumber: string
+  lessons: string
 }
 
 export interface StudentTableProps {
@@ -108,7 +109,7 @@ export const StudentTable = ({ data }: StudentTableProps) => {
       <td>
         <EditStudentModal
           id={parseInt(row.id)}
-          student={{...row, classNumber: parseInt(row.classNumber)}}
+          student={{ ...row, classNumber: parseInt(row.classNumber) }}
         />
       </td>
       <td>
@@ -117,6 +118,9 @@ export const StudentTable = ({ data }: StudentTableProps) => {
           url="admin/student"
           dialog={`ucznia ${row.firstName} ${row.lastName}`}
         />
+      </td>
+      <td>
+        <ShowStudentLessonModal lessons={row.lessons} />
       </td>
     </tr>
   ))
@@ -155,8 +159,8 @@ export const StudentTable = ({ data }: StudentTableProps) => {
               onSort={() => setSorting("classNumber")}>
               Klasa
             </Th>
-            <th></th>
-            <th></th>
+            <th>Edycja</th>
+            <th>Usuwanie</th>
           </tr>
         </thead>
         <tbody>
