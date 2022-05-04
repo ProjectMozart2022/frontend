@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useState } from "react"
-import { TextInput, Group, Button, Box } from "@mantine/core"
+import { TextInput, Group, Button, Box, NumberInput } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import "./css/Student.css"
 import axios, { AxiosError } from "axios"
@@ -67,7 +67,7 @@ const StudentCreationForm: FunctionComponent<IProps> = ({
         await signOut()
       }
     }
-    
+
     setIsAdding(!isAdding)
     // TODO: error handling
     showNotification(notifications, notificationObject)
@@ -92,10 +92,12 @@ const StudentCreationForm: FunctionComponent<IProps> = ({
           placeholder="Podaj nazwisko ucznia"
           {...studentForm.getInputProps("lastName")}
         />
-        <TextInput
+        <NumberInput
           required
           type="number"
           label="Klasa ucznia"
+          min={1}
+          max={12}
           placeholder="Podaj numer klasy ucznia"
           {...studentForm.getInputProps("classNumber")}
         />
