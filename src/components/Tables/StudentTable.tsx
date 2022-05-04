@@ -21,7 +21,6 @@ interface StudentRowData {
   firstName: string
   lastName: string
   classNumber: string
-  lessons: string
 }
 
 interface StudentTableProps {
@@ -98,13 +97,13 @@ export const StudentTable = ({ students, setStudents }: StudentTableProps) => {
             ...student,
             id: student.id.toString(),
             classNumber: student.classNumber.toString(),
-            lessons: ""
+            lessons: "",
           }
           return studentData
         }),
         { sortBy, reversed: reverseSortDirection, search }
       )
-    )     
+    )
   }, [students, sortBy, search, reverseSortDirection])
 
   const setSorting = (field: keyof StudentRowData) => {
@@ -145,7 +144,13 @@ export const StudentTable = ({ students, setStudents }: StudentTableProps) => {
         />
       </td>
       <td>
-        <LessonsModal lessons={row.lessons} />
+        <LessonsModal
+          isStudent={true}
+          lessons={
+            students.filter((student) => student.id === parseInt(row.id))[0]
+              .lessons
+          }
+        />
       </td>
     </tr>
   ))

@@ -4,6 +4,7 @@ import { LessonForm } from "../Lesson/LessonForm"
 import StudentContainer from "../Student/StudentContainer"
 import TeacherContainer from "../Teacher/TeacherContainer"
 import SubjectContainer from "../Subject/SubjectContainer"
+import ReportContainer from "../Report/ReportContainer"
 
 const MainContent: FunctionComponent = () => {
   const [tab, ] = useContext(TabContext)
@@ -17,6 +18,8 @@ const MainContent: FunctionComponent = () => {
       return <SubjectContainer />
     case "lekcje":
       return <LessonForm />
+    case "raport":
+      return <ReportContainer />
     default:
       return <StudentContainer />
     }

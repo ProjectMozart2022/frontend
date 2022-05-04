@@ -141,6 +141,9 @@ export const LessonForm: FunctionComponent = () => {
         />
 
         <Group position="right" mt="md">
+          <Button color="red" disabled>
+            Stwórz ITN
+          </Button>
           <Button color="dark" type="submit">
             Dodaj lekcje
           </Button>

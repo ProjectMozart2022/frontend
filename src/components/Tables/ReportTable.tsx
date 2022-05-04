@@ -10,29 +10,25 @@ import {
 } from "@mantine/core"
 import { Selector, ChevronDown, ChevronUp, Search } from "tabler-icons-react"
 import { tableStyle } from "./styles/tableStyle"
-import { DeleteModal } from "../modals/DeleteModal"
-import { EditTeacherModal } from "../modals/EditTeacherModal"
-import { LessonsModal } from "../modals/LessonsModal"
 
-export interface TeacherRowData {
-  firebaseId: string
+export interface SubjectRowData {
   firstName: string
   lastName: string
-  lessons: string
+  minutesInTotal: string
 }
 
-export interface TeacherTableProps {
-  data: TeacherRowData[]
+export interface SubjectTableProps {
+  data: SubjectRowData[]
 }
 
-interface TeacherThProps {
+interface SubjectThProps {
   children: React.ReactNode
   reversed: boolean
   sorted: boolean
   onSort(): void
 }
 
-const Th = ({ children, reversed, sorted, onSort }: TeacherThProps) => {
+const Th = ({ children, reversed, sorted, onSort }: SubjectThProps) => {
   const { classes } = tableStyle()
   const Icon = sorted ? (reversed ? ChevronUp : ChevronDown) : Selector
   return (
@@ -51,7 +47,7 @@ const Th = ({ children, reversed, sorted, onSort }: TeacherThProps) => {
   )
 }
 
-const filterData = (data: TeacherRowData[], search: string) => {
+const filterData = (data: SubjectRowData[], search: string) => {
   const keys = Object.keys(data[0])
   const query = search.toLowerCase().trim()
   return data.filter((item) =>
@@ -62,8 +58,8 @@ const filterData = (data: TeacherRowData[], search: string) => {
 }
 
 const sortData = (
-  data: TeacherRowData[],
-  payload: { sortBy: keyof TeacherRowData; reversed: boolean; search: string }
+  data: SubjectRowData[],
+  payload: { sortBy: keyof SubjectRowData; reversed: boolean; search: string }
 ) => {
   if (!payload.sortBy) {
     return filterData(data, payload.search)
@@ -80,13 +76,13 @@ const sortData = (
   )
 }
 
-export const TeacherTable = ({ data }: TeacherTableProps) => {
+export const ReportTable = ({ data }: SubjectTableProps) => {
   const [search, setSearch] = useState("")
   const [sortedData, setSortedData] = useState(data)
-  const [sortBy, setSortBy] = useState<keyof TeacherRowData>("lastName")
+  const [sortBy, setSortBy] = useState<keyof SubjectRowData>("firstName")
   const [reverseSortDirection, setReverseSortDirection] = useState(false)
 
-  const setSorting = (field: keyof TeacherRowData) => {
+  const setSorting = (field: keyof SubjectRowData) => {
     const reversed = field === sortBy ? !reverseSortDirection : false
     setReverseSortDirection(reversed)
     setSortBy(field)
@@ -102,22 +98,10 @@ export const TeacherTable = ({ data }: TeacherTableProps) => {
   }
 
   const rows = sortedData.map((row) => (
-    <tr key={`${row.lastName}-${row.firstName}`}>
-      <td>{row.lastName}</td>
+    <tr key={`${row.firstName}-${row.lastName}`}>
       <td>{row.firstName}</td>
-      <td>
-        <EditTeacherModal
-          id={row.firebaseId}
-          teacher={{ firstName: row.firstName, lastName: row.lastName }}
-        />
-      </td>
-      <td>
-        <DeleteModal
-          id={row.firebaseId}
-          url="admin/teacher"
-          dialog={`nauczyciela ${row.firstName} ${row.lastName}`}
-        />
-      </td>
+      <td>{row.lastName}</td>
+      <td>{row.minutesInTotal}</td>
     </tr>
   ))
 
@@ -138,20 +122,23 @@ export const TeacherTable = ({ data }: TeacherTableProps) => {
         <thead>
           <tr>
             <Th
-              sorted={sortBy === "lastName"}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting("lastName")}>
-              Nazwisko
-            </Th>
-            <Th
               sorted={sortBy === "firstName"}
               reversed={reverseSortDirection}
               onSort={() => setSorting("firstName")}>
-              Imię
+              Osoba
             </Th>
-            <th>Edycja</th>
-            <th>Usuwanie</th>
-            <th>Pokaż lekcje nauczyciela</th>
+            <Th
+              sorted={sortBy === "lastName"}
+              reversed={reverseSortDirection}
+              onSort={() => setSorting("lastName")}>
+              Długość zajęć
+            </Th>
+            <Th
+              sorted={sortBy === "minutesInTotal"}
+              reversed={reverseSortDirection}
+              onSort={() => setSorting("minutesInTotal")}>
+              Nazwa zajęć
+            </Th>
           </tr>
         </thead>
         <tbody>
@@ -159,7 +146,7 @@ export const TeacherTable = ({ data }: TeacherTableProps) => {
             rows
           ) : (
             <tr>
-              <td colSpan={4}>
+              <td colSpan={3}>
                 <Text weight={500} align="center">
                   Brak wyników
                 </Text>
