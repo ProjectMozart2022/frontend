@@ -10,6 +10,8 @@ import { Student } from "../../types/Student"
 import { Teacher } from "../../types/Teacher"
 import { signOut } from "../../services/signOut"
 import { setBearerToken } from "../../services/setBearerToken"
+import { ITN } from "../../types/ITN"
+import { CreateItnModal } from "../modals/CreateItnModal"
 
 type LessonFormIProps = {
   subject: string
@@ -23,6 +25,7 @@ export const LessonForm: FunctionComponent = () => {
   const [subject, setSubjects] = useState<Subject[]>([])
   const [students, setStudents] = useState<Student[]>([])
   const [teachers, setTeachers] = useState<Teacher[]>([])
+  const [itn, setItn] = useState<ITN>()
   const fetchDefault = async () => {
     try {
       await setBearerToken()
@@ -124,26 +127,31 @@ export const LessonForm: FunctionComponent = () => {
           {...lessonForm.getInputProps("teacher")}
         />
 
-        <Select
-          required
-          label="Wybierz przedmiot"
-          placeholder="przedmiot"
-          data={subject.map((subject) => {
-            return {
-              value: subject.id.toString(),
-              label: `${subject.name} ${subject.lessonLength}`,
-            }
-          })}
-          nothingFound="ni ma"
-          searchable
-          clearable
-          {...lessonForm.getInputProps("subject")}
-        />
+        {itn ? (
+          <Select label="ITN" disabled data={[itn.name]} value={itn.name} />
+        ) : (
+          <Select
+            required
+            label="Wybierz przedmiot"
+            placeholder="przedmiot"
+            data={subject.map((subject) => {
+              return {
+                value: subject.id.toString(),
+                label: `${subject.name} ${subject.lessonLength}`,
+              }
+            })}
+            nothingFound="ni ma"
+            searchable
+            clearable
+            {...lessonForm.getInputProps("subject")}
+          />
+        )}
 
         <Group position="right" mt="md">
-          <Button color="red" disabled>
+          <CreateItnModal setItn={setItn} />
+          {/* <Button color="red" disabled>
             Stwórz ITN
-          </Button>
+          </Button> */}
           <Button color="dark" type="submit">
             Dodaj lekcje
           </Button>
