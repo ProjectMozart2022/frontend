@@ -40,9 +40,6 @@ const StudentCreationForm: FunctionComponent<IProps> = ({
       classNumber: 1,
     },
     validate: (values) => ({
-      classNumber: /[1-6]{1}/.test(`${values.classNumber}`)
-        ? null
-        : "Nieprawidłowy identyfikator klasy",
       firstName: /[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+$/.test(values.firstName)
         ? null
         : "Nieprawidłowe imię",

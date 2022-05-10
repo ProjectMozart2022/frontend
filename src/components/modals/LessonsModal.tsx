@@ -40,7 +40,7 @@ export const LessonsModal: FunctionComponent<LessonModalIProps> = ({
         <ActionIcon
           aria-label="delete"
           variant="outline"
-          color="red"
+          color="blue"
           onClick={() => setOpened(true)}>
           <ListNumbers size={16} />
         </ActionIcon>
