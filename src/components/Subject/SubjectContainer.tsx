@@ -36,7 +36,7 @@ const SubjectContainer: FunctionComponent = () => {
 
   return (
     <Container className="studentContainer">
-      {!isLoading ? (
+      {!isLoading && subjects.length > 0 ? (
         <SubjectTable setSubjects={setSubjects} subjects={subjects} />
       ) : null}
       <Group position="center">

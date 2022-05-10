@@ -37,7 +37,7 @@ const StudentContainer: FunctionComponent = () => {
 
   return (
     <Container className="studentContainer">
-      {!isLoading ? (
+      {!isLoading && students.length > 0 ? (
         <StudentTable
           setStudents={setStudents} 
           students={students}
