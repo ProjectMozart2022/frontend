@@ -19,6 +19,8 @@ interface TeacherRowData {
   firebaseId: string
   firstName: string
   lastName: string
+  minimumNumOfHours: string
+  actualNumOfHours: string
 }
 
 interface TeacherTableProps {
@@ -88,8 +90,19 @@ export const TeacherTable = ({ teachers, setTeachers }: TeacherTableProps) => {
   const [reverseSortDirection, setReverseSortDirection] = useState(false)
 
   useEffect(() => {
+    const convertedTeachers = teachers.map((teacher) => {
+      return {
+        ...teacher,
+        minimumNumOfHours: teacher.minimalNumOfHours.toString(),
+        actualNumOfHours: teacher.actualNumOfHours.toString(),
+      }
+    })
     setSortedData(
-      sortData(teachers, { sortBy, reversed: reverseSortDirection, search })
+      sortData(convertedTeachers, {
+        sortBy,
+        reversed: reverseSortDirection,
+        search,
+      })
     )
   }, [teachers, sortBy, search, reverseSortDirection])
 
@@ -111,10 +124,21 @@ export const TeacherTable = ({ teachers, setTeachers }: TeacherTableProps) => {
     )
   }
 
+  const isCorrect = (teacher: TeacherRowData) => {
+    return (
+      parseFloat(teacher.minimumNumOfHours) <=
+      parseFloat(teacher.actualNumOfHours)
+    )
+  }
+
   const rows = sortedData.map((row) => (
-    <tr key={`${row.firebaseId}`}>
+    <tr
+      key={`${row.firebaseId}`}
+      style={{ backgroundColor: isCorrect(row) ? "white" : "#FF6666" }}>
       <td>{row.lastName}</td>
       <td>{row.firstName}</td>
+      <td>{row.actualNumOfHours}</td>
+      <td>{row.minimumNumOfHours}</td>
       <td>
         <EditTeacherModal
           id={row.firebaseId}
@@ -170,6 +194,18 @@ export const TeacherTable = ({ teachers, setTeachers }: TeacherTableProps) => {
               onSort={() => setSorting("firstName")}>
               Imię
             </Th>
+            <Th
+              sorted={sortBy === "actualNumOfHours"}
+              reversed={reverseSortDirection}
+              onSort={() => setSorting("actualNumOfHours")}>
+              Godziny pracy
+            </Th>
+            <Th
+              sorted={sortBy === "minimumNumOfHours"}
+              reversed={reverseSortDirection}
+              onSort={() => setSorting("minimumNumOfHours")}>
+              Min. godziny pracy
+            </Th>
             <th>Edycja</th>
             <th>Usuwanie</th>
             <th>Pokaż lekcje nauczyciela</th>
@@ -180,7 +216,7 @@ export const TeacherTable = ({ teachers, setTeachers }: TeacherTableProps) => {
             rows
           ) : (
             <tr>
-              <td colSpan={4}>
+              <td colSpan={6}>
                 <Text weight={500} align="center">
                   Brak wyników
                 </Text>

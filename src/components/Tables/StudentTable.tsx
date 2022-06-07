@@ -7,8 +7,15 @@ import {
   Text,
   Center,
   TextInput,
+  Tooltip,
 } from "@mantine/core"
-import { Selector, ChevronDown, ChevronUp, Search } from "tabler-icons-react"
+import {
+  Selector,
+  ChevronDown,
+  ChevronUp,
+  Search,
+  Star,
+} from "tabler-icons-react"
 import { tableStyle } from "./styles/tableStyle"
 import { DeleteModal } from "../modals/DeleteModal"
 import { EditStudentModal } from "../modals/EditStudentModal"
@@ -20,6 +27,7 @@ interface StudentRowData {
   firstName: string
   lastName: string
   classNumber: string
+  mainInstrument: string
 }
 
 interface StudentTableProps {
@@ -124,10 +132,36 @@ export const StudentTable = ({ students, setStudents }: StudentTableProps) => {
   }
 
   const rows = sortedData.map((row) => (
-    <tr key={`${row.id}`}>
-      <td>{row.firstName}</td>
+    <tr
+      key={`${row.id}`}
+      /* TODO: wyodrebnic logike */
+      style={{
+        backgroundColor: students.find(
+          (student) => student.id === parseInt(row.id)
+        )?.hasAllMandatorySubjectsAssigned
+          ? "white"
+          : "#FF6666",
+      }}>
+      <td>
+        {students.find((student) => student.id === parseInt(row.id))?.hasITN ? (
+          <Tooltip
+            label={"On jest specjalny..."}
+            transition={"pop"}
+            transitionDuration={400}
+            transitionTimingFunction="ease"
+            openDelay={300}
+            closeDelay={500}>
+            <Star
+              size={16}
+              style={{ marginBottom: 5, marginLeft: -10, marginRight: 5 }}
+            />
+          </Tooltip>
+        ) : null}
+        {row.firstName}
+      </td>
       <td>{row.lastName}</td>
       <td>{row.classNumber}</td>
+      <td>{row.mainInstrument}</td>
       <td>
         <EditStudentModal
           id={parseInt(row.id)}
@@ -188,6 +222,12 @@ export const StudentTable = ({ students, setStudents }: StudentTableProps) => {
               onSort={() => setSorting("classNumber")}>
               Klasa
             </Th>
+            <Th
+              sorted={sortBy === "mainInstrument"}
+              reversed={reverseSortDirection}
+              onSort={() => setSorting("mainInstrument")}>
+              Instrument główny
+            </Th>
             <th>Edycja</th>
             <th>Usuwanie</th>
             <th>Sprawdź lekcję ucznia</th>
@@ -198,7 +238,7 @@ export const StudentTable = ({ students, setStudents }: StudentTableProps) => {
             rows
           ) : (
             <tr>
-              <td colSpan={5}>
+              <td colSpan={6}>
                 <Text weight={500} align="center">
                   Brak wyników
                 </Text>

@@ -18,7 +18,17 @@ const SubjectContainer: FunctionComponent = () => {
     try {
       await setBearerToken()
       const teachersResponse = await axios.get<Teacher[]>(`admin/teacher`)
-      setTeachers(teachersResponse.data)
+      setTeachers(
+        teachersResponse.data.map((teacher) => {
+          return {
+            ...teacher,
+            actualNumOfHours: teacher.lessons.reduce(
+              (acc, value) => acc + value.subject.lessonLength,
+              0.0
+            ) / 60,
+          }
+        })
+      )
       setIsLoading(false)
     } catch (error) {
       setError(error as string)

@@ -6,4 +6,7 @@ export type Student = {
   lastName: string
   classNumber: number
   lessons: Lesson[]
+  mainInstrument: string
+  hasAllMandatorySubjectsAssigned: boolean
+  hasITN: boolean
 }

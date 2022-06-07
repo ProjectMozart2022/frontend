@@ -7,4 +7,6 @@ export type Teacher = {
   email: string
   password: string
   lessons: Lesson[]
+  minimalNumOfHours: number
+  actualNumOfHours: number
 }

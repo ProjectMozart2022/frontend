@@ -1,4 +1,4 @@
-import { useEffect, useState, FunctionComponent } from "react"
+import { useState, FunctionComponent } from "react"
 import { Button, Group, Box, Select } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import axios, { AxiosError } from "axios"
@@ -23,19 +23,12 @@ export const LessonForm: FunctionComponent = () => {
   const [subject, setSubjects] = useState<Subject[]>([])
   const [students, setStudents] = useState<Student[]>([])
   const [teachers, setTeachers] = useState<Teacher[]>([])
-  const fetchDefault = async () => {
+
+  const fetchStudents = async () => {
     try {
       await setBearerToken()
-      // zamiast robić trzy responsy można pomyśleć nad Promise.all
-      // później wziąć to w jeden callback tak żeby wszystkie wykonywały się na raz
-      // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all
-      // https://stackoverflow.com/questions/52669596/promise-all-with-axios
-      const subjectResponse = await axios.get<Subject[]>(`admin/subject`)
       const studentResponse = await axios.get<Student[]>(`admin/student`)
-      const teacherResponse = await axios.get<Teacher[]>(`admin/teacher`)
       setStudents(studentResponse.data)
-      setTeachers(teacherResponse.data)
-      setSubjects(subjectResponse.data)
     } catch (error) {
       const aError = error as AxiosError
       if (aError.response?.status === 401) {
@@ -44,9 +37,92 @@ export const LessonForm: FunctionComponent = () => {
     }
   }
 
-  useEffect(() => {
-    void fetchDefault()
-  }, [])
+  const fetchTeachers = async () => {
+    try {
+      await setBearerToken()
+      const teacherResponse = await axios.get<Teacher[]>(`admin/teacher`)
+      setTeachers(teacherResponse.data)
+    } catch (error) {
+      const aError = error as AxiosError
+      if (aError.response?.status === 401) {
+        await signOut()
+      }
+    }
+  }
+
+  const fetchFilteredStudents = async () => {
+    try {
+      await setBearerToken()
+      const studentResponse = await axios.get<Student[]>(
+        `admin/student/byTeacher`,
+        {
+          params: {
+            teacherId: lessonForm.values.teacher,
+            subjectId: lessonForm.values.subject,
+          },
+        }
+      )
+      setStudents(studentResponse.data)
+    } catch (error) {
+      const aError = error as AxiosError
+      if (aError.response?.status === 401) {
+        await signOut()
+      }
+    }
+  }
+
+  const fetchFilteredTeachers = async () => {
+    try {
+      await setBearerToken()
+      const teacherResponse = await axios.get<Teacher[]>(
+        `admin/teacher/byStudent`,
+        {
+          params: {
+            studentId: lessonForm.values.student,
+            subjectId: lessonForm.values.subject,
+          },
+        }
+      )
+      setTeachers(teacherResponse.data)
+    } catch (error) {
+      const aError = error as AxiosError
+      if (aError.response?.status === 401) {
+        await signOut()
+      }
+    }
+  }
+
+  const fetchFilteredSubjects = async () => {
+    try {
+      await setBearerToken()
+      if (teacherIsEmpty()) {
+        const subjectResponse = await axios.get<Subject[]>(
+          `admin/subject/byStudent`,
+          {
+            params: {
+              studentId: lessonForm.values.student,
+            },
+          }
+        )
+        setSubjects(subjectResponse.data)
+      } else {
+        const subjectResponse = await axios.get<Subject[]>(
+          `admin/subject/byTeacher`,
+          {
+            params: {
+              teacherId: lessonForm.values.teacher,
+            },
+          }
+        )
+        setSubjects(subjectResponse.data)
+      }
+    } catch (error) {
+      const aError = error as AxiosError
+      if (aError.response?.status === 401) {
+        await signOut()
+      }
+    }
+  }
 
   const lessonForm = useForm<LessonFormIProps>({
     initialValues: {
@@ -89,11 +165,31 @@ export const LessonForm: FunctionComponent = () => {
     showNotification(notifications, notificationObject)
   }
 
+  const teacherIsEmpty = () => {
+    return (
+      lessonForm.values.teacher === null ||
+      lessonForm.values.teacher.length === 0
+    )
+  }
+  const studentIsEmpty = () => {
+    return (
+      lessonForm.values.student === null ||
+      lessonForm.values.student.length === 0
+    )
+  }
+  const subjectIsEmpty = () => {
+    return (
+      lessonForm.values.subject === null ||
+      lessonForm.values.subject.length === 0
+    )
+  }
+
   return (
     <Box sx={{ maxWidth: 400 }} mx="auto">
       <form onSubmit={lessonForm.onSubmit(handleSubmit)}>
         <Select
           required
+          disabled={!teacherIsEmpty() && subjectIsEmpty()}
           label="Wybierz ucznia"
           placeholder="uczeń"
           data={students.map((student) => {
@@ -105,11 +201,17 @@ export const LessonForm: FunctionComponent = () => {
           nothingFound="ni ma"
           searchable
           clearable
+          onDropdownOpen={async () => {
+            subjectIsEmpty()
+              ? await fetchStudents()
+              : await fetchFilteredStudents()
+          }}
           {...lessonForm.getInputProps("student")}
         />
 
         <Select
           required
+          disabled={!studentIsEmpty() && subjectIsEmpty()}
           label="Wybierz nauczyciela"
           placeholder="nauczyciel"
           data={teachers.map((teacher) => {
@@ -121,11 +223,17 @@ export const LessonForm: FunctionComponent = () => {
           nothingFound="ni ma"
           searchable
           clearable
+          onDropdownOpen={async () => {
+            subjectIsEmpty()
+              ? await fetchTeachers()
+              : await fetchFilteredTeachers()
+          }}
           {...lessonForm.getInputProps("teacher")}
         />
 
         <Select
           required
+          disabled={studentIsEmpty() && teacherIsEmpty()}
           label="Wybierz przedmiot"
           placeholder="przedmiot"
           data={subject.map((subject) => {
@@ -137,6 +245,7 @@ export const LessonForm: FunctionComponent = () => {
           nothingFound="ni ma"
           searchable
           clearable
+          onDropdownOpen={fetchFilteredSubjects}
           {...lessonForm.getInputProps("subject")}
         />
 

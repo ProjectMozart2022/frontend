@@ -1,5 +1,12 @@
-import { useState, FunctionComponent } from "react"
-import { TextInput, Button, Group, Box } from "@mantine/core"
+import { useState, FunctionComponent, useEffect } from "react"
+import {
+  TextInput,
+  Button,
+  Group,
+  Box,
+  NumberInput,
+  MultiSelect,
+} from "@mantine/core"
 import { useForm } from "@mantine/form"
 import axios, { AxiosError } from "axios"
 import { useNotifications } from "@mantine/notifications"
@@ -7,12 +14,16 @@ import { Check, X } from "tabler-icons-react"
 import { showNotification } from "../../services/notificationService"
 import { signOut } from "../../services/signOut"
 import { Teacher } from "../../types/Teacher"
+import { Subject } from "../../types/Subject"
 
 type TeacherFormType = {
   firstName: string
   lastName: string
   email: string
   password: string
+  minimalNumOfHours: number
+  taughtInstruments: string[]
+  knownSubjects: string[]
 }
 interface IProps {
   setTeachers: React.Dispatch<React.SetStateAction<Teacher[]>>
@@ -27,6 +38,8 @@ export const TeacherForm: FunctionComponent<IProps> = ({
 }) => {
   const notifications = useNotifications()
   const [error, setError] = useState("")
+  const [instruments, setInstruments] = useState<string[]>([])
+  const [subjects, setSubjects] = useState<Subject[]>([])
 
   const teacherForm = useForm<TeacherFormType>({
     initialValues: {
@@ -34,6 +47,9 @@ export const TeacherForm: FunctionComponent<IProps> = ({
       lastName: "",
       email: "",
       password: "",
+      minimalNumOfHours: 0,
+      taughtInstruments: [],
+      knownSubjects: [],
     },
 
     validate: (values) => ({
@@ -43,6 +59,10 @@ export const TeacherForm: FunctionComponent<IProps> = ({
       lastName: /^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+$/.test(values.lastName)
         ? null
         : "Niepoprawne nazwisko",
+      password:
+        values.password.length >= 6
+          ? null
+          : "Hasło musi się składać z przynajmniej 6 znaków",
     }),
   })
 
@@ -62,8 +82,16 @@ export const TeacherForm: FunctionComponent<IProps> = ({
 
   const handleSubmit = async (teacherData: TeacherFormType) => {
     try {
+      const subjectsId = [teacherData.knownSubjects.map((name) =>
+        subjects.find((subject) => subject.name === name)?.id
+      ).reduce((acc, value) => {
+        return {...acc, ['id']: value};
+      }, {})]
       setIsAdding(!isAdding)
-      await axios.post(`admin/teacher`, teacherData)
+      await axios.post(`admin/teacher`, {
+        ...teacherData,
+        knownSubjects: subjectsId,
+      })
       await fetchTeachers()
     } catch (error) {
       setIsAdding(!isAdding)
@@ -89,6 +117,35 @@ export const TeacherForm: FunctionComponent<IProps> = ({
       }
     }
   }
+
+  const fetchInstruments = async () => {
+    try {
+      const instrumentsResponse = await axios.get<string[]>(`admin/instrument`)
+      setInstruments(instrumentsResponse.data)
+    } catch (error) {
+      const aError = error as AxiosError
+      if (aError.response?.status === 401) {
+        await signOut()
+      }
+    }
+  }
+
+  const fetchSubjects = async () => {
+    try {
+      const subjectResponse = await axios.get<Subject[]>(`admin/subject`)
+      setSubjects(subjectResponse.data)
+    } catch (error) {
+      const aError = error as AxiosError
+      if (aError.response?.status === 401) {
+        await signOut()
+      }
+    }
+  }
+
+  useEffect(() => {
+    void fetchInstruments()
+    void fetchSubjects()
+  }, [])
 
   return (
     <Box sx={{ maxWidth: 400 }} mx="auto">
@@ -121,6 +178,29 @@ export const TeacherForm: FunctionComponent<IProps> = ({
           placeholder="Nazwisko"
           {...teacherForm.getInputProps("lastName")}
         />
+
+        <NumberInput
+          label="Liczba godzin"
+          placeholder="Liczba godzin"
+          {...teacherForm.getInputProps("minimalNumOfHours")}
+        />
+
+        <MultiSelect
+          data={instruments}
+          label="Nauczane instrumenty"
+          placeholder="Instrumenty"
+          searchable
+          {...teacherForm.getInputProps("taughtInstruments")}
+        />
+
+        <MultiSelect
+          data={subjects.map((subject) => subject.name)}
+          label="Nauczane przedmioty"
+          placeholder="Przedmioty"
+          searchable
+          {...teacherForm.getInputProps("knownSubjects")}
+        />
+
         <Group position="right" mt="md">
           <Button type="submit" color="dark">
             Dodaj nauczyciela

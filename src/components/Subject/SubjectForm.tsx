@@ -6,6 +6,7 @@ import {
   Box,
   NumberInput,
   MultiSelect,
+  Checkbox,
 } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import axios, { AxiosError } from "axios"
@@ -19,12 +20,17 @@ export type SubjectFormType = {
   name: string
   lessonLength: number
   classRange: string[]
+  mandatory: boolean
+  instrumentRelated: boolean
 }
 
 type SubjectCreateType = {
   name: string
   lessonLength: number
   classRange: number[]
+  mandatory: boolean
+  instrumentRelated: boolean
+  itn: boolean
 }
 interface IProps {
   setSubjects: React.Dispatch<React.SetStateAction<Subject[]>>
@@ -55,11 +61,13 @@ export const SubjectForm: FunctionComponent<IProps> = ({
     "12",
   ])
 
-  const profileForm = useForm<SubjectFormType>({
+  const subjectForm = useForm<SubjectFormType>({
     initialValues: {
       name: "",
       lessonLength: 45,
       classRange: [],
+      mandatory: false,
+      instrumentRelated: false,
     },
 
     validate: () => ({}),
@@ -73,18 +81,19 @@ export const SubjectForm: FunctionComponent<IProps> = ({
     icon: error?.length > 0 ? <X size={18} /> : <Check size={18} />,
     color: error?.length > 0 ? "red" : "green",
     message: error
-      ? `Nie udało się dodać przedmiotu ${profileForm.values.name}`
-      : `Udało się dodać przedmiot ${profileForm.values.name}`,
+      ? `Nie udało się dodać przedmiotu ${subjectForm.values.name}`
+      : `Udało się dodać przedmiot ${subjectForm.values.name}`,
   }
 
-  const handleSubmit = async (profileData: SubjectFormType) => {
+  const handleSubmit = async (subjectData: SubjectFormType) => {
     try {
       setIsAdding(!isAdding)
       const payload: SubjectCreateType = {
-        ...profileData,
-        classRange: profileData.classRange.map((classNum) => {
+        ...subjectData,
+        classRange: subjectData.classRange.map((classNum) => {
           return parseInt(classNum)
         }),
+        itn: true
       }
       await axios.post(`admin/subject`, payload)
       await fetchSubjects()
@@ -114,12 +123,12 @@ export const SubjectForm: FunctionComponent<IProps> = ({
 
   return (
     <Box sx={{ maxWidth: 400 }} mx="auto">
-      <form onSubmit={profileForm.onSubmit(handleSubmit)}>
+      <form onSubmit={subjectForm.onSubmit(handleSubmit)}>
         <TextInput
           required
           label="Nazwa zajęć"
           placeholder="nazwa"
-          {...profileForm.getInputProps("name")}
+          {...subjectForm.getInputProps("name")}
         />
 
         <NumberInput
@@ -130,7 +139,7 @@ export const SubjectForm: FunctionComponent<IProps> = ({
           step={5}
           placeholder="długość zajęć"
           label="Długość zajęć"
-          {...profileForm.getInputProps("lessonLength")}
+          {...subjectForm.getInputProps("lessonLength")}
         />
 
         <MultiSelect
@@ -139,7 +148,19 @@ export const SubjectForm: FunctionComponent<IProps> = ({
           placeholder="klasa"
           data={classNumber}
           searchable
-          {...profileForm.getInputProps("classRange")}
+          {...subjectForm.getInputProps("classRange")}
+        />
+
+        <Checkbox
+          mt={10}
+          label="Przedmiot obowiązkowy"
+          {...subjectForm.getInputProps("mandatory")}
+        />
+
+        <Checkbox
+          mt={10}
+          label="Dotyczący instrumentu"
+          {...subjectForm.getInputProps("instrumentRelated")}
         />
 
         <Group position="right" mt="md">

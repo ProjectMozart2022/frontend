@@ -24,6 +24,7 @@ export type StudentFormType = {
   firstName: string
   lastName: string
   classNumber: number
+  mainInstrument: string
 }
 
 const StudentCreationForm: FunctionComponent<IProps> = ({
@@ -38,6 +39,7 @@ const StudentCreationForm: FunctionComponent<IProps> = ({
       firstName: "",
       lastName: "",
       classNumber: 1,
+      mainInstrument: "SAX"
     },
     validate: (values) => ({
       firstName: /[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+$/.test(values.firstName)
