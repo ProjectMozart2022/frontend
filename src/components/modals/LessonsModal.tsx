@@ -1,5 +1,5 @@
 import { ActionIcon, Group, Modal } from "@mantine/core"
-import { useState, FunctionComponent } from "react"
+import { FunctionComponent, useState } from "react"
 import { ListNumbers } from "tabler-icons-react"
 import { Lesson } from "../../types/Lesson"
 import { LessonTable } from "../Tables/LessonTable"

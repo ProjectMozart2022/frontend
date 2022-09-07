@@ -1,17 +1,17 @@
-import { useState, FunctionComponent, Dispatch, SetStateAction } from "react"
 import {
-  Modal,
-  Group,
   ActionIcon,
-  Button,
-  Text,
   Box,
+  Button,
+  Group,
+  Modal,
+  Text,
   TextInput,
 } from "@mantine/core"
-import { Edit } from "tabler-icons-react"
-import axios, { AxiosError } from "axios"
-import { signOut } from "../../services/signOut"
 import { useForm } from "@mantine/form"
+import axios, { AxiosError } from "axios"
+import { Dispatch, FunctionComponent, SetStateAction, useState } from "react"
+import { Edit } from "tabler-icons-react"
+import { signOut } from "../../services/auth/signOut"
 import { Teacher } from "../../types/Teacher"
 
 interface IPropsEditTeacherModal {

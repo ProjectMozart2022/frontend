@@ -1,13 +1,13 @@
+import { initializeApp } from "firebase/app"
+import { getAuth, User } from "firebase/auth"
 import {
-  useContext,
   createContext,
   FunctionComponent,
   ReactNode,
-  useState,
+  useContext,
   useEffect,
+  useState,
 } from "react"
-import { initializeApp } from "firebase/app"
-import { getAuth, User } from "firebase/auth"
 
 const firebaseConfig = {
   apiKey: "AIzaSyA7zW5JVBpiGghTaEUa3FmjslP5fcR09Kk",
@@ -34,11 +34,10 @@ const UserContext: FunctionComponent<IProps> = ({ children }) => {
   const value = { user }
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      setUser(user)
+    return auth.onAuthStateChanged((authorizedUser) => {
+      setUser(authorizedUser)
       setTimeout(() => auth.signOut(), 10800000)
     })
-    return unsubscribe
   }, [])
 
   return (

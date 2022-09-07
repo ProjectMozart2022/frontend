@@ -1,20 +1,17 @@
-import { useState, FunctionComponent, useEffect } from "react"
 import {
-  TextInput,
+  Box,
   Button,
   Group,
-  Box,
-  NumberInput,
   MultiSelect,
+  NumberInput,
+  TextInput,
 } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import axios, { AxiosError } from "axios"
-import { useNotifications } from "@mantine/notifications"
-import { Check, X } from "tabler-icons-react"
-import { showNotification } from "../../services/notificationService"
-import { signOut } from "../../services/signOut"
-import { Teacher } from "../../types/Teacher"
+import { FunctionComponent, useEffect, useState } from "react"
+import { signOut } from "../../services/auth/signOut"
 import { Subject } from "../../types/Subject"
+import { Teacher } from "../../types/Teacher"
 
 type TeacherFormType = {
   firstName: string
@@ -36,8 +33,7 @@ export const TeacherForm: FunctionComponent<IProps> = ({
   isAdding,
   setIsAdding,
 }) => {
-  const notifications = useNotifications()
-  const [error, setError] = useState("")
+  const [_error, setError] = useState("")
   const [instruments, setInstruments] = useState<string[]>([])
   const [subjects, setSubjects] = useState<Subject[]>([])
 
@@ -66,27 +62,29 @@ export const TeacherForm: FunctionComponent<IProps> = ({
     }),
   })
 
-  const notificationObject = {
-    title: `${
-      error
-        ? `Nie udało się dodać nauczyciela!`
-        : "Udało się dodać nauczyciela!"
-    }`,
-    autoClose: 3000,
-    icon: error?.length > 0 ? <X size={18} /> : <Check size={18} />,
-    color: error?.length > 0 ? "red" : "green",
-    message: error
-      ? `Nie udało się dodać nauczyciela ${teacherForm.values.firstName} ${teacherForm.values.lastName}!`
-      : `Udało się dodać nauczyciela ${teacherForm.values.firstName} ${teacherForm.values.lastName}!`,
-  }
+  // const notificationObject = {
+  //   title: `${
+  //     error
+  //       ? `Nie udało się dodać nauczyciela!`
+  //       : "Udało się dodać nauczyciela!"
+  //   }`,
+  //   autoClose: 3000,
+  //   icon: error?.length > 0 ? <X size={18} /> : <Check size={18} />,
+  //   color: error?.length > 0 ? "red" : "green",
+  //   message: error
+  //     ? `Nie udało się dodać nauczyciela ${teacherForm.values.firstName} ${teacherForm.values.lastName}!`
+  //     : `Udało się dodać nauczyciela ${teacherForm.values.firstName} ${teacherForm.values.lastName}!`,
+  // }
 
   const handleSubmit = async (teacherData: TeacherFormType) => {
     try {
-      const subjectsId = [teacherData.knownSubjects.map((name) =>
-        subjects.find((subject) => subject.name === name)?.id
-      ).reduce((acc, value) => {
-        return {...acc, ['id']: value};
-      }, {})]
+      const subjectsId = [
+        teacherData.knownSubjects
+          .map((name) => subjects.find((subject) => subject.name === name)?.id)
+          .reduce((acc, value) => {
+            return { ...acc, ["id"]: value }
+          }, {}),
+      ]
       setIsAdding(!isAdding)
       await axios.post(`admin/teacher`, {
         ...teacherData,
@@ -102,8 +100,7 @@ export const TeacherForm: FunctionComponent<IProps> = ({
       }
     }
     setIsAdding(!isAdding)
-    // TODO: error handling
-    showNotification(notifications, notificationObject)
+    // TODO: error handling (notification)
   }
 
   const fetchTeachers = async () => {

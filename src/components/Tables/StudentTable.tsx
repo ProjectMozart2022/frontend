@@ -1,26 +1,26 @@
-import React, { Dispatch, SetStateAction, useState, useEffect } from "react"
 import {
-  Table,
-  ScrollArea,
-  UnstyledButton,
-  Group,
-  Text,
   Center,
+  Group,
+  ScrollArea,
+  Table,
+  Text,
   TextInput,
   Tooltip,
+  UnstyledButton,
 } from "@mantine/core"
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
 import {
-  Selector,
   ChevronDown,
   ChevronUp,
   Search,
+  Selector,
   Star,
 } from "tabler-icons-react"
-import { tableStyle } from "./styles/tableStyle"
+import { Student } from "../../types/Student"
 import { DeleteModal } from "../modals/DeleteModal"
 import { EditStudentModal } from "../modals/EditStudentModal"
 import { LessonsModal } from "../modals/LessonsModal"
-import { Student } from "../../types/Student"
+import { tableStyle } from "./styles/tableStyle"
 
 interface StudentRowData {
   id: string

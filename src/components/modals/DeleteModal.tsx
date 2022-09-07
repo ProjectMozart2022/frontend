@@ -1,7 +1,7 @@
-import { useState, FunctionComponent } from 'react';
-import { Modal, Group, ActionIcon, Button, Text } from '@mantine/core';
-import { X } from "tabler-icons-react"
+import { ActionIcon, Button, Group, Modal, Text } from "@mantine/core"
 import axios from "axios"
+import { FunctionComponent, useState } from "react"
+import { X } from "tabler-icons-react"
 
 interface IPropsDeleteModal {
   id: number | string
@@ -12,7 +12,7 @@ interface IPropsDeleteModal {
 export const DeleteModal: FunctionComponent<IPropsDeleteModal> = ({
   id,
   url,
-  dialog
+  dialog,
 }) => {
   const [opened, setOpened] = useState(false)
 
@@ -34,11 +34,11 @@ export const DeleteModal: FunctionComponent<IPropsDeleteModal> = ({
         overlayColor={"gray"}
         overlayOpacity={0.95}
         closeButtonLabel="Close delete modal">
-        <Text>
-          Jesteś pewien, że chcesz usunąć {dialog}
-        </Text>
+        <Text>Jesteś pewien, że chcesz usunąć {dialog}</Text>
         <Group position="center" grow>
-          <Button color="red" onClick={() => deleteEntity(id)}>Tak, usuń</Button>
+          <Button color="red" onClick={() => deleteEntity(id)}>
+            Tak, usuń
+          </Button>
           <Button onClick={() => setOpened(false)}>Nie usuwaj</Button>
         </Group>
       </Modal>
@@ -49,7 +49,7 @@ export const DeleteModal: FunctionComponent<IPropsDeleteModal> = ({
           variant="outline"
           color="red"
           onClick={() => setOpened(true)}>
-          <X size={16}/>
+          <X size={16} />
         </ActionIcon>
       </Group>
     </>

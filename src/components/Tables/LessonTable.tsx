@@ -1,14 +1,14 @@
-import React, { useState } from "react"
 import {
-  Table,
-  ScrollArea,
-  UnstyledButton,
-  Group,
-  Text,
   Center,
+  Group,
+  ScrollArea,
+  Table,
+  Text,
   TextInput,
+  UnstyledButton,
 } from "@mantine/core"
-import { Selector, ChevronDown, ChevronUp, Search } from "tabler-icons-react"
+import React, { useState } from "react"
+import { ChevronDown, ChevronUp, Search, Selector } from "tabler-icons-react"
 import { tableStyle } from "./styles/tableStyle"
 
 export interface LessonRowData {

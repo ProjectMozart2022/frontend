@@ -1,11 +1,11 @@
-import { TeacherTable } from "../Tables/TeacherTable"
+import { Button, Container, Group } from "@mantine/core"
 import axios, { AxiosError } from "axios"
-import { TeacherForm } from "./TeacherForm"
-import { Container, Button, Group } from "@mantine/core"
-import { useState, useEffect, FunctionComponent } from "react"
+import { FunctionComponent, useEffect, useState } from "react"
+import { setBearerToken } from "../../services/auth/setBearerToken"
+import { signOut } from "../../services/auth/signOut"
 import { Teacher } from "../../types/Teacher"
-import { signOut } from "../../services/signOut"
-import { setBearerToken } from "../../services/setBearerToken"
+import { TeacherTable } from "../Tables/TeacherTable"
+import { TeacherForm } from "./TeacherForm"
 
 const SubjectContainer: FunctionComponent = () => {
   const [isAdding, setIsAdding] = useState(false)
@@ -22,10 +22,11 @@ const SubjectContainer: FunctionComponent = () => {
         teachersResponse.data.map((teacher) => {
           return {
             ...teacher,
-            actualNumOfHours: teacher.lessons.reduce(
-              (acc, value) => acc + value.subject.lessonLength,
-              0.0
-            ) / 60,
+            actualNumOfHours:
+              teacher.lessons.reduce(
+                (acc, value) => acc + value.subject.lessonLength,
+                0.0
+              ) / 60,
           }
         })
       )
@@ -58,7 +59,11 @@ const SubjectContainer: FunctionComponent = () => {
         </Button>
       </Group>
       {isAdding && (
-        <TeacherForm setTeachers={setTeachers} isAdding={isAdding} setIsAdding={setIsAdding} />
+        <TeacherForm
+          setTeachers={setTeachers}
+          isAdding={isAdding}
+          setIsAdding={setIsAdding}
+        />
       )}
     </Container>
   )

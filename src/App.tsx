@@ -1,24 +1,44 @@
-import { FunctionComponent, useState } from "react"
-import { MantineProvider } from "@mantine/core"
-import { NotificationsProvider } from "@mantine/notifications"
-import UserContext from "./contexts/UserContext"
+import { Container } from "@mantine/core"
+import { FunctionComponent } from "react"
+import { Navigate, Route, Routes } from "react-router"
+import { Header } from "./components/header/Header"
+import { LessonForm } from "./components/Lesson/LessonForm"
+import LoginScreen from "./components/login/LoginView"
+import ReportContainer from "./components/Report/ReportContainer"
+import StudentContainer from "./components/Student/StudentContainer"
+import SubjectContainer from "./components/Subject/SubjectContainer"
+import TeacherContainer from "./components/Teacher/TeacherContainer"
+import { useFirebaseAuth } from "./contexts/UserContext"
 
-import AppWrapper from "./AppWrapper"
-import { TabProvider } from "./contexts/TabContext"
+const DEFAULT_PICTURE_URL =
+  "https://st3.depositphotos.com/1767687/16607/v/600/depositphotos_166074422-stock-illustration-default-avatar-profile-icon-grey.jpg"
 
+// TODO: work on this
 const App: FunctionComponent = () => {
-  const [tab, setTab] = useState<string>("")
+  const user = useFirebaseAuth()
+  const headerUser = {
+    name: user?.displayName || "Antoni Karwosky",
+    image: user?.photoURL || DEFAULT_PICTURE_URL,
+  }
 
-  return (
-    <UserContext>
-      <TabProvider value={[tab, setTab]}>
-        <MantineProvider>
-          <NotificationsProvider>
-            <AppWrapper />
-          </NotificationsProvider>
-        </MantineProvider>
-      </TabProvider>
-    </UserContext>
+  return user !== null ? (
+    <Container>
+      <Header user={headerUser} />
+      <Routes>
+        <Route path="/" element={<Navigate to="/uczniowie" />} />
+        <Route path="/uczniowie" element={<StudentContainer />} />
+        <Route path="/nauczyciele" element={<TeacherContainer />} />
+        <Route path="/przedmioty" element={<SubjectContainer />} />
+        <Route path="/lekcje" element={<LessonForm />} />
+        <Route path="/raport" element={<ReportContainer />} />
+
+        {/* TO BE ADDED */}
+        {/* <Route path="error" element={<ErrorPage />} /> */}
+        <Route path="*" element={<Navigate to="/uczniowie" />} />
+      </Routes>
+    </Container>
+  ) : (
+    <LoginScreen />
   )
 }
 

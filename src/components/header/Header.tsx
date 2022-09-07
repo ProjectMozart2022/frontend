@@ -1,26 +1,21 @@
-import { useState, useContext } from "react"
-import { Container, Group, Tabs, Burger, Image } from "@mantine/core"
-import { useBooleanToggle } from "@mantine/hooks"
+import { Burger, Container, Group, Image, Tabs } from "@mantine/core"
+import { useState } from "react"
+import { useNavigate, useParams } from "react-router"
 import { User } from "../../types/User"
 import HeaderMenu from "./HeaderMenu"
 import { headerStyle } from "./styles/headerStyle"
-import TabContext from "../../contexts/TabContext"
 
-interface HeaderTabsProps {
+interface HeaderProps {
   user: User
   tabs?: string[]
 }
 
-export const HeaderTabsColored = ({ user }: HeaderTabsProps) => {
+export const Header = ({ user }: HeaderProps) => {
   const { classes, theme } = headerStyle()
-  const [opened, toggleOpened] = useBooleanToggle(false)
+  const { tabValue } = useParams()
+  const navigate = useNavigate()
+  const [isToggleOpen, setIsToggleOpen] = useState(false)
   const [userMenuOpened, setUserMenuOpened] = useState(false)
-  const [activeTab, setActiveTab] = useState(0)
-  const [, setTab] = useContext(TabContext)
-  const onChangeTab = (active: number, tabKey: string) => {
-    setActiveTab(active)
-    setTab(tabKey)
-  }
 
   return (
     <div className={classes.header}>
@@ -31,15 +26,13 @@ export const HeaderTabsColored = ({ user }: HeaderTabsProps) => {
             src="https://www.muzyczna-sosnowa.pl/wp-content/uploads/2016/09/logo_1-2.png"
             alt="Random unsplash image"
           />
-
           <Burger
-            opened={opened}
-            onClick={() => toggleOpened()}
+            opened={isToggleOpen}
+            onClick={() => setIsToggleOpen(!isToggleOpen)}
             className={classes.burger}
             size="sm"
             color={theme.white}
           />
-
           <HeaderMenu
             user={user}
             userMenuOpened={userMenuOpened}
@@ -50,20 +43,19 @@ export const HeaderTabsColored = ({ user }: HeaderTabsProps) => {
 
       <Container>
         <Tabs
-          active={activeTab}
-          onTabChange={onChangeTab}
+          defaultValue={tabValue}
+          onTabChange={(value) => navigate(`/${value as string}`)}
           variant="outline"
           classNames={{
             root: classes.tabs,
-            tabsListWrapper: classes.tabsList,
-            tabControl: classes.tabControl,
-            tabActive: classes.tabControlActive,
           }}>
-          <Tabs.Tab label="Uczniowie" tabKey="uczniowie" />
-          <Tabs.Tab label="Nauczyciele" tabKey="nauczyciele" />
-          <Tabs.Tab label="Przedmioty" tabKey="przedmioty" />
-          <Tabs.Tab label="Lekcje" tabKey="lekcje" />
-          <Tabs.Tab label="Raporcik" tabKey="raport" />
+          <Tabs.List>
+            <Tabs.Tab value="uczniowie">Uczniowie</Tabs.Tab>
+            <Tabs.Tab value="nauczyciele">Nauczyciele</Tabs.Tab>
+            <Tabs.Tab value="przedmioty">Przedmioty</Tabs.Tab>
+            <Tabs.Tab value="lekcje">Lekcje</Tabs.Tab>
+            <Tabs.Tab value="raport">Raporcik</Tabs.Tab>
+          </Tabs.List>
         </Tabs>
       </Container>
     </div>

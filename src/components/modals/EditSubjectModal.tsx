@@ -1,21 +1,21 @@
-import { useState, FunctionComponent, Dispatch, SetStateAction } from "react"
 import {
-  Modal,
-  Group,
   ActionIcon,
-  Button,
-  Text,
   Box,
-  TextInput,
-  NumberInput,
+  Button,
+  Group,
+  Modal,
   MultiSelect,
+  NumberInput,
+  Text,
+  TextInput,
 } from "@mantine/core"
-import { Edit } from "tabler-icons-react"
-import axios, { AxiosError } from "axios"
-import { signOut } from "../../services/signOut"
 import { useForm } from "@mantine/form"
-import { SubjectFormType } from "../Subject/SubjectForm"
+import axios, { AxiosError } from "axios"
+import { Dispatch, FunctionComponent, SetStateAction, useState } from "react"
+import { Edit } from "tabler-icons-react"
+import { signOut } from "../../services/auth/signOut"
 import { Subject } from "../../types/Subject"
+import { SubjectFormType } from "../Subject/SubjectForm"
 
 interface IPropsEditSubjectModal {
   id: number

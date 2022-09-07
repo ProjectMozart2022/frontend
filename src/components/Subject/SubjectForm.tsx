@@ -1,19 +1,16 @@
-import React, { useState, FunctionComponent } from "react"
 import {
-  TextInput,
-  Button,
-  Group,
   Box,
-  NumberInput,
-  MultiSelect,
+  Button,
   Checkbox,
+  Group,
+  MultiSelect,
+  NumberInput,
+  TextInput,
 } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import axios, { AxiosError } from "axios"
-import { useNotifications } from "@mantine/notifications"
-import { Check, X } from "tabler-icons-react"
-import { showNotification } from "../../services/notificationService"
-import { signOut } from "../../services/signOut"
+import React, { FunctionComponent, useState } from "react"
+import { signOut } from "../../services/auth/signOut"
 import { Subject } from "../../types/Subject"
 
 export type SubjectFormType = {
@@ -43,8 +40,7 @@ export const SubjectForm: FunctionComponent<IProps> = ({
   isAdding,
   setIsAdding,
 }) => {
-  const notifications = useNotifications()
-  const [error] = useState("")
+  // const [error] = useState("")
 
   const [classNumber] = useState([
     "1",
@@ -73,17 +69,17 @@ export const SubjectForm: FunctionComponent<IProps> = ({
     validate: () => ({}),
   })
 
-  const notificationObject = {
-    title: `${
-      error ? `Nie udało się dodać przedmiotu!` : "Udało się dodać przedmiot!"
-    }`,
-    autoClose: 3000,
-    icon: error?.length > 0 ? <X size={18} /> : <Check size={18} />,
-    color: error?.length > 0 ? "red" : "green",
-    message: error
-      ? `Nie udało się dodać przedmiotu ${subjectForm.values.name}`
-      : `Udało się dodać przedmiot ${subjectForm.values.name}`,
-  }
+  // const notificationObject = {
+  //   title: `${
+  //     error ? `Nie udało się dodać przedmiotu!` : "Udało się dodać przedmiot!"
+  //   }`,
+  //   autoClose: 3000,
+  //   icon: error?.length > 0 ? <X size={18} /> : <Check size={18} />,
+  //   color: error?.length > 0 ? "red" : "green",
+  //   message: error
+  //     ? `Nie udało się dodać przedmiotu ${subjectForm.values.name}`
+  //     : `Udało się dodać przedmiot ${subjectForm.values.name}`,
+  // }
 
   const handleSubmit = async (subjectData: SubjectFormType) => {
     try {
@@ -93,7 +89,7 @@ export const SubjectForm: FunctionComponent<IProps> = ({
         classRange: subjectData.classRange.map((classNum) => {
           return parseInt(classNum)
         }),
-        itn: true
+        itn: true,
       }
       await axios.post(`admin/subject`, payload)
       await fetchSubjects()
@@ -105,8 +101,7 @@ export const SubjectForm: FunctionComponent<IProps> = ({
       }
     }
     setIsAdding(!isAdding)
-    // TODO: error handling
-    showNotification(notifications, notificationObject)
+    // TODO: error handling (notifaction)
   }
 
   const fetchSubjects = async () => {

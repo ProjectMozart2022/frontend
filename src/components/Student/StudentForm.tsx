@@ -1,18 +1,10 @@
-import React, {
-  Dispatch,
-  FunctionComponent,
-  SetStateAction,
-  useState,
-} from "react"
-import { TextInput, Group, Button, Box, NumberInput } from "@mantine/core"
+import { Box, Button, Group, NumberInput, TextInput } from "@mantine/core"
 import { useForm } from "@mantine/form"
-import "./css/Student.css"
 import axios, { AxiosError } from "axios"
-import { useNotifications } from "@mantine/notifications"
-import { Check, X } from "tabler-icons-react"
-import { showNotification } from "../../services/notificationService"
-import { signOut } from "../../services/signOut"
+import React, { Dispatch, FunctionComponent, SetStateAction } from "react"
+import { signOut } from "../../services/auth/signOut"
 import { Student } from "../../types/Student"
+import "./css/Student.css"
 
 interface IProps {
   isAdding: boolean
@@ -32,14 +24,12 @@ const StudentCreationForm: FunctionComponent<IProps> = ({
   isAdding,
   setIsAdding,
 }) => {
-  const notifications = useNotifications()
-
   const studentForm = useForm<StudentFormType>({
     initialValues: {
       firstName: "",
       lastName: "",
       classNumber: 1,
-      mainInstrument: "SAX"
+      mainInstrument: "SAX",
     },
     validate: (values) => ({
       firstName: /[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+$/.test(values.firstName)
@@ -50,18 +40,18 @@ const StudentCreationForm: FunctionComponent<IProps> = ({
         : "Nieprawidłowe nazwisko",
     }),
   })
-  const [error] = useState("")
-  const notificationObject = {
-    title: `${
-      error ? `Nie udało się stworzyć ucznia!` : "Udało stworzyć się ucznia!"
-    }`,
-    autoClose: 3000,
-    icon: error?.length > 0 ? <X size={18} /> : <Check size={18} />,
-    color: error?.length > 0 ? "red" : "green",
-    message: error
-      ? `Nie udało się stworzyć ucznia ${studentForm.values.firstName} ${studentForm.values.lastName}`
-      : `Udało się stworzyć ucznia ${studentForm.values.firstName} ${studentForm.values.lastName}`,
-  }
+  // const [error] = useState("")
+  // const notificationObject = {
+  //   title: `${
+  //     error ? `Nie udało się stworzyć ucznia!` : "Udało stworzyć się ucznia!"
+  //   }`,
+  //   autoClose: 3000,
+  //   icon: error?.length > 0 ? <X size={18} /> : <Check size={18} />,
+  //   color: error?.length > 0 ? "red" : "green",
+  //   message: error
+  //     ? `Nie udało się stworzyć ucznia ${studentForm.values.firstName} ${studentForm.values.lastName}`
+  //     : `Udało się stworzyć ucznia ${studentForm.values.firstName} ${studentForm.values.lastName}`,
+  // }
 
   const handleSubmit = async (studentData: StudentFormType) => {
     try {
@@ -76,8 +66,7 @@ const StudentCreationForm: FunctionComponent<IProps> = ({
       }
     }
     setIsAdding(!isAdding)
-    // TODO: error handling
-    showNotification(notifications, notificationObject)
+    // TODO: error handling (notification)
   }
 
   const fetchStudents = async () => {

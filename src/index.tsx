@@ -1,16 +1,24 @@
+import { MantineProvider } from "@mantine/core"
+import { NotificationsProvider } from "@mantine/notifications"
 import React from "react"
-import ReactDOM from "react-dom"
-import "./index.css"
+import ReactDOM from "react-dom/client"
+import { BrowserRouter } from "react-router-dom"
 import App from "./App"
-import axios from "axios"
+import UserContext from "./contexts/UserContext"
+import "./index.css"
 
-axios.defaults.baseURL = "https://mozart-backend.azurewebsites.net/api/"
-axios.defaults.headers.post['Content-Type'] = "application/json"
-axios.defaults.headers.common['Allow-Origin'] = "*"
+const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
 
-ReactDOM.render(
+root.render(
   <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById("root")
+    <MantineProvider withGlobalStyles withNormalizeCSS>
+      <NotificationsProvider>
+        <UserContext>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </UserContext>
+      </NotificationsProvider>
+    </MantineProvider>
+  </React.StrictMode>
 )

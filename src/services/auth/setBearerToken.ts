@@ -1,5 +1,5 @@
 import axios from "axios"
-import { auth } from "../contexts/UserContext"
+import { auth } from "../../contexts/UserContext"
 
 export const setBearerToken = async () => {
   const jwt = await auth.currentUser?.getIdToken()

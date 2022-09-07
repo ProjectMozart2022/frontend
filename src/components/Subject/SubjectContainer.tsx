@@ -1,11 +1,11 @@
-import { SubjectTable } from "../Tables/SubjectTable"
+import { Button, Container, Group } from "@mantine/core"
 import axios, { AxiosError } from "axios"
-import { SubjectForm } from "./SubjectForm"
-import { Container, Button, Group } from "@mantine/core"
-import { useState, useEffect, FunctionComponent } from "react"
+import { FunctionComponent, useEffect, useState } from "react"
+import { setBearerToken } from "../../services/auth/setBearerToken"
+import { signOut } from "../../services/auth/signOut"
 import { Subject } from "../../types/Subject"
-import { signOut } from "../../services/signOut"
-import { setBearerToken } from "../../services/setBearerToken"
+import { SubjectTable } from "../Tables/SubjectTable"
+import { SubjectForm } from "./SubjectForm"
 
 const SubjectContainer: FunctionComponent = () => {
   const [isAdding, setIsAdding] = useState(false)

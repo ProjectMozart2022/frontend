@@ -1,15 +1,12 @@
-import { useState, FunctionComponent } from "react"
-import { Button, Group, Box, Select } from "@mantine/core"
+import { Box, Button, Group, Select } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import axios, { AxiosError } from "axios"
-import { useNotifications } from "@mantine/notifications"
-import { showNotification } from "../../services/notificationService"
-import { Check, X } from "tabler-icons-react"
-import { Subject } from "../../types/Subject"
+import { FunctionComponent, useState } from "react"
+import { setBearerToken } from "../../services/auth/setBearerToken"
+import { signOut } from "../../services/auth/signOut"
 import { Student } from "../../types/Student"
+import { Subject } from "../../types/Subject"
 import { Teacher } from "../../types/Teacher"
-import { signOut } from "../../services/signOut"
-import { setBearerToken } from "../../services/setBearerToken"
 
 type LessonFormIProps = {
   subject: string
@@ -18,8 +15,7 @@ type LessonFormIProps = {
 }
 
 export const LessonForm: FunctionComponent = () => {
-  const notifications = useNotifications()
-  const [error, setError] = useState("")
+  const [_error, setError] = useState("")
   const [subject, setSubjects] = useState<Subject[]>([])
   const [students, setStudents] = useState<Student[]>([])
   const [teachers, setTeachers] = useState<Teacher[]>([])
@@ -138,15 +134,15 @@ export const LessonForm: FunctionComponent = () => {
     }),
   })
 
-  const notificationObject = {
-    title: `${
-      error ? `Nie udało się dodać lekcji!` : "Udało się dodać lekcje!"
-    }`,
-    autoClose: 3000,
-    icon: error?.length > 0 ? <X size={18} /> : <Check size={18} />,
-    color: error?.length > 0 ? "red" : "green",
-    message: error ? `Nie udało się dodać lekcji` : `Udało się dodać lekcje`,
-  }
+  // const notificationObject = {
+  //   title: `${
+  //     error ? `Nie udało się dodać lekcji!` : "Udało się dodać lekcje!"
+  //   }`,
+  //   autoClose: 3000,
+  //   icon: error?.length > 0 ? <X size={18} /> : <Check size={18} />,
+  //   color: error?.length > 0 ? "red" : "green",
+  //   message: error ? `Nie udało się dodać lekcji` : `Udało się dodać lekcje`,
+  // }
 
   const handleSubmit = async (lessonData: LessonFormIProps) => {
     const { subject, student, teacher } = lessonData
@@ -162,7 +158,7 @@ export const LessonForm: FunctionComponent = () => {
         await signOut()
       }
     }
-    showNotification(notifications, notificationObject)
+    // (notification)
   }
 
   const teacherIsEmpty = () => {

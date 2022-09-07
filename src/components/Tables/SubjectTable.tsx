@@ -1,18 +1,18 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
 import {
-  Table,
-  ScrollArea,
-  UnstyledButton,
-  Group,
-  Text,
   Center,
+  Group,
+  ScrollArea,
+  Table,
+  Text,
   TextInput,
+  UnstyledButton,
 } from "@mantine/core"
-import { Selector, ChevronDown, ChevronUp, Search } from "tabler-icons-react"
-import { tableStyle } from "./styles/tableStyle"
-import { EditSubjectModal } from "../modals/EditSubjectModal"
-import { DeleteModal } from "../modals/DeleteModal"
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
+import { ChevronDown, ChevronUp, Search, Selector } from "tabler-icons-react"
 import { Subject } from "../../types/Subject"
+import { DeleteModal } from "../modals/DeleteModal"
+import { EditSubjectModal } from "../modals/EditSubjectModal"
+import { tableStyle } from "./styles/tableStyle"
 
 interface SubjectRowData {
   id: string

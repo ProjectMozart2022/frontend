@@ -1,20 +1,20 @@
-import { useState, FunctionComponent, Dispatch, SetStateAction } from "react"
 import {
-  Modal,
-  Group,
   ActionIcon,
-  Button,
-  Text,
   Box,
+  Button,
+  Group,
+  Modal,
+  NumberInput,
+  Text,
   TextInput,
-  NumberInput
 } from "@mantine/core"
-import { Edit } from "tabler-icons-react"
-import axios, { AxiosError } from "axios"
-import { signOut } from "../../services/signOut"
 import { useForm } from "@mantine/form"
-import { StudentFormType } from "../Student/StudentForm"
+import axios, { AxiosError } from "axios"
+import { Dispatch, FunctionComponent, SetStateAction, useState } from "react"
+import { Edit } from "tabler-icons-react"
+import { signOut } from "../../services/auth/signOut"
 import { Student } from "../../types/Student"
+import { StudentFormType } from "../Student/StudentForm"
 
 interface IPropsEditStudentModal {
   id: number
@@ -108,7 +108,9 @@ export const EditStudentModal: FunctionComponent<IPropsEditStudentModal> = ({
             />
             <Text>Jesteś pewien, że chcesz zmienić dane studenta?</Text>
             <Group position="center" grow>
-              <Button color="yellow" type="submit">Tak, zmień</Button>
+              <Button color="yellow" type="submit">
+                Tak, zmień
+              </Button>
               <Button onClick={() => setOpened(false)}>Nie zmieniaj</Button>
             </Group>
           </form>

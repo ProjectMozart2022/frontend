@@ -1,10 +1,10 @@
 import {
   Avatar,
-  Group,
-  UnstyledButton,
-  Text,
-  Menu,
   Button,
+  Group,
+  Menu,
+  Text,
+  UnstyledButton,
 } from "@mantine/core"
 import React, { FunctionComponent } from "react"
 import { ChevronDown } from "tabler-icons-react"
@@ -29,6 +29,7 @@ const HeaderMenu: FunctionComponent<IProps> = ({
     auth.signOut().catch((err) => console.log(err))
   }
 
+  // TO DO - user menu
   return (
     <Menu
       size={260}

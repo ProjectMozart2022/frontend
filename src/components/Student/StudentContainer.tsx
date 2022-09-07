@@ -1,12 +1,12 @@
-import "./css/Student.css"
+import { Button, Container, Group } from "@mantine/core"
 import axios, { AxiosError } from "axios"
-import StudentCreationForm from "./StudentForm"
-import { StudentTable } from "../Tables/StudentTable"
-import { Container, Button, Group } from "@mantine/core"
-import { useState, useEffect, FunctionComponent } from "react"
+import { FunctionComponent, useEffect, useState } from "react"
+import { setBearerToken } from "../../services/auth/setBearerToken"
+import { signOut } from "../../services/auth/signOut"
 import { Student } from "../../types/Student"
-import { signOut } from "../../services/signOut"
-import { setBearerToken } from "../../services/setBearerToken"
+import { StudentTable } from "../Tables/StudentTable"
+import "./css/Student.css"
+import StudentCreationForm from "./StudentForm"
 
 const StudentContainer: FunctionComponent = () => {
   const [isAdding, setIsAdding] = useState(false)
@@ -38,10 +38,7 @@ const StudentContainer: FunctionComponent = () => {
   return (
     <Container className="studentContainer">
       {!isLoading && students.length > 0 ? (
-        <StudentTable
-          setStudents={setStudents} 
-          students={students}
-        />
+        <StudentTable setStudents={setStudents} students={students} />
       ) : null}
       <Group position="center">
         <Button
@@ -52,7 +49,11 @@ const StudentContainer: FunctionComponent = () => {
         </Button>
       </Group>
       {isAdding && (
-        <StudentCreationForm setStudents={setStudents} isAdding={isAdding} setIsAdding={setIsAdding} />
+        <StudentCreationForm
+          setStudents={setStudents}
+          isAdding={isAdding}
+          setIsAdding={setIsAdding}
+        />
       )}
     </Container>
   )

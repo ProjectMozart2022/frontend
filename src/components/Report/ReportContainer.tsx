@@ -1,8 +1,8 @@
-import axios, { AxiosError } from "axios"
 import { Container } from "@mantine/core"
-import { useState, useEffect, FunctionComponent } from "react"
-import { signOut } from "../../services/signOut"
-import { setBearerToken } from "../../services/setBearerToken"
+import axios, { AxiosError } from "axios"
+import { FunctionComponent, useEffect, useState } from "react"
+import { setBearerToken } from "../../services/auth/setBearerToken"
+import { signOut } from "../../services/auth/signOut"
 import { TeacherReport } from "../../types/TeacherReport"
 import { ReportTable } from "../Tables/ReportTable"
 
