@@ -7,12 +7,12 @@ import {
   Title,
 } from "@mantine/core"
 import { useForm } from "@mantine/form"
-import { signInWithEmailAndPassword } from "firebase/auth"
-import { auth } from "../../contexts/UserContext"
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth"
 import { FirebaseUser } from "../../types/FirebaseUser"
 import { useLoginStyles } from "./styles/loginStyles"
 
 const LoginView = () => {
+  const auth = getAuth()
   const { classes } = useLoginStyles()
 
   const loginForm = useForm<FirebaseUser>({

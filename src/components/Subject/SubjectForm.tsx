@@ -10,7 +10,7 @@ import {
 import { useForm } from "@mantine/form"
 import axios, { AxiosError } from "axios"
 import React, { FunctionComponent, useState } from "react"
-import { signOut } from "../../services/auth/signOut"
+import { signOut } from "../../services/auth"
 import { Subject } from "../../types/Subject"
 
 export type SubjectFormType = {
@@ -40,8 +40,6 @@ export const SubjectForm: FunctionComponent<IProps> = ({
   isAdding,
   setIsAdding,
 }) => {
-  // const [error] = useState("")
-
   const [classNumber] = useState([
     "1",
     "2",

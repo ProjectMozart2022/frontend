@@ -2,7 +2,7 @@ import { Box, Button, Group, NumberInput, TextInput } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import axios, { AxiosError } from "axios"
 import React, { Dispatch, FunctionComponent, SetStateAction } from "react"
-import { signOut } from "../../services/auth/signOut"
+import { signOut } from "../../services/auth"
 import { Student } from "../../types/Student"
 import "./css/Student.css"
 

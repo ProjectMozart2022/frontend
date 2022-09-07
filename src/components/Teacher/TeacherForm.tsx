@@ -9,7 +9,7 @@ import {
 import { useForm } from "@mantine/form"
 import axios, { AxiosError } from "axios"
 import { FunctionComponent, useEffect, useState } from "react"
-import { signOut } from "../../services/auth/signOut"
+import { signOut } from "../../services/auth"
 import { Subject } from "../../types/Subject"
 import { Teacher } from "../../types/Teacher"
 

@@ -11,7 +11,7 @@ import { useForm } from "@mantine/form"
 import axios, { AxiosError } from "axios"
 import { Dispatch, FunctionComponent, SetStateAction, useState } from "react"
 import { Edit } from "tabler-icons-react"
-import { signOut } from "../../services/auth/signOut"
+import { signOut } from "../../services/auth"
 import { Teacher } from "../../types/Teacher"
 
 interface IPropsEditTeacherModal {

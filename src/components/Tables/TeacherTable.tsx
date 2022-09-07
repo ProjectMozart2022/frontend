@@ -1,19 +1,19 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
 import {
-  Table,
-  ScrollArea,
-  UnstyledButton,
-  Group,
-  Text,
   Center,
+  Group,
+  ScrollArea,
+  Table,
+  Text,
   TextInput,
+  UnstyledButton,
 } from "@mantine/core"
-import { Selector, ChevronDown, ChevronUp, Search } from "tabler-icons-react"
-import { tableStyle } from "./styles/tableStyle"
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
+import { ChevronDown, ChevronUp, Search, Selector } from "tabler-icons-react"
+import { Teacher } from "../../types/Teacher"
 import { DeleteModal } from "../modals/DeleteModal"
 import { EditTeacherModal } from "../modals/EditTeacherModal"
 import { LessonsModal } from "../modals/LessonsModal"
-import { Teacher } from "../../types/Teacher"
+import { tableStyle } from "./styles/tableStyle"
 
 interface TeacherRowData {
   firebaseId: string

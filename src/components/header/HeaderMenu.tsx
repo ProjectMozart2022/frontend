@@ -6,9 +6,9 @@ import {
   Text,
   UnstyledButton,
 } from "@mantine/core"
+import { getAuth } from "firebase/auth"
 import React, { FunctionComponent } from "react"
 import { ChevronDown } from "tabler-icons-react"
-import { auth } from "../../contexts/UserContext"
 import { User } from "../../types/User"
 import { headerStyle } from "./styles/headerStyle"
 
@@ -24,7 +24,7 @@ const HeaderMenu: FunctionComponent<IProps> = ({
   setUserMenuOpened,
 }) => {
   const { classes, theme, cx } = headerStyle()
-
+  const auth = getAuth()
   const onLogOut = () => {
     auth.signOut().catch((err) => console.log(err))
   }

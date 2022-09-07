@@ -1,4 +1,5 @@
 import { Container } from "@mantine/core"
+import { getAuth } from "firebase/auth"
 import { FunctionComponent } from "react"
 import { Navigate, Route, Routes } from "react-router"
 import { Header } from "./components/header/Header"
@@ -8,14 +9,14 @@ import ReportContainer from "./components/Report/ReportContainer"
 import StudentContainer from "./components/Student/StudentContainer"
 import SubjectContainer from "./components/Subject/SubjectContainer"
 import TeacherContainer from "./components/Teacher/TeacherContainer"
-import { useFirebaseAuth } from "./contexts/UserContext"
 
 const DEFAULT_PICTURE_URL =
   "https://st3.depositphotos.com/1767687/16607/v/600/depositphotos_166074422-stock-illustration-default-avatar-profile-icon-grey.jpg"
 
 // TODO: work on this
 const App: FunctionComponent = () => {
-  const user = useFirebaseAuth()
+  const auth = getAuth()
+  const user = auth.currentUser
   const headerUser = {
     name: user?.displayName || "Antoni Karwosky",
     image: user?.photoURL || DEFAULT_PICTURE_URL,
