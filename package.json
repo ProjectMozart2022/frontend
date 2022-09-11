@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "vite",
-    "build": "vite build",
+    "build": "sh -ac '. .env; vite build;'",
+    "build-prod": "sh -ac '. .env.prod; vite build;'",
     "lint": "eslint --fix",
     "format": "prettier --write ./src/**/*.ts ./src/**/*.tsx ./src/**/**/*.ts ./src/**/**/*.tsx"
   },
