@@ -10,7 +10,6 @@ import {
 import { useForm } from "@mantine/form"
 import axios, { AxiosError } from "axios"
 import { Dispatch, FunctionComponent, SetStateAction, useState } from "react"
-import { Edit } from "tabler-icons-react"
 import { signOut } from "../../services/auth"
 import { Teacher } from "../../types/Teacher"
 
@@ -79,7 +78,7 @@ export const EditTeacherModal: FunctionComponent<IPropsEditTeacherModal> = ({
         centered
         opened={opened}
         onClose={() => setOpened(false)}
-        overlayColor={"gray"}
+        overlayColor="gray"
         overlayOpacity={0.95}
         closeButtonLabel="Close edit modal">
         <Box sx={{ maxWidth: 400 }} mx="auto">
@@ -115,9 +114,7 @@ export const EditTeacherModal: FunctionComponent<IPropsEditTeacherModal> = ({
           aria-label="edit"
           variant="outline"
           color="yellow"
-          onClick={() => setOpened(true)}>
-          <Edit size={16} />
-        </ActionIcon>
+          onClick={() => setOpened(true)}></ActionIcon>
       </Group>
     </>
   )

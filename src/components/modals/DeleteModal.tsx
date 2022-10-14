@@ -1,7 +1,6 @@
 import { ActionIcon, Button, Group, Modal, Text } from "@mantine/core"
 import axios from "axios"
 import { FunctionComponent, useState } from "react"
-import { X } from "tabler-icons-react"
 
 interface IPropsDeleteModal {
   id: number | string
@@ -31,7 +30,7 @@ export const DeleteModal: FunctionComponent<IPropsDeleteModal> = ({
         centered
         opened={opened}
         onClose={() => setOpened(false)}
-        overlayColor={"gray"}
+        overlayColor="gray"
         overlayOpacity={0.95}
         closeButtonLabel="Close delete modal">
         <Text>Jesteś pewien, że chcesz usunąć {dialog}</Text>
@@ -48,9 +47,7 @@ export const DeleteModal: FunctionComponent<IPropsDeleteModal> = ({
           aria-label="delete"
           variant="outline"
           color="red"
-          onClick={() => setOpened(true)}>
-          <X size={16} />
-        </ActionIcon>
+          onClick={() => setOpened(true)}></ActionIcon>
       </Group>
     </>
   )

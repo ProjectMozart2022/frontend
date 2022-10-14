@@ -15,6 +15,7 @@
   "rules": {
     "react/prop-types": 0,
     "react/react-in-jsx-scope": 0,
+    "react/jsx-curly-brace-presence": "error",
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": [
       "warn", // or "error"
@@ -26,9 +27,6 @@
     ],
     "react-hooks/exhaustive-deps": "warn",
     "@typescript-eslint/no-empty-function": 0,
-    "indent": ["error", 2, {
-      "SwitchCase": 1
-    }],
     "eqeqeq": ["error", "always"],
     "yoda": ["error", "never"],
     "prefer-regex-literals": "error",
@@ -48,7 +46,7 @@
     "dot-notation": "error",
     "camelcase": "error",
     "no-unmodified-loop-condition": "error",
-    "no-duplicate-imports": "error",
+    "import/no-duplicates": "error",
     "require-await": "error",
     "import/no-unresolved": 0,
     "prettier/prettier": "warn",

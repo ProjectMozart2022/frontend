@@ -1,5 +1,4 @@
 import {
-  Center,
   Group,
   ScrollArea,
   Table,
@@ -8,7 +7,6 @@ import {
   UnstyledButton,
 } from "@mantine/core"
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
-import { ChevronDown, ChevronUp, Search, Selector } from "tabler-icons-react"
 import { Subject } from "../../types/Subject"
 import { DeleteModal } from "../modals/DeleteModal"
 import { EditSubjectModal } from "../modals/EditSubjectModal"
@@ -35,7 +33,6 @@ interface SubjectThProps {
 
 const Th = ({ children, reversed, sorted, onSort }: SubjectThProps) => {
   const { classes } = tableStyle()
-  const Icon = sorted ? (reversed ? ChevronUp : ChevronDown) : Selector
   return (
     <th className={classes.th}>
       <UnstyledButton onClick={onSort} className={classes.control}>
@@ -43,9 +40,6 @@ const Th = ({ children, reversed, sorted, onSort }: SubjectThProps) => {
           <Text weight={500} size="sm">
             {children}
           </Text>
-          <Center className={classes.icon}>
-            <Icon size={14} />
-          </Center>
         </Group>
       </UnstyledButton>
     </th>
@@ -158,7 +152,6 @@ export const SubjectTable = ({ subjects, setSubjects }: SubjectTableProps) => {
       <TextInput
         placeholder=""
         mb="md"
-        icon={<Search size={14} />}
         value={search}
         onChange={handleSearchChange}
       />

@@ -1,5 +1,4 @@
 import {
-  Center,
   Group,
   ScrollArea,
   Table,
@@ -8,7 +7,6 @@ import {
   UnstyledButton,
 } from "@mantine/core"
 import React, { useState } from "react"
-import { ChevronDown, ChevronUp, Search, Selector } from "tabler-icons-react"
 import { tableStyle } from "./styles/tableStyle"
 
 export interface ReportRowData {
@@ -30,7 +28,6 @@ interface ReportThProps {
 
 const Th = ({ children, reversed, sorted, onSort }: ReportThProps) => {
   const { classes } = tableStyle()
-  const Icon = sorted ? (reversed ? ChevronUp : ChevronDown) : Selector
   return (
     <th className={classes.th}>
       <UnstyledButton onClick={onSort} className={classes.control}>
@@ -38,9 +35,6 @@ const Th = ({ children, reversed, sorted, onSort }: ReportThProps) => {
           <Text weight={500} size="sm">
             {children}
           </Text>
-          <Center className={classes.icon}>
-            <Icon size={14} />
-          </Center>
         </Group>
       </UnstyledButton>
     </th>
@@ -110,7 +104,6 @@ export const ReportTable = ({ data }: ReportTableProps) => {
       <TextInput
         placeholder=""
         mb="md"
-        icon={<Search size={14} />}
         value={search}
         onChange={handleSearchChange}
       />

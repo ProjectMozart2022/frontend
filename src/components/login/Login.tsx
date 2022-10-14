@@ -7,13 +7,17 @@ import {
   Title,
 } from "@mantine/core"
 import { useForm } from "@mantine/form"
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth"
+import { useEffect } from "react"
+import { useAuthState } from "react-firebase-hooks/auth"
+import { useNavigate } from "react-router-dom"
+import { authService, logInWithEmailAndPassword } from "../../services/auth"
 import { FirebaseUser } from "../../types/FirebaseUser"
 import { useLoginStyles } from "./styles/loginStyles"
 
-const LoginView = () => {
-  const auth = getAuth()
+const Login = () => {
   const { classes } = useLoginStyles()
+  const navigate = useNavigate()
+  const [user, loading, error] = useAuthState(authService)
 
   const loginForm = useForm<FirebaseUser>({
     initialValues: {
@@ -23,8 +27,20 @@ const LoginView = () => {
   })
 
   const handleSubmit = async (userData: FirebaseUser) => {
-    await signInWithEmailAndPassword(auth, userData.email, userData.password)
+    await logInWithEmailAndPassword({
+      email: userData.email,
+      password: userData.password,
+    })
   }
+
+  useEffect(() => {
+    if (loading) {
+      // trigger a loading screen
+      return
+    }
+    console.log(user)
+    if (user) navigate("/uczniowie")
+  }, [user, loading, navigate])
 
   return (
     <div className={classes.wrapper}>
@@ -42,14 +58,14 @@ const LoginView = () => {
             required
             className={classes.input}
             label="Email"
-            placeholder="Wpisz email"
+            placeholder="Podaj email"
             {...loginForm.getInputProps("email")}
           />
           <PasswordInput
             required
             className={classes.input}
             label="Hasło"
-            placeholder="Wpisz hasło"
+            placeholder="Podaj hasło"
             {...loginForm.getInputProps("password")}
           />
           <Center>
@@ -63,4 +79,4 @@ const LoginView = () => {
   )
 }
 
-export default LoginView
+export default Login

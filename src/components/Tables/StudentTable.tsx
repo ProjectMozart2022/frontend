@@ -1,5 +1,4 @@
 import {
-  Center,
   Group,
   ScrollArea,
   Table,
@@ -9,13 +8,6 @@ import {
   UnstyledButton,
 } from "@mantine/core"
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
-import {
-  ChevronDown,
-  ChevronUp,
-  Search,
-  Selector,
-  Star,
-} from "tabler-icons-react"
 import { Student } from "../../types/Student"
 import { DeleteModal } from "../modals/DeleteModal"
 import { EditStudentModal } from "../modals/EditStudentModal"
@@ -44,7 +36,6 @@ interface StudentThProps {
 
 const Th = ({ children, reversed, sorted, onSort }: StudentThProps) => {
   const { classes } = tableStyle()
-  const Icon = sorted ? (reversed ? ChevronUp : ChevronDown) : Selector
   return (
     <th className={classes.th}>
       <UnstyledButton onClick={onSort} className={classes.control}>
@@ -52,9 +43,6 @@ const Th = ({ children, reversed, sorted, onSort }: StudentThProps) => {
           <Text weight={500} size="sm">
             {children}
           </Text>
-          <Center className={classes.icon}>
-            <Icon size={14} />
-          </Center>
         </Group>
       </UnstyledButton>
     </th>
@@ -150,12 +138,7 @@ export const StudentTable = ({ students, setStudents }: StudentTableProps) => {
             transitionDuration={400}
             transitionTimingFunction="ease"
             openDelay={300}
-            closeDelay={500}>
-            <Star
-              size={16}
-              style={{ marginBottom: 5, marginLeft: -10, marginRight: 5 }}
-            />
-          </Tooltip>
+            closeDelay={500}></Tooltip>
         ) : null}
         {row.firstName}
       </td>
@@ -193,7 +176,6 @@ export const StudentTable = ({ students, setStudents }: StudentTableProps) => {
       <TextInput
         placeholder=""
         mb="md"
-        icon={<Search size={14} />}
         value={search}
         onChange={handleSearchChange}
       />

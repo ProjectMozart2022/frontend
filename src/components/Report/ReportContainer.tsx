@@ -1,13 +1,9 @@
 import { Container } from "@mantine/core"
 import axios, { AxiosError } from "axios"
 import { FunctionComponent, useEffect, useState } from "react"
-import { setBearerToken, signOut } from "../../services/auth"
-import { TeacherReport } from "../../types/TeacherReport"
+import { getToken, signOut } from "../../services/auth"
+import { SummaryReport } from "../../types/SummaryReport"
 import { ReportTable } from "../Tables/ReportTable"
-
-interface SummaryReport {
-  teacherReports: TeacherReport[]
-}
 
 const ReportContainer: FunctionComponent = () => {
   const [isLoading, setIsLoading] = useState(true)
@@ -17,7 +13,7 @@ const ReportContainer: FunctionComponent = () => {
   const fetchReport = async () => {
     setIsLoading(true)
     try {
-      await setBearerToken()
+      await getToken()
       const reportResponse = await axios.get<SummaryReport>(`admin/report`)
       setReport(reportResponse.data)
       setIsLoading(false)

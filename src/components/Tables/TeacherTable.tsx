@@ -1,5 +1,4 @@
 import {
-  Center,
   Group,
   ScrollArea,
   Table,
@@ -8,7 +7,6 @@ import {
   UnstyledButton,
 } from "@mantine/core"
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
-import { ChevronDown, ChevronUp, Search, Selector } from "tabler-icons-react"
 import { Teacher } from "../../types/Teacher"
 import { DeleteModal } from "../modals/DeleteModal"
 import { EditTeacherModal } from "../modals/EditTeacherModal"
@@ -37,7 +35,6 @@ interface TeacherThProps {
 
 const Th = ({ children, reversed, sorted, onSort }: TeacherThProps) => {
   const { classes } = tableStyle()
-  const Icon = sorted ? (reversed ? ChevronUp : ChevronDown) : Selector
   return (
     <th className={classes.th}>
       <UnstyledButton onClick={onSort} className={classes.control}>
@@ -45,9 +42,6 @@ const Th = ({ children, reversed, sorted, onSort }: TeacherThProps) => {
           <Text weight={500} size="sm">
             {children}
           </Text>
-          <Center className={classes.icon}>
-            <Icon size={14} />
-          </Center>
         </Group>
       </UnstyledButton>
     </th>
@@ -171,7 +165,6 @@ export const TeacherTable = ({ teachers, setTeachers }: TeacherTableProps) => {
       <TextInput
         placeholder=""
         mb="md"
-        icon={<Search size={14} />}
         value={search}
         onChange={handleSearchChange}
       />

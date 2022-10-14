@@ -1,6 +1,6 @@
 import axios from "axios"
 import { FirebaseOptions, initializeApp } from "firebase/app"
-import { getAuth } from "firebase/auth"
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth"
 
 // TO EXTRACT THIS FROM THE CLIENT SIDE
 const firebaseConfig: FirebaseOptions = {
@@ -9,24 +9,32 @@ const firebaseConfig: FirebaseOptions = {
 }
 
 const app = initializeApp(firebaseConfig)
-
 export const authService = getAuth(app)
 
-export const setBearerToken = async () => {
-  const auth = getAuth()
-  const jwt = await auth.currentUser?.getIdToken()
-  if (jwt) {
-    axios.defaults.headers.common.Authorization = `Bearer ${jwt}`
+export const logInWithEmailAndPassword = async ({
+  email,
+  password,
+}: {
+  email: string
+  password: string
+}) => {
+  try {
+    await signInWithEmailAndPassword(authService, email, password)
+  } catch (err) {
+    // TODO: handle error
+    console.error(err)
   }
 }
 
-export const getBearerToken = async () => {
-  const auth = getAuth()
-  const jwt = await auth.currentUser?.getIdToken()
-  return jwt
+export const getToken = async () => {
+  const jwt = await authService.currentUser?.getIdToken()
+  if (jwt) {
+    axios.defaults.headers.common.Authorization = `Bearer ${jwt}`
+    return true
+  }
+  return false
 }
 
 export const signOut = async () => {
-  const auth = getAuth()
-  await auth.signOut()
+  await authService.signOut()
 }

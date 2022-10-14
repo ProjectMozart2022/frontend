@@ -1,45 +1,35 @@
-import { Button, Container, Group } from "@mantine/core"
-import axios, { AxiosError } from "axios"
-import { FunctionComponent, useEffect, useState } from "react"
-import { setBearerToken, signOut } from "../../services/auth"
-import { Student } from "../../types/Student"
-import { StudentTable } from "../Tables/StudentTable"
+import { Container } from "@mantine/core"
+import { FunctionComponent } from "react"
+import { useStudents } from "../../services/queries"
+import { CustomTable } from "../Tables/CustomTable"
 import "./css/Student.css"
-import StudentCreationForm from "./StudentForm"
 
 const StudentContainer: FunctionComponent = () => {
-  const [isAdding, setIsAdding] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
-  const [students, setStudents] = useState<Student[]>([])
-  const [, setError] = useState("")
+  const { status, error: _error, data: students } = useStudents()
 
-  const fetchStudents = async () => {
-    setIsLoading(true)
-    try {
-      await setBearerToken()
-      const studentResponse = await axios.get<Student[]>(`admin/student`)
-      setStudents(studentResponse.data)
-      setIsLoading(false)
-    } catch (error) {
-      setError(error as string)
-      setIsLoading(false)
-      const aError = error as AxiosError
-      if (aError.response?.status === 401) {
-        await signOut()
-      }
-    }
-  }
-
-  useEffect(() => {
-    void fetchStudents()
-  }, [])
+  // const fetchStudents = async () => {
+  //   setIsLoading(true)
+  //   try {
+  //     await setBearerToken()
+  //     const studentResponse = await axios.get<Student[]>(`admin/student`)
+  //     setStudents(studentResponse.data)
+  //     setIsLoading(false)
+  //   } catch (error) {
+  //     setError(error as string)
+  //     setIsLoading(false)
+  //     const aError = error as AxiosError
+  //     if (aError.response?.status === 401) {
+  //       await signOut()
+  //     }
+  //   }
+  // }
 
   return (
     <Container className="studentContainer">
-      {!isLoading && students.length > 0 ? (
+      {/* {status === "success" && students.length > 0 ? (
         <StudentTable setStudents={setStudents} students={students} />
-      ) : null}
-      <Group position="center">
+      ) : null} */}
+      {/* <Group position="center">
         <Button
           style={{ marginLeft: "0.75vw", marginBottom: "0.5vh" }}
           color="dark"
@@ -53,7 +43,8 @@ const StudentContainer: FunctionComponent = () => {
           isAdding={isAdding}
           setIsAdding={setIsAdding}
         />
-      )}
+      )} */}
+      <CustomTable />
     </Container>
   )
 }

@@ -1,6 +1,5 @@
 import { ActionIcon, Group, Modal } from "@mantine/core"
 import { FunctionComponent, useState } from "react"
-import { ListNumbers } from "tabler-icons-react"
 import { Lesson } from "../../types/Lesson"
 import { LessonTable } from "../Tables/LessonTable"
 interface LessonModalIProps {
@@ -21,7 +20,7 @@ export const LessonsModal: FunctionComponent<LessonModalIProps> = ({
         onClose={() => setOpened(false)}
         overlayColor="gray"
         overlayOpacity={0.95}
-        size={"xl"}
+        size="xl"
         closeButtonLabel="Close delete modal">
         <LessonTable
           data={lessons.map((lesson) => {
@@ -41,9 +40,7 @@ export const LessonsModal: FunctionComponent<LessonModalIProps> = ({
           aria-label="delete"
           variant="outline"
           color="blue"
-          onClick={() => setOpened(true)}>
-          <ListNumbers size={16} />
-        </ActionIcon>
+          onClick={() => setOpened(true)}></ActionIcon>
       </Group>
     </>
   )

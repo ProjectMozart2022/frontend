@@ -6,7 +6,7 @@ import { Teacher } from "../../types/Teacher"
 import { TeacherTable } from "../Tables/TeacherTable"
 import { TeacherForm } from "./TeacherForm"
 
-const SubjectContainer: FunctionComponent = () => {
+const TeacherContainer: FunctionComponent = () => {
   const [isAdding, setIsAdding] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [teachers, setTeachers] = useState<Teacher[]>([])
@@ -68,4 +68,4 @@ const SubjectContainer: FunctionComponent = () => {
   )
 }
 
-export default SubjectContainer
+export default TeacherContainer
